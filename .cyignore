@@ -1,0 +1,10 @@
+$(SEARCH_cJSON)/tests
+$(SEARCH_cJSON)/test.c
+$(SEARCH_cJSON)/cJSON_Utils.c
+$(SEARCH_cJSON)/fuzzing
+
+
+$(SEARCH_iotc-modustoolbox-sdk)/lib/cJSON/tests
+$(SEARCH_iotc-modustoolbox-sdk)/lib/cJSON/fuzzing
+$(SEARCH_iotc-modustoolbox-sdk)/lib/cJSON/test.c
+$(SEARCH_iotc-modustoolbox-sdk)/lib/iotc-c-lib/tests
