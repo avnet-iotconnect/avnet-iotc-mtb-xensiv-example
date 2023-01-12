@@ -1,5 +1,3 @@
-## iotc-modustoolbox-XENSIV-example
-
 Avnet IoTConnect XENSIV&trade; project example for Infineon's ModusToolbox IDE and framework
 
 ## Requirements
@@ -9,10 +7,9 @@ Avnet IoTConnect XENSIV&trade; project example for Infineon's ModusToolbox IDE a
 ## Supported Boards
 
 The code has been developed and tested With:
-- Rapid IoT connect developer kit (`CYSBSYSKIT-DEV-01`) with PAS CO2 sensor.
+- [Rapid IoT connect developer kit (`CYSBSYSKIT-DEV-01`) with PAS CO2 sensor.](https://www.infineon.com/cms/en/product/evaluation-boards/kit_csk_pasco2)
 
 ## Build Instructions
-
 - Download, install and open [ModusToolbox&trade; software](https://www.cypress.com/products/modustoolbox-software-environment). On Windows, ensure that you **Run As Adminstrator** the installation package so that the neccessary drivers can be installed.
 - Select a name for your workspace when prompted for a workspace name.
 - Click the **New Application** link in the **Quick Panel** (or, use **File** > **New** > **ModusToolbox Application**). This launches the [Project Creator](https://www.cypress.com/ModusToolboxProjectCreator) tool.
