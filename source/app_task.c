@@ -66,6 +66,8 @@
 #include "xensiv_dps3xx_mtb.h"
 #include "xensiv_pasco2_mtb.h"
 
+#include "optiga_trust_helpers.h"
+
 #define APP_VERSION "01.00.00"
 
 #if defined(TARGET_CYSBSYSKIT_DEV_01)
@@ -193,7 +195,7 @@ static void publish_telemetry() {
     // TelemetryAddWith* calls are only required if sending multiple data points in one packet.
     iotcl_telemetry_add_with_iso_time(msg, iotcl_iso_timestamp_now());
     iotcl_telemetry_set_string(msg, "version", APP_VERSION);
-//    iotcl_telemetry_set_number(msg, "cpu", 3.123); // test floating point numbers
+    iotcl_telemetry_set_number(msg, "cpu", 3.123); // test floating point numbers
 
     /* Read CO2 value from sensor */
     uint16_t ppm = 0;
@@ -203,7 +205,7 @@ static void publish_telemetry() {
     {
     	printf("READ SUCCESS\r\n");
     }
-    iotcl_telemetry_set_number(msg, "cpu", ppm); // test floating point numbers
+    iotcl_telemetry_set_number(msg, "co2level", ppm); // test floating point numbers
 
     const char *str = iotcl_create_serialized_string(msg, false);
     iotcl_telemetry_destroy(msg);
@@ -214,19 +216,30 @@ static void publish_telemetry() {
     cyhal_system_delay_ms(500);
 }
 
+/* We don't use CLIENT_CERTIFICATE memory but instead allocate a buffer and
+ * populate it with teh certificate form the Secure Element */
+char CERTIFICATE[1200];
+uint16_t CERTIFICATE_SIZE = 1200;
 
+void use_optiga_certificate(void)
+{
+    /* This is the place where the certificate is initialized. This is a function
+     * which will allow to read it out and populate internal mbedtls settings wit it*/
+    read_certificate_from_optiga(0xe0e0, CERTIFICATE, &CERTIFICATE_SIZE);
+    printf("Your certificate is:\n%s\n",CERTIFICATE);
+}
 
 void app_task(void *pvParameters) {
 
     cy_rslt_t result;
 
-    xensiv_dps3xx_t xensiv_dps3xx;
+    printf("Your certificate is:\n%s\n",CERTIFICATE);
 
-    /* I2C variables */
+    // I2C variables
     cyhal_i2c_t cyhal_i2c;
-    /* initialize i2c library*/
+    // initialize i2c library
     cyhal_i2c_cfg_t i2c_master_config = {CYHAL_I2C_MODE_MASTER,
-                                         0 /* address is not used for master mode */,
+                                         0, // address is not used for master mode
                                          I2C_MASTER_FREQUENCY};
 
     result = cyhal_i2c_init(&cyhal_i2c, CYBSP_I2C_SDA, CYBSP_I2C_SCL, NULL);
@@ -240,21 +253,21 @@ void app_task(void *pvParameters) {
         CY_ASSERT(0);
     }
 
-    /* Initialize and enable PAS CO2 Wing Board I2C channel communication*/
+    // Initialize and enable PAS CO2 Wing Board I2C channel communication
     result = cyhal_gpio_init(MTB_PASCO2_PSEL, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, MTB_PASCO2_PSEL_I2C_ENABLE);
     if (result != CY_RSLT_SUCCESS)
     {
         CY_ASSERT(0);
     }
 
-    /* Initialize and enable PAS CO2 Wing Board power switch */
+    // Initialize and enable PAS CO2 Wing Board power switch
     result = cyhal_gpio_init(MTB_PASCO2_POWER_SWITCH, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, MTB_PASCO2_POWER_ON);
     if (result != CY_RSLT_SUCCESS)
     {
         CY_ASSERT(0);
     }
 
-    /* Initialize the LEDs on PAS CO2 Wing Board */
+    // Initialize the LEDs on PAS CO2 Wing Board
     result = cyhal_gpio_init(MTB_PASCO2_LED_OK, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, MTB_PASCO_LED_STATE_OFF);
     if (result != CY_RSLT_SUCCESS)
     {
@@ -267,16 +280,10 @@ void app_task(void *pvParameters) {
         CY_ASSERT(0);
     }
 
-    /* Delay 2s to wait for pasco2 sensor get ready */
+    // Delay 2s to wait for pasco2 sensor get ready
     vTaskDelay(pdMS_TO_TICKS(PASCO2_INITIALIZATION_DELAY));
 
-    result = xensiv_dps3xx_mtb_init_i2c(&xensiv_dps3xx, &cyhal_i2c, XENSIV_DPS3XX_I2C_ADDR_ALT);
-    if (result != CY_RSLT_SUCCESS)
-    {
-    	printf("dps3xx device initialization error\n");
-    }
-
-    /* Initialize PAS CO2 sensor with default parameter values */
+    // Initialize PAS CO2 sensor with default parameter values
     result = xensiv_pasco2_mtb_init_i2c(&xensiv_pasco2, &cyhal_i2c);
     if (result != CY_RSLT_SUCCESS)
     {
@@ -285,7 +292,7 @@ void app_task(void *pvParameters) {
         // exit current thread (suspend)
         return;
     }
-    /* Configure PAS CO2 Wing board interrupt to enable 12V boost converter in wingboard */
+    // Configure PAS CO2 Wing board interrupt to enable 12V boost converter in wingboard
     xensiv_pasco2_interrupt_config_t int_config =
     {
         .b.int_func = XENSIV_PASCO2_INTERRUPT_FUNCTION_NONE,
@@ -299,14 +306,15 @@ void app_task(void *pvParameters) {
         CY_ASSERT(0);
     }
 
-    cyhal_gpio_write(CYBSP_USER_LED, false); /* USER_LED is active low */
+    cyhal_gpio_write(CYBSP_USER_LED, false); // USER_LED is active low
 
-    /* Turn on status LED on PAS CO2 Wing Board to indicate normal operation */
+    // Turn on status LED on PAS CO2 Wing Board to indicate normal operation
     cyhal_gpio_write(MTB_PASCO2_LED_OK, MTB_PASCO_LED_STATE_ON);
 
-    /* Structures that store the data to be sent/received to/from various
-     * message queues.
-     */
+
+
+
+
 
     /* Configure the Wi-Fi interface as a Wi-Fi STA (i.e. Client). */
     cy_wcm_config_t config = { .interface = CY_WCM_INTERFACE_TYPE_STA };
@@ -348,8 +356,10 @@ void app_task(void *pvParameters) {
         iotc_config->auth.type = IOTCONNECT_AUTH_TYPE;
 
         if (iotc_config->auth.type == IOTC_AT_X509) {
-            iotc_config->auth.data.cert_info.device_cert = IOTCONNECT_DEVICE_CERT;
-            iotc_config->auth.data.cert_info.device_key = IOTCONNECT_DEVICE_KEY;
+//           iotc_config->auth.data.cert_info.device_cert = (const char *)IOTCONNECT_DEVICE_CERT;
+//            iotc_config->auth.data.cert_info.device_key = (const char *)IOTCONNECT_DEVICE_KEY;
+            iotc_config->auth.data.cert_info.device_cert = (const char *)CERTIFICATE;
+            iotc_config->auth.data.cert_info.device_key = (const char *)IOTCONNECT_DEVICE_KEY;
         }
 
 

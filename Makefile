@@ -34,7 +34,7 @@
 # configurations. If TARGET is manually edited, ensure TARGET_<BSP>.mtb with a
 # valid URL exists in the application, run 'make getlibs' to fetch BSP contents
 # and update or regenerate launch configurations for your IDE.
-TARGET=CY8CKIT-062-WIFI-BT
+TARGET=CYSBSYSKIT-DEV-01
 
 # Name of application (used to derive name of final linked file).
 #
@@ -78,10 +78,13 @@ VERBOSE=
 # ... then code in directories named COMPONENT_foo and COMPONENT_bar will be
 # added to the build
 #
-COMPONENTS=FREERTOS LWIP MBEDTLS SECURE_SOCKETS RTOS_AWARE 
+COMPONENTS=FREERTOS LWIP MBEDTLS SECURE_SOCKETS RTOS_AWARE PSOC6_FREERTOS 
 
 # Like COMPONENTS, but disable optional code that was enabled by default.
 DISABLE_COMPONENTS=
+
+OPTIGAFLAGS=\
+	OPTIGA_LIB_EXTERNAL='"optiga_lib_config_mtb.h"'
 
 # By default the build system automatically looks in the Makefile's directory
 # tree for source code and builds it. The SOURCES variable can be used to
@@ -94,13 +97,13 @@ SOURCES=
 INCLUDES=./configs
 
 # Custom configuration of mbedtls library.
-MBEDTLSFLAGS = MBEDTLS_USER_CONFIG_FILE='"mbedtls_user_config.h"'
+MBEDTLSFLAGS = MBEDTLS_USER_CONFIG_FILE='"mbedtls_user_config.h"' CY_CRYPTO_HAL_DISABLE 
 
 # Turn off making tests for CJSON
 CJSONFLAGS = ENABLE_CJSON_TEST=off ENABLE_CJSON_UTILS=off
 
 # Add additional defines to the build process (without a leading -D).
-DEFINES=$(MBEDTLSFLAGS) $(CJSONFLAGS) CYBSP_WIFI_CAPABLE CY_RETARGET_IO_CONVERT_LF_TO_CRLF 
+DEFINES=$(MBEDTLSFLAGS) $(OPTIGAFLAGS) $(CJSONFLAGS) CYBSP_WIFI_CAPABLE CY_RETARGET_IO_CONVERT_LF_TO_CRLF CY_CRYPTO_HAL_DISABLE 
 
 # for http client
 DEFINES+=ENABLE_HTTP_CLIENT_LOGS HTTP_DO_NOT_USE_CUSTOM_CONFIG MQTT_DO_NOT_USE_CUSTOM_CONFIG

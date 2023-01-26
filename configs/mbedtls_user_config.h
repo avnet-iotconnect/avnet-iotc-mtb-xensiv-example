@@ -29,6 +29,58 @@
 #ifndef MBEDTLS_USER_CONFIG_HEADER
 #define MBEDTLS_USER_CONFIG_HEADER
 
+/**
+ * \def MBEDTLS_MD2_PROCESS_ALT
+ *
+ * MBEDTLS__FUNCTION_NAME__ALT: Uncomment a macro to let mbed TLS use you
+ * alternate core implementation of symmetric crypto or hash function. Keep in
+ * mind that function prototypes should remain the same.
+ *
+ * This replaces only one function. The header file from mbed TLS is still
+ * used, in contrast to the MBEDTLS__MODULE_NAME__ALT flags.
+ *
+ * Example: In case you uncomment MBEDTLS_SHA256_PROCESS_ALT, mbed TLS will
+ * no longer provide the mbedtls_sha1_process() function, but it will still provide
+ * the other function (using your mbedtls_sha1_process() function) and the definition
+ * of mbedtls_sha1_context, so your implementation of mbedtls_sha1_process must be compatible
+ * with this definition.
+ *
+ * \note Because of a signature change, the core AES encryption and decryption routines are
+ *       currently named mbedtls_aes_internal_encrypt and mbedtls_aes_internal_decrypt,
+ *       respectively. When setting up alternative implementations, these functions should
+ *       be overridden, but the wrapper functions mbedtls_aes_decrypt and mbedtls_aes_encrypt
+ *       must stay untouched.
+ *
+ * \note If you use the AES_xxx_ALT macros, then is is recommended to also set
+ *       MBEDTLS_AES_ROM_TABLES in order to help the linker garbage-collect the AES
+ *       tables.
+ *
+ * Uncomment a macro to enable alternate implementation of the corresponding
+ * function.
+ *
+ * \warning   MD2, MD4, MD5, DES and SHA-1 are considered weak and their use
+ *            constitutes a security risk. If possible, we recommend avoiding
+ *            dependencies on them, and considering stronger message digests
+ *            and ciphers instead.
+ *
+ * \warning   If both MBEDTLS_ECDSA_SIGN_ALT and MBEDTLS_ECDSA_DETERMINISTIC are
+ *            enabled, then the deterministic ECDH signature functions pass the
+ *            the static HMAC-DRBG as RNG to mbedtls_ecdsa_sign(). Therefore
+ *            alternative implementations should use the RNG only for generating
+ *            the ephemeral key and nothing else. If this is not possible, then
+ *            MBEDTLS_ECDSA_DETERMINISTIC should be disabled and an alternative
+ *            implementation should be provided for mbedtls_ecdsa_sign_det_ext()
+ *            (and for mbedtls_ecdsa_sign_det() too if backward compatibility is
+ *            desirable).
+ *
+ */
+#define MBEDTLS_ECDH_GEN_PUBLIC_ALT
+#define MBEDTLS_ECDSA_SIGN_ALT
+#define MBEDTLS_ECDSA_VERIFY_ALT
+#define MBEDTLS_ECDH_COMPUTE_SHARED_ALT
+#define MBEDTLS_ECDSA_GENKEY_ALT
+
+#undef MBEDTLS_KEY_EXCHANGE_ECDHE_ECDSA_ENABLED
 
 /**
  * \def MBEDTLS_HAVE_TIME_DATE
@@ -113,11 +165,11 @@
 #undef MBEDTLS_ECP_DP_SECP256K1_ENABLED
 #undef MBEDTLS_ECP_DP_BP256R1_ENABLED
 #undef MBEDTLS_ECP_DP_BP384R1_ENABLED
-//#undef MBEDTLS_ECP_DP_BP512R1_ENABLED
+#undef MBEDTLS_ECP_DP_BP512R1_ENABLED
 //#undef MBEDTLS_ECP_DP_CURVE25519_ENABLED
 #undef MBEDTLS_ECP_DP_CURVE448_ENABLED
 
-#define MBEDTLS_ECP_DP_BP512R1_ENABLED
+//#define MBEDTLS_ECP_DP_BP512R1_ENABLED
 
 /**
  * \def MBEDTLS_KEY_EXCHANGE_PSK_ENABLED
@@ -711,6 +763,116 @@
  *      MBEDTLS_TLS_RSA_PSK_WITH_RC4_128_SHA
  */
 #undef MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
+
+/**
+ * \def MBEDTLS_KEY_EXCHANGE_RSA_ENABLED
+ *
+ * Enable the RSA-only based ciphersuite modes in SSL / TLS.
+ *
+ * Requires: MBEDTLS_RSA_C, MBEDTLS_PKCS1_V15,
+ *           MBEDTLS_X509_CRT_PARSE_C
+ *
+ * This enables the following ciphersuites (if other requisites are
+ * enabled as well):
+ *      MBEDTLS_TLS_RSA_WITH_AES_256_GCM_SHA384
+ *      MBEDTLS_TLS_RSA_WITH_AES_256_CBC_SHA256
+ *      MBEDTLS_TLS_RSA_WITH_AES_256_CBC_SHA
+ *      MBEDTLS_TLS_RSA_WITH_CAMELLIA_256_GCM_SHA384
+ *      MBEDTLS_TLS_RSA_WITH_CAMELLIA_256_CBC_SHA256
+ *      MBEDTLS_TLS_RSA_WITH_CAMELLIA_256_CBC_SHA
+ *      MBEDTLS_TLS_RSA_WITH_AES_128_GCM_SHA256
+ *      MBEDTLS_TLS_RSA_WITH_AES_128_CBC_SHA256
+ *      MBEDTLS_TLS_RSA_WITH_AES_128_CBC_SHA
+ *      MBEDTLS_TLS_RSA_WITH_CAMELLIA_128_GCM_SHA256
+ *      MBEDTLS_TLS_RSA_WITH_CAMELLIA_128_CBC_SHA256
+ *      MBEDTLS_TLS_RSA_WITH_CAMELLIA_128_CBC_SHA
+ *      MBEDTLS_TLS_RSA_WITH_3DES_EDE_CBC_SHA
+ *      MBEDTLS_TLS_RSA_WITH_RC4_128_SHA
+ *      MBEDTLS_TLS_RSA_WITH_RC4_128_MD5
+ */
+#undef MBEDTLS_KEY_EXCHANGE_RSA_ENABLED
+
+/**
+ * \def MBEDTLS_KEY_EXCHANGE_DHE_RSA_ENABLED
+ *
+ * Enable the DHE-RSA based ciphersuite modes in SSL / TLS.
+ *
+ * Requires: MBEDTLS_DHM_C, MBEDTLS_RSA_C, MBEDTLS_PKCS1_V15,
+ *           MBEDTLS_X509_CRT_PARSE_C
+ *
+ * This enables the following ciphersuites (if other requisites are
+ * enabled as well):
+ *      MBEDTLS_TLS_DHE_RSA_WITH_AES_256_GCM_SHA384
+ *      MBEDTLS_TLS_DHE_RSA_WITH_AES_256_CBC_SHA256
+ *      MBEDTLS_TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+ *      MBEDTLS_TLS_DHE_RSA_WITH_CAMELLIA_256_GCM_SHA384
+ *      MBEDTLS_TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA256
+ *      MBEDTLS_TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA
+ *      MBEDTLS_TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
+ *      MBEDTLS_TLS_DHE_RSA_WITH_AES_128_CBC_SHA256
+ *      MBEDTLS_TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+ *      MBEDTLS_TLS_DHE_RSA_WITH_CAMELLIA_128_GCM_SHA256
+ *      MBEDTLS_TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA256
+ *      MBEDTLS_TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA
+ *      MBEDTLS_TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+ *
+ * \warning    Using DHE constitutes a security risk as it
+ *             is not possible to validate custom DH parameters.
+ *             If possible, it is recommended users should consider
+ *             preferring other methods of key exchange.
+ *             See dhm.h for more details.
+ *
+ */
+#undef MBEDTLS_KEY_EXCHANGE_DHE_RSA_ENABLED
+
+/**
+ * \def MBEDTLS_KEY_EXCHANGE_ECDHE_RSA_ENABLED
+ *
+ * Enable the ECDHE-RSA based ciphersuite modes in SSL / TLS.
+ *
+ * Requires: MBEDTLS_ECDH_C, MBEDTLS_RSA_C, MBEDTLS_PKCS1_V15,
+ *           MBEDTLS_X509_CRT_PARSE_C
+ *
+ * This enables the following ciphersuites (if other requisites are
+ * enabled as well):
+ *      MBEDTLS_TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ *      MBEDTLS_TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384
+ *      MBEDTLS_TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+ *      MBEDTLS_TLS_ECDHE_RSA_WITH_CAMELLIA_256_GCM_SHA384
+ *      MBEDTLS_TLS_ECDHE_RSA_WITH_CAMELLIA_256_CBC_SHA384
+ *      MBEDTLS_TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+ *      MBEDTLS_TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+ *      MBEDTLS_TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+ *      MBEDTLS_TLS_ECDHE_RSA_WITH_CAMELLIA_128_GCM_SHA256
+ *      MBEDTLS_TLS_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256
+ *      MBEDTLS_TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA
+ *      MBEDTLS_TLS_ECDHE_RSA_WITH_RC4_128_SHA
+ */
+#define MBEDTLS_KEY_EXCHANGE_ECDHE_RSA_ENABLED
+
+/**
+ * \def MBEDTLS_KEY_EXCHANGE_ECDH_RSA_ENABLED
+ *
+ * Enable the ECDH-RSA based ciphersuite modes in SSL / TLS.
+ *
+ * Requires: MBEDTLS_ECDH_C, MBEDTLS_X509_CRT_PARSE_C
+ *
+ * This enables the following ciphersuites (if other requisites are
+ * enabled as well):
+ *      MBEDTLS_TLS_ECDH_RSA_WITH_RC4_128_SHA
+ *      MBEDTLS_TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA
+ *      MBEDTLS_TLS_ECDH_RSA_WITH_AES_128_CBC_SHA
+ *      MBEDTLS_TLS_ECDH_RSA_WITH_AES_256_CBC_SHA
+ *      MBEDTLS_TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256
+ *      MBEDTLS_TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384
+ *      MBEDTLS_TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256
+ *      MBEDTLS_TLS_ECDH_RSA_WITH_AES_256_GCM_SHA384
+ *      MBEDTLS_TLS_ECDH_RSA_WITH_CAMELLIA_128_CBC_SHA256
+ *      MBEDTLS_TLS_ECDH_RSA_WITH_CAMELLIA_256_CBC_SHA384
+ *      MBEDTLS_TLS_ECDH_RSA_WITH_CAMELLIA_128_GCM_SHA256
+ *      MBEDTLS_TLS_ECDH_RSA_WITH_CAMELLIA_256_GCM_SHA384
+ */
+#undef MBEDTLS_KEY_EXCHANGE_ECDH_RSA_ENABLED
 
 /**
  * \def MBEDTLS_PSA_CRYPTO_C
