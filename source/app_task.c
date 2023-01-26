@@ -63,7 +63,6 @@
 #include "app_config.h"
 #include "app_task.h"
 
-#include "xensiv_dps3xx_mtb.h"
 #include "xensiv_pasco2_mtb.h"
 
 #include "optiga_trust_helpers.h"
@@ -100,9 +99,7 @@
 /* Delay time after each PAS CO2 readout */
 #define PASCO2_PROCESS_DELAY (1000)
 
-
 xensiv_pasco2_t xensiv_pasco2;
-xensiv_dps3xx_t xensiv_dps3xx;
 
 
 /* Macro to check if the result of an operation was successful and set the
