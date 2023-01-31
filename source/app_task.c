@@ -65,6 +65,9 @@
 
 #include "xensiv_pasco2_mtb.h"
 
+#include "optiga/pal/pal_os_event.h"
+#include "optiga/pal/pal_i2c.h"
+#include "optiga_trust.h"
 #include "optiga_trust_helpers.h"
 
 #define APP_VERSION "01.00.00"
@@ -99,7 +102,14 @@
 /* Delay time after each PAS CO2 readout */
 #define PASCO2_PROCESS_DELAY (1000)
 
-xensiv_pasco2_t xensiv_pasco2;
+
+static xensiv_pasco2_t xensiv_pasco2;
+static cyhal_i2c_t cyhal_i2c;
+
+/* We don't use CLIENT_CERTIFICATE memory but instead allocate a buffer and
+ * populate it with teh certificate form the Secure Element */
+static char certificate[1200];
+uint16_t certificate_size = 0;
 
 
 /* Macro to check if the result of an operation was successful and set the
@@ -120,6 +130,7 @@ xensiv_pasco2_t xensiv_pasco2;
                              return result;                    \
                          }                                     \
                      } while(0)
+
 
 
 
@@ -210,30 +221,28 @@ static void publish_telemetry() {
     iotconnect_sdk_send_packet(str); // underlying code will report an error
     iotcl_destroy_serialized(str);
 
-    cyhal_system_delay_ms(500);
 }
 
-/* We don't use CLIENT_CERTIFICATE memory but instead allocate a buffer and
- * populate it with teh certificate form the Secure Element */
-char CERTIFICATE[1200];
-uint16_t CERTIFICATE_SIZE = 1200;
-
-void use_optiga_certificate(void)
+bool use_optiga_certificate(void)
 {
     /* This is the place where the certificate is initialized. This is a function
      * which will allow to read it out and populate internal mbedtls settings wit it*/
-    read_certificate_from_optiga(0xe0e0, CERTIFICATE, &CERTIFICATE_SIZE);
-    printf("Your certificate is:\n%s\n",CERTIFICATE);
+    read_certificate_from_optiga(0xe0e0, certificate, &certificate_size);
+
+    if (certificate_size) {
+        printf("Your certificate is:\n%s\n",certificate);
+    	return true;
+    } else {
+        printf("Optiga certificate read failed\n");
+    	return false;
+    }
 }
 
-void app_task(void *pvParameters) {
 
+static void pasco2_init(void)
+{
     cy_rslt_t result;
 
-    printf("Your certificate is:\n%s\n",CERTIFICATE);
-
-    // I2C variables
-    cyhal_i2c_t cyhal_i2c;
     // initialize i2c library
     cyhal_i2c_cfg_t i2c_master_config = {CYHAL_I2C_MODE_MASTER,
                                          0, // address is not used for master mode
@@ -308,10 +317,13 @@ void app_task(void *pvParameters) {
     // Turn on status LED on PAS CO2 Wing Board to indicate normal operation
     cyhal_gpio_write(MTB_PASCO2_LED_OK, MTB_PASCO_LED_STATE_ON);
 
+    printf("PAS CO2 initialized successfully\n\n");
+}
 
+void app_task(void *pvParameters) {
 
-
-
+	/* Initialize PAS CO2 sensor */
+	pasco2_init();
 
     /* Configure the Wi-Fi interface as a Wi-Fi STA (i.e. Client). */
     cy_wcm_config_t config = { .interface = CY_WCM_INTERFACE_TYPE_STA };
@@ -353,10 +365,8 @@ void app_task(void *pvParameters) {
         iotc_config->auth.type = IOTCONNECT_AUTH_TYPE;
 
         if (iotc_config->auth.type == IOTC_AT_X509) {
-//           iotc_config->auth.data.cert_info.device_cert = (const char *)IOTCONNECT_DEVICE_CERT;
-//            iotc_config->auth.data.cert_info.device_key = (const char *)IOTCONNECT_DEVICE_KEY;
-            iotc_config->auth.data.cert_info.device_cert = (const char *)CERTIFICATE;
-            iotc_config->auth.data.cert_info.device_key = (const char *)IOTCONNECT_DEVICE_KEY;
+            iotc_config->auth.data.cert_info.device_cert = (const char *)certificate;
+            iotc_config->auth.data.cert_info.device_key = (const char *)DUMMY_PRIVATE_KEY;
         }
 
 

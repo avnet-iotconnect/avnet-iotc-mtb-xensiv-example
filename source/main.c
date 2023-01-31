@@ -56,15 +56,14 @@
 #include "optiga/pal/pal_os_event.h"
 #include "optiga/pal/pal_i2c.h"
 #include "optiga_trust.h"
-#include "optiga_trust_helpers.h"
+
+extern void use_optiga_certificate(void);
 
 /******************************************************************************
  * Global Variables
  ******************************************************************************/
 /* This enables RTOS aware debugging. */
 volatile int uxTopUsedPriority;
-
-extern void use_optiga_certificate(void);
 
 /* This is a place from which we can poll the status of operation */
 void vApplicationTickHook( void );
@@ -75,12 +74,15 @@ void vApplicationTickHook( void )
     pal_os_event_trigger_registered_callback();
 }
 
-void optiga_client_task(void *pvParameters)
+void optiga_and_apptask_task(void *pvParameters)
 {
-    printf("\x1b[2J\x1b[;H");
+    /* Optiga initialize and read the certificate */
     pal_i2c_init(NULL);
     optiga_trust_init();
+    /* Based on the certificate read from the chip, Optiga uses a hook(optiga-trust-m\release-v3.1.4\examples\mbedtls_port\)
+     * to mbedtls to generate signature and so on for TLS handshake */
     use_optiga_certificate();
+
 
     /* \x1b[2J\x1b[;H - ANSI ESC sequence to clear screen. */
     printf("\x1b[2J\x1b[;H");
@@ -95,6 +97,7 @@ void optiga_client_task(void *pvParameters)
 
     while(1);
 }
+
 
 /******************************************************************************
  * Function Name: main
@@ -132,8 +135,7 @@ int main() {
 
     /* Create an OPTIGA task to make sure everything related to
      * the OPTIGA stack will be called from the scheduler */
-    xTaskCreate(optiga_client_task, "OPTIGA", 1024 * 12, NULL, 2, NULL);
-
+    xTaskCreate(optiga_and_apptask_task, "optiga_and_apptask", 1024 * 12, NULL, 2, NULL);
 
     /* Start the FreeRTOS scheduler. */
     vTaskStartScheduler();

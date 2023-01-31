@@ -24,7 +24,8 @@
 "...\n"\
 "-----END CERTIFICATE-----"
 
-#define IOTCONNECT_DEVICE_KEY \
+/*private key cannot be empty if using Optiga cert, so that putting dummy key here*/
+#define DUMMY_PRIVATE_KEY \
 "-----BEGIN EC PRIVATE KEY-----\n" \
 "MHcCAQEEIIGm2Ma8d7qLDqCSQ8aXn6Quvnu56EdBh5okuSlnG67ZoAoGCCqGSM49\n" \
 "AwEHoUQDQgAEwbCYk6G3fWQYzTbdmcJ7C+Zudz6VGt1Uskf2lCWcn/7x4LRZdS5t\n" \

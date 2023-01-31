@@ -1,4 +1,8 @@
-Avnet IoTConnect XENSIV&trade; project example for Infineon's ModusToolbox IDE and framework
+## About
+Avnet IoTConnect Optiga and XENSIV&trade; project example for Infineon's ModusToolbox IDE and framework.
+
+This code is based on the [mtb-example-optiga-mqtt-client](https://github.com/Infineon/mtb-example-optiga-mqtt-client) project and
+ uses [optiga_trust_helpers](https://github.com/Infineon/mtb-example-optiga-mqtt-client/blob/master/source/optiga_trust_helpers.c) files.
 
 ## Requirements
 
@@ -14,7 +18,7 @@ The code has been developed and tested With:
 - Select a name for your workspace when prompted for a workspace name.
 - Click the **New Application** link in the **Quick Panel** (or, use **File** > **New** > **ModusToolbox Application**). This launches the [Project Creator](https://www.cypress.com/ModusToolboxProjectCreator) tool.
 - Pick a kit supported by the code example from the list shown in the **Project Creator - Choose Board Support Package (BSP)** dialog and click **Next**
-- In the **Project Creator - Select Application** dialog, Click the checkbox of the project **Avnet IoTConnect Example** under **Wi-Fi** catergory and then click **Create**. 
+- In the **Project Creator - Select Application** dialog, Click the checkbox of the project **Avnet Optiga IoTConnect Example** under **Wi-Fi** catergory and then click **Create**. 
 - Modify Avnet_IoTConnect_Example/configs/app_config.h per your IoTConnect device and account info.
 - At this point you should be able to build and run the application by using the options in the **Quick Panel** on bottom left of the screen.   
 - You should see the application output in your terminal emulator.
