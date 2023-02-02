@@ -10,8 +10,8 @@ This code is based on the [mtb-example-optiga-mqtt-client](https://github.com/In
 
 ## Supported Boards
 
-The code has been developed and tested With:
-- [Rapid IoT connect developer kit (`CYSBSYSKIT-DEV-01`) with PAS CO2 sensor.](https://www.infineon.com/cms/en/product/evaluation-boards/kit_csk_pasco2)
+The code has been developed and tested with:
+- [Rapid IoT connect developer kit with PAS CO2 sensor.](https://www.infineon.com/cms/en/product/evaluation-boards/kit_csk_pasco2) (`CYSBSYSKIT-DEV-01`)
 
 ## Build Instructions
 - Download, install and open [ModusToolbox&trade; software](https://www.cypress.com/products/modustoolbox-software-environment). On Windows, ensure that you **Run As Adminstrator** the installation package so that the neccessary drivers can be installed.
