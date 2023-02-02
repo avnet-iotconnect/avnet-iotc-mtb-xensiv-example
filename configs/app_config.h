@@ -17,14 +17,7 @@
 // from iotconnect.h IotConnectAuthType
 #define IOTCONNECT_AUTH_TYPE IOTC_AT_X509
 
-// PEM format certificate and private key, if using X509 type auth.
-// For example:
-#define IOTCONNECT_DEVICE_CERT \
-"-----BEGIN CERTIFICATE-----\n"\
-"...\n"\
-"-----END CERTIFICATE-----"
-
-/*private key cannot be empty if using Optiga cert, so that putting dummy key here*/
+/*private key cannot be empty if using Optiga cert, so we use the dummy private key here*/
 #define DUMMY_PRIVATE_KEY \
 "-----BEGIN EC PRIVATE KEY-----\n" \
 "MHcCAQEEIIGm2Ma8d7qLDqCSQ8aXn6Quvnu56EdBh5okuSlnG67ZoAoGCCqGSM49\n" \

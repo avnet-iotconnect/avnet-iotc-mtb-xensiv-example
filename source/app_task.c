@@ -102,14 +102,14 @@
 /* Delay time after each PAS CO2 readout */
 #define PASCO2_PROCESS_DELAY (1000)
 
+#define CERT_BUF_SIZE	(1200)
 
 static xensiv_pasco2_t xensiv_pasco2;
 static cyhal_i2c_t cyhal_i2c;
 
 /* We don't use CLIENT_CERTIFICATE memory but instead allocate a buffer and
  * populate it with teh certificate form the Secure Element */
-static char certificate[1200];
-uint16_t certificate_size = 0;
+static char certificate[CERT_BUF_SIZE];
 
 
 /* Macro to check if the result of an operation was successful and set the
@@ -225,15 +225,19 @@ static void publish_telemetry() {
 
 bool use_optiga_certificate(void)
 {
+	uint16_t certificate_size = 0;
     /* This is the place where the certificate is initialized. This is a function
      * which will allow to read it out and populate internal mbedtls settings wit it*/
     read_certificate_from_optiga(0xe0e0, certificate, &certificate_size);
 
-    if (certificate_size) {
-        printf("Your certificate is:\n%s\n",certificate);
+    if (certificate_size && (certificate_size < CERT_BUF_SIZE)) {
+        printf("Your certificate is:\n%s\n", certificate);
     	return true;
+    } else if (certificate_size) {
+        printf("Error: Certificate buffer overflow!\n");
+    	return false;
     } else {
-        printf("Optiga certificate read failed\n");
+        printf("Error: Optiga certificate read failed!\n");
     	return false;
     }
 }
@@ -322,8 +326,8 @@ static void pasco2_init(void)
 
 void app_task(void *pvParameters) {
 
-	/* Initialize PAS CO2 sensor */
-	pasco2_init();
+    /* Initialize PAS CO2 sensor */
+    pasco2_init();
 
     /* Configure the Wi-Fi interface as a Wi-Fi STA (i.e. Client). */
     cy_wcm_config_t config = { .interface = CY_WCM_INTERFACE_TYPE_STA };

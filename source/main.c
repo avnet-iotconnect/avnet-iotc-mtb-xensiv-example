@@ -57,7 +57,7 @@
 #include "optiga/pal/pal_i2c.h"
 #include "optiga_trust.h"
 
-extern void use_optiga_certificate(void);
+extern bool use_optiga_certificate(void);
 
 /******************************************************************************
  * Global Variables
@@ -74,15 +74,18 @@ void vApplicationTickHook( void )
     pal_os_event_trigger_registered_callback();
 }
 
-void optiga_and_apptask_task(void *pvParameters)
+void optiga_client_task(void *pvParameters)
 {
     /* Optiga initialize and read the certificate */
     pal_i2c_init(NULL);
     optiga_trust_init();
     /* Based on the certificate read from the chip, Optiga uses a hook(optiga-trust-m\release-v3.1.4\examples\mbedtls_port\)
      * to mbedtls to generate signature and so on for TLS handshake */
-    use_optiga_certificate();
-
+    bool result = use_optiga_certificate();
+    if (!result) {
+    	//the called function will print the ERROR.
+    	return;
+    }
 
     /* \x1b[2J\x1b[;H - ANSI ESC sequence to clear screen. */
     printf("\x1b[2J\x1b[;H");
@@ -92,8 +95,7 @@ void optiga_and_apptask_task(void *pvParameters)
 
     /* Create the MQTT Client task. */
 
-    xTaskCreate(app_task, "App Task", APP_TASK_STACK_SIZE,
-    NULL, APP_TASK_PRIORITY, NULL);
+    xTaskCreate(app_task, "App Task", APP_TASK_STACK_SIZE, NULL, APP_TASK_PRIORITY, NULL);
 
     while(1);
 }
@@ -135,7 +137,7 @@ int main() {
 
     /* Create an OPTIGA task to make sure everything related to
      * the OPTIGA stack will be called from the scheduler */
-    xTaskCreate(optiga_and_apptask_task, "optiga_and_apptask", 1024 * 12, NULL, 2, NULL);
+    xTaskCreate(optiga_client_task, "Optiga Client Task", 1024 * 12, NULL, 2, NULL);
 
     /* Start the FreeRTOS scheduler. */
     vTaskStartScheduler();
