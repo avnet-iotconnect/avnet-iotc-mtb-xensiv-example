@@ -67,7 +67,7 @@ The private key is securely stored on the device and cannot be accessed even pro
 The only information that may potentially "leak" by using a public web site in this fashion is the informational 
 manufacturer data, including the device serial number. Below is a sample screenshot:
 
-![Fingerprint Web Site Screenshot](media/fingerprint.png "Fingerprint Web Site Screenshot")
+<img src="media/fingerprint.png" width="50%" height="50%" />
 
 ## Setting up the Device in IoTConnect
  
