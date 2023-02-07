@@ -31,7 +31,7 @@ On Windows, ensure that you **Run As Adminstrator** the installation package so 
 - At this point you should be able to build and run the application by using the options in the **Quick Panel** on bottom left of the screen.   
 - You should see the application output in your terminal emulator.
 
-### IoTConnect Template Setup
+## IoTConnect Template Setup
 
 * Login to the IoTConnect platform, navigate to Devices -> Device -> Templates and click "Create Template."
   * Enter a name like "xensivdemo" for **Template Code** and **Template Name**. 
@@ -69,7 +69,7 @@ manufacturer data, including the device serial number. Below is a sample screens
 
 ![Fingerprint Web Site Screenshot](media/fingerprint.png "Fingerprint Web Site Screenshot")
 
-### Setting up the Device in IoTConnect
+## Setting up the Device in IoTConnect
  
 * Navigate to Device -> Device and click the **Create Device** button.
 * Your device unique ID is the "snXXXXXXXX" collection numbers and letters by which the files on the MSD are created. 
