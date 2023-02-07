@@ -47,7 +47,7 @@ On Windows, ensure that you **Run As Adminstrator** the installation package so 
   * *button* 
 * The screenshot below shows an example template:
 
-![Template Screenshot](media/template.png "Template Screenshot")
+<img src="media/template.png" width="50%" height="50%" />
 
 ## Obtaining the Device Certificate Fingerprint
 
@@ -79,4 +79,4 @@ Enter that name (including "sn") as the device name and display name.
 * Enter the fingerprint obtained in the previous step (without colons) as the **Primary Thumbprint**. See screenshot below.
 * Click **Save**.
 
-![Device Creation Screenshot](media/iotc-device.png "Device Creation Screenshot")
+<img src="media/iotc-device.png" width="50%" height="50%" />
