@@ -39,7 +39,7 @@ On Windows, ensure that you **Run As Adminstrator** the installation package so 
   * Ensure that **Device Message Version** is **1.0**
   * Click **Save**
 * On the same page, click the Attributes tab.
-* Add a field to the list of attributes called "version" of type **STRING** 
+* Add a field to the list of attributes called *version* of type **STRING** 
 * Add the following **NUMERIC** fields to the list of attributes:
   * *temperature*
   * *humidity* 
@@ -55,7 +55,7 @@ This section outlines how to set up the device for IoTConnect Self Signed Certif
 Steps for other authentication types are out of scope for this guide.
 
 * In order to complete the next steps, obtain the fingerprint of device certificate.
-The device certificate is located in the MSD in the file named snXXXXXX_device.pem.
+The device certificate is printed in the log of the terminal app once you program and run the application onto the board.
 The fingerprint of the certificate can be either SHA256 or SHA1.
 There are a couple of ways to go about that:
    * One can execute ``` openssl x509 -noout -fingerprint -inform pem -in snxXXXX_device.pem ``` if openssl is installed.
