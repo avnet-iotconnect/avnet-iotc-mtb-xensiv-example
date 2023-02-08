@@ -72,8 +72,7 @@ manufacturer data, including the device serial number. Below is a sample screens
 ## Setting up the Device in IoTConnect
  
 * Navigate to Device -> Device and click the **Create Device** button.
-* Your device unique ID is the "snXXXXXXXX" collection numbers and letters by which the files on the MSD are created. 
-Enter that name (including "sn") as the device name and display name.
+* Enther your device unique ID.
 * Choose your entity where you will create the device.
 * Select the Template that was created in a previous step.
 * Enter the fingerprint obtained in the previous step (without colons) as the **Primary Thumbprint**. See screenshot below.
