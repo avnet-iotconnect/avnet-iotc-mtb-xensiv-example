@@ -1,12 +1,12 @@
 ## Introduction
 
-This document demonstrates the steps of setting up the Infineon [XENSIV development kit](https://www.infineon.com/cms/en/product/evaluation-boards/kit_csk_pasco2/) 
+This document demonstrates the steps of setting up the Infineon [XENSIV&trade;  development kit](https://www.infineon.com/cms/en/product/evaluation-boards/kit_csk_pasco2/) 
 for connecting to Avnet's IoTConnect Platform.
 
 The built-in Optiga secure element provides a quick and secure way 
 to set up the device with IoTConnect.
 
-The dev kit uses the click board that has both PAS CO2 and pressure&temperature sensors. There are more click boards with 
+The dev kit uses the click board that has both PAS CO2 and pressure & temperature sensors. There are more click boards with 
 different sesnors are supported by the dev kit. 
 
 ## Hardware Setup
@@ -39,7 +39,7 @@ On Windows, ensure that you **Run As Adminstrator** the installation package so 
   * Ensure that **Device Message Version** is **1.0**
   * Click **Save**
 * On the same page, click the Attributes tab.
-* Add a field to the list of attributes called *version* of type **STRING** 
+* Add a field to the list of attributes called "*version*" of type **STRING** 
 * Add the following **NUMERIC** fields to the list of attributes:
   * *temperature*
   * *humidity* 
@@ -54,13 +54,13 @@ On Windows, ensure that you **Run As Adminstrator** the installation package so 
 This section outlines how to set up the device for IoTConnect Self Signed Certificate authentication type.
 Steps for other authentication types are out of scope for this guide.
 
-* In order to complete the next steps, obtain the fingerprint of device certificate.
-The device certificate is printed in the log of the terminal app once you program and run the application onto the board.
+* Obtain the fingerprint of device certificate:
+   * The device certificate is printed in the log of the terminal app once you program and run the application onto the board.
 The fingerprint of the certificate can be either SHA256 or SHA1.
-There are a couple of ways to go about that:
    * One can execute ``` openssl x509 -noout -fingerprint -inform pem -in snxXXXX_device.pem ``` if openssl is installed.
    * The contents of snxXXXX_device.pem can be pasted into an online
-fingerprint calculator such as [this one](https://www.samltool.com/fingerprint.php). 
+  
+Fingerprint calculator such as [this one](https://www.samltool.com/fingerprint.php). 
 Note that publishing the device certificate or fingerprint online is not technically unsafe 
 because the certificate must be paired by the private key derived data during authentication. 
 The private key is securely stored on the device and cannot be accessed even programmatically.
