@@ -16,4 +16,4 @@ The code has been developed and tested with:
 
 ## Instructions
 
-Please refer to the [QUICK_DEMO](https://github.com/avnet-iotconnect/iotc-modustoolbox-xensiv-example/blob/main/QUICKSTART_DEMO.md) document.
+Please refer to the [QUICKSTART_DEMO](https://github.com/avnet-iotconnect/iotc-modustoolbox-xensiv-example/blob/main/QUICKSTART_DEMO.md) document.
