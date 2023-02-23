@@ -34,7 +34,7 @@
 // Copyright: Avnet 2021
 // Modified by Nik Markovic <nikola.markovic@avnet.com> on 11/11/21.
 //
-
+#include "math.h"
 #include "cyhal.h"
 #include "cybsp.h"
 
@@ -64,6 +64,8 @@
 #include "app_task.h"
 
 #include "xensiv_pasco2_mtb.h"
+#include "xensiv_dps3xx_mtb.h"
+#include "xensiv_dps3xx.h"
 
 #include "optiga/pal/pal_os_event.h"
 #include "optiga/pal/pal_i2c.h"
@@ -92,7 +94,7 @@
 /* Pin state for PAS CO2 Wing Board LED on. */
 #define MTB_PASCO_LED_STATE_ON (1U)
 /* I2C bus frequency */
-#define I2C_MASTER_FREQUENCY (100000U)
+#define I2C_MASTER_FREQUENCY (400000U)  //100000U
 
 #define DEFAULT_PRESSURE_VALUE (1015.0F)
 
@@ -106,6 +108,7 @@
 
 static xensiv_pasco2_t xensiv_pasco2;
 static cyhal_i2c_t cyhal_i2c;
+static xensiv_dps3xx_t dps310_sensor;
 
 /* We don't use CLIENT_CERTIFICATE memory but instead allocate a buffer and
  * populate it with teh certificate form the Secure Element */
@@ -196,6 +199,7 @@ static cy_rslt_t wifi_connect(void) {
     return result;
 }
 
+
 static void publish_telemetry() {
     IotclMessageHandle msg = iotcl_telemetry_create();
 
@@ -205,15 +209,39 @@ static void publish_telemetry() {
     iotcl_telemetry_set_string(msg, "version", APP_VERSION);
     iotcl_telemetry_set_number(msg, "cpu", 3.123); // test floating point numbers
 
-    /* Read CO2 value from sensor */
+
     uint16_t ppm = 0;
     float32_t pressure = DEFAULT_PRESSURE_VALUE;
-    cy_rslt_t result = xensiv_pasco2_mtb_read(&xensiv_pasco2, (uint16_t)pressure, &ppm); //unit PPM
-    if (result == CY_RSLT_SUCCESS)
+    float32_t temperature = 0;
+
+    // Read the pressure and temperature data
+    if (xensiv_dps3xx_read(&dps310_sensor, &pressure, &temperature) == CY_RSLT_SUCCESS)
     {
-    	printf("READ SUCCESS\r\n");
+        // Display the pressure and temperature data in console
+        printf("Pressure : %0.2f mBar", pressure);
+        // 0xF8 - ASCII Degree Symbol
+        printf("\t Temperature: %0.2f %cC \r\n\n", temperature, 0xF8);
     }
-    iotcl_telemetry_set_number(msg, "co2level", ppm); // test floating point numbers
+    else
+    {
+        printf("\n Failed to read temperature and pressure data.\r\n");
+    }
+
+    /* Read CO2 value from sensor */
+    cy_rslt_t result = xensiv_pasco2_mtb_read(&xensiv_pasco2, (uint16_t)pressure, &ppm); //unit PPM
+    if (result != CY_RSLT_SUCCESS)
+    {
+    	printf("pasco2 sensor read error\r\n");
+    }
+
+    //round the number to 2 decimal places
+    float temp = roundf(temperature * 100) / 100;
+    printf("\nTEMP is %f\r\n\n", temp);
+
+    iotcl_telemetry_set_number(msg, "co2level", ppm);
+    iotcl_telemetry_set_number(msg, "temperature", temp);
+    iotcl_telemetry_set_number(msg, "pressure", pressure);
+
 
     const char *str = iotcl_create_serialized_string(msg, false);
     iotcl_telemetry_destroy(msg);
@@ -243,7 +271,7 @@ bool use_optiga_certificate(void)
 }
 
 
-static void pasco2_init(void)
+static void sensor_init(void)
 {
     cy_rslt_t result;
 
@@ -321,13 +349,36 @@ static void pasco2_init(void)
     // Turn on status LED on PAS CO2 Wing Board to indicate normal operation
     cyhal_gpio_write(MTB_PASCO2_LED_OK, MTB_PASCO_LED_STATE_ON);
 
-    printf("PAS CO2 initialized successfully\n\n");
+
+    // Initialize pressure sensor
+    result = xensiv_dps3xx_mtb_init_i2c(&dps310_sensor, &cyhal_i2c,
+                                        XENSIV_DPS3XX_I2C_ADDR_ALT);
+    if (result != CY_RSLT_SUCCESS)
+    {
+        printf("\r\nFailed to initialize DPS310 I2C\r\n");
+        CY_ASSERT(0);
+    }
+
+    uint32_t revisionID = 0;
+
+    // Retrieve the DPS310 Revision ID and display the same
+    if (xensiv_dps3xx_get_revision_id(&dps310_sensor,(uint8_t*)&revisionID) == CY_RSLT_SUCCESS)
+    {
+        printf("DPS310 Revision ID = %d\r\n\n",(uint8_t)revisionID);
+    }
+    else
+    {
+        printf("Failed to get Revision ID\r\n");
+        CY_ASSERT(0);
+    }
+
+    printf("PAS CO2 and DPSxxx pressure sensors initialized successfully\n\n");
 }
 
 void app_task(void *pvParameters) {
 
     /* Initialize PAS CO2 sensor */
-    pasco2_init();
+    sensor_init();
 
     /* Configure the Wi-Fi interface as a Wi-Fi STA (i.e. Client). */
     cy_wcm_config_t config = { .interface = CY_WCM_INTERFACE_TYPE_STA };
@@ -359,6 +410,7 @@ void app_task(void *pvParameters) {
         // called function will print errors
         return;
     }
+
 
     for (int i = 0; i < 100; i++) {
 
