@@ -72,7 +72,11 @@
 #include "optiga_trust.h"
 #include "optiga_trust_helpers.h"
 
+#include "eeprom.h"
+
 #define APP_VERSION "01.00.00"
+extern uint8_t flashData[EEPROM_DATA_SIZE];
+
 
 #if defined(TARGET_CYSBSYSKIT_DEV_01)
 /* Output pin for sensor PSEL line */
@@ -163,8 +167,12 @@ static cy_rslt_t wifi_connect(void) {
     if (cy_wcm_is_connected_to_ap() == 0) {
         /* Configure the connection parameters for the Wi-Fi interface. */
         memset(&connect_param, 0, sizeof(cy_wcm_connect_params_t));
-        memcpy(connect_param.ap_credentials.SSID, WIFI_SSID, sizeof(WIFI_SSID));
-        memcpy(connect_param.ap_credentials.password, WIFI_PASSWORD, sizeof(WIFI_PASSWORD));
+//        memcpy(connect_param.ap_credentials.SSID, WIFI_SSID, sizeof(WIFI_SSID));
+//        memcpy(connect_param.ap_credentials.password, WIFI_PASSWORD, sizeof(WIFI_PASSWORD));
+
+        memcpy(connect_param.ap_credentials.SSID, &flashData[SSID_SIZE_IDX + 1], flashData[SSID_SIZE_IDX]);
+        memcpy(connect_param.ap_credentials.password, &flashData[PW_SIZE_IDX + 1], flashData[PW_SIZE_IDX]);
+
         connect_param.ap_credentials.security = WIFI_SECURITY;
 
         printf("Connecting to Wi-Fi AP '%s'\n", connect_param.ap_credentials.SSID);
@@ -412,12 +420,21 @@ void app_task(void *pvParameters) {
     }
 
 
+
     for (int i = 0; i < 100; i++) {
+        uint8_t cpid_len = flashData[CPID_SIZE_IDX] + 1;  //consider the null terminator at the end.
+        uint8_t env_len = flashData[ENV_SIZE_IDX] + 1;
+        char iotc_cpid[cpid_len];
+        char iotc_env[env_len];
+        memcpy(iotc_cpid, &flashData[CPID_SIZE_IDX + 1], cpid_len);
+        memcpy(iotc_env, &flashData[ENV_SIZE_IDX + 1], env_len);
 
         IotConnectClientConfig *iotc_config = iotconnect_sdk_init_and_get_config();
         iotc_config->duid = IOTCONNECT_DUID;
-        iotc_config->cpid = IOTCONNECT_CPID;
-        iotc_config->env =  IOTCONNECT_ENV;
+//        iotc_config->cpid = IOTCONNECT_CPID;
+//        iotc_config->env =  IOTCONNECT_ENV;
+        iotc_config->cpid = iotc_cpid;
+        iotc_config->env =  iotc_env;
         iotc_config->auth.type = IOTCONNECT_AUTH_TYPE;
 
         if (iotc_config->auth.type == IOTC_AT_X509) {

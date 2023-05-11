@@ -57,11 +57,13 @@
 #include "optiga/pal/pal_i2c.h"
 #include "optiga_trust.h"
 
-extern bool use_optiga_certificate(void);
 
-/******************************************************************************
- * Global Variables
- ******************************************************************************/
+/******forward declaration******/
+extern bool use_optiga_certificate(void);
+extern int eeprom_init(void);
+extern void eeprom_op(bool usrInput);
+
+
 /* This enables RTOS aware debugging. */
 volatile int uxTopUsedPriority;
 
@@ -132,8 +134,27 @@ int main() {
     __enable_irq();
 
     /* Initialize retarget-io to use the debug UART port. */
-    cy_retarget_io_init(CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX,
+    result = cy_retarget_io_init(CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX,
     CY_RETARGET_IO_BAUDRATE);
+
+    /* retarget-io init failed. Stop program execution */
+    if (result != CY_RSLT_SUCCESS)
+    {
+        CY_ASSERT(0);
+    }
+
+    /* EEPROM init */
+    if (eeprom_init()){
+    	printf("EEPROM init failed.\r\n");
+    }
+    /* user to input wifi SSID Password CPID and ENV */
+
+    char input;
+    printf("\nDo you want to configure WIFI & CPID/ENV (y/n): \n");
+    scanf("%1s", &input);
+    if(0x79 == input){     //"0x79" is ascii y
+    	eeprom_op(true);
+    }
 
     /* Create an OPTIGA task to make sure everything related to
      * the OPTIGA stack will be called from the scheduler */
@@ -145,5 +166,6 @@ int main() {
     /* Should never get here. */
     CY_ASSERT(0);
 }
+
 
 /* [] END OF FILE */
