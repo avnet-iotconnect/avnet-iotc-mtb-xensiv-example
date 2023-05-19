@@ -44,6 +44,7 @@
 //
 
 /* Header file includes */
+#include <stdio.h>
 #include "cyhal.h"
 #include "cybsp.h"
 #include "cy_retarget_io.h"
@@ -56,6 +57,8 @@
 #include "optiga/pal/pal_os_event.h"
 #include "optiga/pal/pal_i2c.h"
 #include "optiga_trust.h"
+
+#include "eeprom.h"
 
 
 /******forward declaration******/
@@ -149,9 +152,12 @@ int main() {
     }
     /* user to input wifi SSID Password CPID and ENV */
 
-    char input;
+    printf("\x1b[2J\x1b[;H");
+    printf("===============================================================\n");
     printf("\nDo you want to configure WIFI & CPID/ENV (y/n): \n");
-    scanf("%1s", &input);
+
+    char input;
+    scanf("%s", &input);
     if(0x79 == input){     //"0x79" is ascii y
     	eeprom_op(true);
     }

@@ -4,7 +4,7 @@
 #include "eeprom.h"
 
 static void handle_error(uint32_t status, char *message);
-
+static void print_usrinput(uint8_t* input_array, int input_size);
 /******************************************************************************
  * Global Variables
  ******************************************************************************/
@@ -97,55 +97,30 @@ void eeprom_op(bool usrInput){
 		memset(pw, 0xff, LEN);
 
 
-	    printf("===============================================================\n");
-	    while (1){
-	    	printf("\nEnter CPID: \n");
-	    	scanf("%19s", cpid);
-	    	cpid_size = calSize(cpid, LEN);
-//	    	printf("cpid_size is %x\n", cpid_size);
+	    printf("\n===============================================================\n");
 
-	    	if(cpid_size < 20)
-	    		break;
-	    	else
-	    		printf("Length is too long (max 19bytes). Please input again.\r\n");
-	    }
+	    printf("\nEnter CPID : \n");
+	    scanf("%19s", cpid);
+	    //char* user_input = fgets((char*)cpid, (int)LEN, stdin);
+    	cpid_size = calSize(cpid, LEN);
+    	print_usrinput(cpid, cpid_size);
 
-	    while(1){
-	    	printf("\nEnter Environment: \n");
-	    	scanf("%19s", env);
-	    	env_size = calSize(env, LEN);
-//	    	printf("env_size is %x\n", env_size);
-
-	    	if(env_size < 20)
-	    		break;
-	    	else
-	    		printf("Length is too long (max 19bytes). Please input again.\r\n");
-	    }
+	    printf("\n\nEnter Environment: \n");
+	    scanf("%19s", env);
+	    env_size = calSize(env, LEN);
+    	print_usrinput(env, env_size);
 
 
-		while(1){
-			printf("\nEnter SSID: \n");
-			scanf("%19s", ssid);
-			ssid_size = calSize(ssid, LEN);
-//			printf("ssid_size is %x\n", ssid_size);
+		printf("\n\nEnter SSID: \n");
+		scanf("%19s", ssid);
+		ssid_size = calSize(ssid, LEN);
+    	print_usrinput(ssid, ssid_size);
 
-	    	if(ssid_size < 20)
-	    		break;
-	    	else
-	    		printf("Length is too long (max 19bytes). Please input again.\r\n");
-	    }
 
-	    while(1){
-	    	printf("\nEnter password: \n");
-	    	scanf("%19s", pw);
-	    	pw_size = calSize(pw, LEN);
-//	    	printf("pw_size is %x\n", pw_size);
+	    printf("\n\nEnter password: \n");
+	    scanf("%19s", pw);
+	    pw_size = calSize(pw, LEN);
 
-	    	if(cpid_size < 20)
-	    		break;
-	    	else
-	    		printf("Length is too long (max 19bytes). Please input again.\r\n");
-	    }
 
 	    /* Write initial data to EEPROM. */
 
@@ -263,3 +238,17 @@ static void handle_error(uint32_t status, char *message)
 
     }
 }
+
+static void print_usrinput(uint8_t* input_array, int input_size)
+{
+    printf("You entered: ");
+	for(int count = 0; count < input_size ; count++){
+	    printf("%c",input_array[count]);
+	}
+}
+void clear_input_buffer(void)
+{
+    int c;
+    while ( (c = getchar()) != '\n' && c != EOF) {}
+}
+

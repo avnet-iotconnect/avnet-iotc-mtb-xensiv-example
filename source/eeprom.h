@@ -37,3 +37,5 @@
 #define ENV_SIZE_IDX			21
 #define SSID_SIZE_IDX			41
 #define PW_SIZE_IDX				61
+
+void clear_input_buffer(void);
