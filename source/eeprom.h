@@ -13,7 +13,7 @@
 #define BLOCKING_WRITE                  (1u)
 
 /* Logical Size of Emulated EEPROM in bytes. */
-#define EEPROM_DATA_SIZE     		    (81u)
+#define EEPROM_DATA_SIZE     		    (101u)
 #define EEPROM_DATA_START    			(0u)
 
 
@@ -35,7 +35,8 @@
 #define FLAG					0xFE 		//if 0xfe, eeprom is already written by users.
 #define CPID_SIZE_IDX			1
 #define ENV_SIZE_IDX			21
-#define SSID_SIZE_IDX			41
-#define PW_SIZE_IDX				61
+#define DUID_SIZE_IDX			41
+#define SSID_SIZE_IDX			61
+#define PW_SIZE_IDX				81
 
 void clear_input_buffer(void);

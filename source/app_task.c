@@ -420,19 +420,23 @@ void app_task(void *pvParameters) {
     }
 
 
-
     for (int i = 0; i < 100; i++) {
+    	//get connect info from flash data
         uint8_t cpid_len = flashData[CPID_SIZE_IDX] + 1;  //consider the null terminator at the end.
         uint8_t env_len = flashData[ENV_SIZE_IDX] + 1;
+        uint8_t duid_len = flashData[DUID_SIZE_IDX] + 1;
         char iotc_cpid[cpid_len];
         char iotc_env[env_len];
+        char iotc_duid[duid_len];
         memcpy(iotc_cpid, &flashData[CPID_SIZE_IDX + 1], cpid_len);
         memcpy(iotc_env, &flashData[ENV_SIZE_IDX + 1], env_len);
+        memcpy(iotc_duid, &flashData[DUID_SIZE_IDX + 1], duid_len);
 
         IotConnectClientConfig *iotc_config = iotconnect_sdk_init_and_get_config();
-        iotc_config->duid = IOTCONNECT_DUID;
+//        iotc_config->duid = IOTCONNECT_DUID;
 //        iotc_config->cpid = IOTCONNECT_CPID;
 //        iotc_config->env =  IOTCONNECT_ENV;
+        iotc_config->duid = iotc_duid;
         iotc_config->cpid = iotc_cpid;
         iotc_config->env =  iotc_env;
         iotc_config->auth.type = IOTCONNECT_AUTH_TYPE;

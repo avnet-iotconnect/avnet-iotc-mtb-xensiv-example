@@ -43,7 +43,7 @@ int eeprom_init(void){
 /*
 	printf("\nInitial flash data is ");
 	for(int count = 0; count < EEPROM_DATA_SIZE ; count++){
-	    printf("%02x",flashData[count]);
+	    printf("%c",flashData[count]);
 	}
 */
 	return eeprom_return_value;
@@ -71,10 +71,12 @@ index 1: cpid_size
 index 2-20: cpid
 index 21: env_size
 index 22-40: env
-index 41: ssid_size
-index 42-60: ssid
-index 61: pw_size
-index 62-80: pw
+index 41: duid_size
+index 42-60: duid
+index 61: ssid_size
+index 62-80: ssid
+index 81: pw_size
+index 82-100: pw
 --------------------------------------------------------------------*/
 void eeprom_op(bool usrInput){
 	cy_en_em_eeprom_status_t eeprom_return_value;
@@ -82,17 +84,20 @@ void eeprom_op(bool usrInput){
 
 		uint8_t cpid[LEN];
 		uint8_t env[LEN];
+		uint8_t duid[LEN];
 		uint8_t ssid[LEN];
 		uint8_t pw[LEN];
 		uint8_t user_flag = FLAG;
 
 		uint8_t cpid_size;
 		uint8_t env_size;
+		uint8_t duid_size;
 		uint8_t ssid_size;
 		uint8_t pw_size;
 
 		memset(cpid, 0xff, LEN);
 		memset(env, 0xff, LEN);
+		memset(duid, 0xff, LEN);
 		memset(ssid, 0xff, LEN);
 		memset(pw, 0xff, LEN);
 
@@ -110,14 +115,18 @@ void eeprom_op(bool usrInput){
 	    env_size = calSize(env, LEN);
     	print_usrinput(env, env_size);
 
+		printf("\n\nEnter Device ID: \n");
+		scanf("%19s", duid);
+		duid_size = calSize(duid, LEN);
+    	print_usrinput(duid, duid_size);
 
-		printf("\n\nEnter SSID: \n");
+		printf("\n\nEnter WIFI SSID: \n");
 		scanf("%19s", ssid);
 		ssid_size = calSize(ssid, LEN);
     	print_usrinput(ssid, ssid_size);
 
 
-	    printf("\n\nEnter password: \n");
+	    printf("\n\nEnter WIFI password: \n");
 	    scanf("%19s", pw);
 	    pw_size = calSize(pw, LEN);
 
@@ -155,6 +164,19 @@ void eeprom_op(bool usrInput){
 	    eeprom_return_value = Cy_Em_EEPROM_Write(ENV_SIZE_IDX + 1,
 	    										env,
 												env_size,
+												&eepromContext);
+	    handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
+
+	    //write env into EEPROM
+	    eeprom_return_value = Cy_Em_EEPROM_Write(DUID_SIZE_IDX,
+	    										&duid_size,
+												1,
+												&eepromContext);
+	    handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
+
+	    eeprom_return_value = Cy_Em_EEPROM_Write(DUID_SIZE_IDX + 1,
+	    										duid,
+												duid_size,
 												&eepromContext);
 	    handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
 
