@@ -13,7 +13,7 @@
 #define BLOCKING_WRITE                  (1u)
 
 /* Logical Size of Emulated EEPROM in bytes. */
-#define EEPROM_DATA_SIZE     		    (101u)
+#define EEPROM_DATA_SIZE     		    (253u)
 #define EEPROM_DATA_START    			(0u)
 
 
@@ -31,12 +31,22 @@
 #define FLASH_REGION_TO_USE     USER_FLASH
 #endif
 
-#define LEN 					19
-#define FLAG					0xFE 		//if 0xfe, eeprom is already written by users.
-#define CPID_SIZE_IDX			1
-#define ENV_SIZE_IDX			21
-#define DUID_SIZE_IDX			41
-#define SSID_SIZE_IDX			61
-#define PW_SIZE_IDX				81
+#define CPID_LEN 					64
+#define ENV_LEN						20
+#define DUID_LEN					64
+#define SSID_LEN					32
+#define PW_LEN						64
+#define DATA_VERSION_LEN			4
 
+#define CPID_SIZE_IDX				0
+#define ENV_SIZE_IDX				65
+#define DUID_SIZE_IDX				86
+#define SSID_SIZE_IDX				151
+#define PW_SIZE_IDX					184
+#define DATA_VERSION_IDX			249
+
+
+int eeprom_init(void);
+void iotc_config_input_handler(void);
 void clear_input_buffer(void);
+

@@ -44,6 +44,7 @@
 //
 
 /* Header file includes */
+#include <iotc_config_input.h>
 #include <stdio.h>
 #include "cyhal.h"
 #include "cybsp.h"
@@ -58,13 +59,11 @@
 #include "optiga/pal/pal_i2c.h"
 #include "optiga_trust.h"
 
-#include "eeprom.h"
+#include "iotc_config_input.h"
 
 
 /******forward declaration******/
 extern bool use_optiga_certificate(void);
-extern int eeprom_init(void);
-extern void eeprom_op(bool usrInput);
 
 
 /* This enables RTOS aware debugging. */
@@ -159,7 +158,7 @@ int main() {
     char input;
     scanf("%s", &input);
     if(0x79 == input){     //"0x79" is ascii y
-    	eeprom_op(true);
+    	iotc_config_input_handler();
     }
 
     /* Create an OPTIGA task to make sure everything related to

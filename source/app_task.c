@@ -34,6 +34,7 @@
 // Copyright: Avnet 2021
 // Modified by Nik Markovic <nikola.markovic@avnet.com> on 11/11/21.
 //
+#include <iotc_config_input.h>
 #include "math.h"
 #include "cyhal.h"
 #include "cybsp.h"
@@ -72,10 +73,9 @@
 #include "optiga_trust.h"
 #include "optiga_trust_helpers.h"
 
-#include "eeprom.h"
 
 #define APP_VERSION "01.00.00"
-extern uint8_t flashData[EEPROM_DATA_SIZE];
+extern uint8_t flash_data[EEPROM_DATA_SIZE];
 
 
 #if defined(TARGET_CYSBSYSKIT_DEV_01)
@@ -170,8 +170,20 @@ static cy_rslt_t wifi_connect(void) {
 //        memcpy(connect_param.ap_credentials.SSID, WIFI_SSID, sizeof(WIFI_SSID));
 //        memcpy(connect_param.ap_credentials.password, WIFI_PASSWORD, sizeof(WIFI_PASSWORD));
 
-        memcpy(connect_param.ap_credentials.SSID, &flashData[SSID_SIZE_IDX + 1], flashData[SSID_SIZE_IDX]);
-        memcpy(connect_param.ap_credentials.password, &flashData[PW_SIZE_IDX + 1], flashData[PW_SIZE_IDX]);
+        if (flash_data[SSID_SIZE_IDX] < SSID_LEN && flash_data[SSID_SIZE_IDX] > 0) {
+        	memcpy(connect_param.ap_credentials.SSID, &flash_data[SSID_SIZE_IDX + 1], flash_data[SSID_SIZE_IDX]);
+        }
+        else {
+        	printf("Wrong WIFI SSID size!\r\n");
+        	return -1;
+        }
+        if (flash_data[PW_SIZE_IDX] < PW_LEN && flash_data[PW_SIZE_IDX] > 0) {
+        	memcpy(connect_param.ap_credentials.password, &flash_data[PW_SIZE_IDX + 1], flash_data[PW_SIZE_IDX]);
+        }
+        else {
+        	printf("Wrong WIFI password size!\r\n");
+        	return -1;
+        }
 
         connect_param.ap_credentials.security = WIFI_SECURITY;
 
@@ -244,7 +256,7 @@ static void publish_telemetry() {
 
     //round the number to 2 decimal places
     float temp = roundf(temperature * 100) / 100;
-    printf("\nTEMP is %f\r\n\n", temp);
+//    printf("\nTEMP is %f\r\n\n", temp);
 
     iotcl_telemetry_set_number(msg, "co2level", ppm);
     iotcl_telemetry_set_number(msg, "temperature", temp);
@@ -422,15 +434,31 @@ void app_task(void *pvParameters) {
 
     for (int i = 0; i < 100; i++) {
     	//get connect info from flash data
-        uint8_t cpid_len = flashData[CPID_SIZE_IDX] + 1;  //consider the null terminator at the end.
-        uint8_t env_len = flashData[ENV_SIZE_IDX] + 1;
-        uint8_t duid_len = flashData[DUID_SIZE_IDX] + 1;
-        char iotc_cpid[cpid_len];
-        char iotc_env[env_len];
-        char iotc_duid[duid_len];
-        memcpy(iotc_cpid, &flashData[CPID_SIZE_IDX + 1], cpid_len);
-        memcpy(iotc_env, &flashData[ENV_SIZE_IDX + 1], env_len);
-        memcpy(iotc_duid, &flashData[DUID_SIZE_IDX + 1], duid_len);
+		char iotc_cpid[flash_data[CPID_SIZE_IDX] + 1];		//consider the null terminator at the end
+		char iotc_env[flash_data[ENV_SIZE_IDX] + 1];
+		char iotc_duid[flash_data[DUID_SIZE_IDX] + 1];
+
+    	if (flash_data[CPID_SIZE_IDX] < CPID_LEN && flash_data[CPID_SIZE_IDX] > 0) {
+            memcpy(iotc_cpid, &flash_data[CPID_SIZE_IDX + 1], flash_data[CPID_SIZE_IDX] + 1);
+    	}
+    	else {
+    		printf("Wrong CPID size!\r\n");
+    		goto exit_cleanup;
+    	}
+    	if (flash_data[ENV_SIZE_IDX] < ENV_LEN && flash_data[ENV_SIZE_IDX] > 0) {
+            memcpy(iotc_env, &flash_data[ENV_SIZE_IDX + 1], flash_data[ENV_SIZE_IDX] + 1);
+    	}
+    	else {
+    		printf("Wrong ENV size!\r\n");
+    		goto exit_cleanup;
+    	}
+    	if (flash_data[DUID_SIZE_IDX] < DUID_LEN && flash_data[DUID_SIZE_IDX] > 0) {
+    		memcpy(iotc_duid, &flash_data[DUID_SIZE_IDX + 1], flash_data[DUID_SIZE_IDX] + 1);
+    	}
+    	else {
+    		printf("Wrong DUID size!\r\n");
+    		goto exit_cleanup;
+    	}
 
         IotConnectClientConfig *iotc_config = iotconnect_sdk_init_and_get_config();
 //        iotc_config->duid = IOTCONNECT_DUID;
@@ -453,7 +481,7 @@ void app_task(void *pvParameters) {
             goto exit_cleanup;
         }
 
-        for (int j = 0; iotconnect_sdk_is_connected() && j < 3; j++) {
+        for (int j = 0; iotconnect_sdk_is_connected() && j < 10; j++) {
             publish_telemetry();
             vTaskDelay(pdMS_TO_TICKS(10000));
         }
