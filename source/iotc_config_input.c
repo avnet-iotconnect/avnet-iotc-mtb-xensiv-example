@@ -33,16 +33,13 @@ cy_stc_eeprom_config_t eeprom_config =
 uint8_t flash_data[EEPROM_DATA_SIZE];
 
 
-int eeprom_init(void){
+int eeprom_init(void) {
 
 	cy_en_em_eeprom_status_t eeprom_return_value = Cy_Em_EEPROM_Init(&eeprom_config, &eeprom_context);
 	handle_error(eeprom_return_value, "Emulated EEPROM Initialization Error \r\n");
 
 	/* Read 81 bytes out of EEPROM memory. */
-	eeprom_return_value = Cy_Em_EEPROM_Read(EEPROM_DATA_START,
-											flash_data,
-											EEPROM_DATA_SIZE,
-											&eeprom_context);
+	eeprom_return_value = Cy_Em_EEPROM_Read(EEPROM_DATA_START, flash_data, EEPROM_DATA_SIZE, &eeprom_context);
 	handle_error(eeprom_return_value, "Emulated EEPROM Read failed \r\n");
 
 /*
@@ -69,16 +66,12 @@ static uint8_t calc_size(uint8_t * arr, int length) {
 	return arr_size;
 }
 
-static cy_rslt_t get_unique_client_identifier(char *iotc_device_id)
-{
+static cy_rslt_t get_unique_client_identifier(char *iotc_device_id) {
     cy_rslt_t status = CY_RSLT_SUCCESS;
 //    srand(time(NULL));
     int random_num = rand() % 10000 + 1000;
     /* Check for errors from snprintf. */
-    if (0 > snprintf(iotc_device_id,
-                     (DUID_LEN),
-					 IOTC_DEVICE_ID "%d",
-					 random_num)) {
+    if (0 > snprintf(iotc_device_id, (DUID_LEN), IOTC_DEVICE_ID "%d", random_num)) {
         status = ~CY_RSLT_SUCCESS;
     }
 
@@ -100,7 +93,7 @@ index 185-248: pw			//64 bytes
 index 249-252: data_version //4 bytes
 
 --------------------------------------------------------------------*/
-void iotc_config_input_handler(void){
+void iotc_config_input_handler(void) {
 	cy_en_em_eeprom_status_t eeprom_return_value;
 
 	uint8_t cpid[CPID_LEN];
@@ -120,10 +113,6 @@ void iotc_config_input_handler(void){
 //	memset(duid, 0xff, DUID_LEN);
 	memset(ssid, 0xff, SSID_LEN);
 	memset(pw, 0xff, PW_LEN);
-
-
-
-
 
 	printf("\n===============================================================\n");
 	/*
@@ -165,84 +154,47 @@ void iotc_config_input_handler(void){
 
 
 	//write cpid into EEPROM
-	eeprom_return_value = Cy_Em_EEPROM_Write(CPID_SIZE_IDX,
-											&cpid_size,
-											sizeof(cpid_size),
-											&eeprom_context);
+	eeprom_return_value = Cy_Em_EEPROM_Write(CPID_SIZE_IDX, &cpid_size, sizeof(cpid_size), &eeprom_context);
 	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
 
-	eeprom_return_value = Cy_Em_EEPROM_Write(CPID_SIZE_IDX + 1,
-											cpid,
-											cpid_size,
-											&eeprom_context);
-	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
-
-
-	//write env into EEPROM
-	eeprom_return_value = Cy_Em_EEPROM_Write(ENV_SIZE_IDX,
-											&env_size,
-											sizeof(env_size),
-											&eeprom_context);
-	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
-
-	eeprom_return_value = Cy_Em_EEPROM_Write(ENV_SIZE_IDX + 1,
-											env,
-											env_size,
-											&eeprom_context);
+	eeprom_return_value = Cy_Em_EEPROM_Write(CPID_SIZE_IDX + 1, cpid, cpid_size, &eeprom_context);
 	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
 
 	//write env into EEPROM
-	eeprom_return_value = Cy_Em_EEPROM_Write(DUID_SIZE_IDX,
-											&duid_size,
-											sizeof(duid_size),
-											&eeprom_context);
+	eeprom_return_value = Cy_Em_EEPROM_Write(ENV_SIZE_IDX, &env_size, sizeof(env_size), &eeprom_context);
 	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
 
-	eeprom_return_value = Cy_Em_EEPROM_Write(DUID_SIZE_IDX + 1,
-											duid,
-											duid_size,
-											&eeprom_context);
+	eeprom_return_value = Cy_Em_EEPROM_Write(ENV_SIZE_IDX + 1, env, env_size, &eeprom_context);
+	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
+
+	//write env into EEPROM
+	eeprom_return_value = Cy_Em_EEPROM_Write(DUID_SIZE_IDX, &duid_size, sizeof(duid_size), &eeprom_context);
+	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
+
+	eeprom_return_value = Cy_Em_EEPROM_Write(DUID_SIZE_IDX + 1, duid, duid_size, &eeprom_context);
 	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
 
 	//write ssid into EEPROM
-	eeprom_return_value = Cy_Em_EEPROM_Write(SSID_SIZE_IDX,
-											&ssid_size,
-											sizeof(ssid_size),
-											&eeprom_context);
+	eeprom_return_value = Cy_Em_EEPROM_Write(SSID_SIZE_IDX, &ssid_size, sizeof(ssid_size), &eeprom_context);
 	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
 
-	eeprom_return_value = Cy_Em_EEPROM_Write(SSID_SIZE_IDX + 1,
-											ssid,
-											ssid_size,
-											&eeprom_context);
+	eeprom_return_value = Cy_Em_EEPROM_Write(SSID_SIZE_IDX + 1, ssid, ssid_size, &eeprom_context);
 	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
 
 	//write pw into EEPROM
-	eeprom_return_value = Cy_Em_EEPROM_Write(PW_SIZE_IDX,
-											&pw_size,
-											sizeof(pw_size),
-											&eeprom_context);
+	eeprom_return_value = Cy_Em_EEPROM_Write(PW_SIZE_IDX, &pw_size, sizeof(pw_size), &eeprom_context);
 	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
 
-	eeprom_return_value = Cy_Em_EEPROM_Write(PW_SIZE_IDX + 1,
-											pw,
-											pw_size,
-											&eeprom_context);
+	eeprom_return_value = Cy_Em_EEPROM_Write(PW_SIZE_IDX + 1, pw, pw_size, &eeprom_context);
 	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
 
 	//write data version into EEPROM
-	eeprom_return_value = Cy_Em_EEPROM_Write(DATA_VERSION_IDX,
-											data_version,
-											DATA_VERSION_LEN,
-											&eeprom_context);
+	eeprom_return_value = Cy_Em_EEPROM_Write(DATA_VERSION_IDX, data_version, DATA_VERSION_LEN, &eeprom_context);
 	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
 
 
 	/* Read contents of EEPROM after write. */
-	eeprom_return_value = Cy_Em_EEPROM_Read(EEPROM_DATA_START,
-											flash_data,
-											EEPROM_DATA_SIZE,
-											&eeprom_context);
+	eeprom_return_value = Cy_Em_EEPROM_Read(EEPROM_DATA_START, flash_data, EEPROM_DATA_SIZE, &eeprom_context);
 	handle_error(eeprom_return_value, "Emulated EEPROM Read failed \r\n" );
 	return;
 
@@ -265,27 +217,21 @@ void iotc_config_input_handler(void){
 * Note: If error occurs interrupts are disabled.
 *
 *******************************************************************************/
-static void handle_error(uint32_t status, char *message)
-{
+static void handle_error(uint32_t status, char *message) {
+    if (CY_EM_EEPROM_SUCCESS != status) {
+        if (CY_EM_EEPROM_REDUNDANT_COPY_USED != status) {
 
-    if(CY_EM_EEPROM_SUCCESS != status)
-    {
-        if(CY_EM_EEPROM_REDUNDANT_COPY_USED != status)
-        {
-            __disable_irq();
+        	__disable_irq();
 
-            if(NULL != message)
-            {
+            if (NULL != message) {
                 printf("%s",message);
             }
 
             while(1u);
         }
-        else
-        {
+        else {
             printf("%s","Main copy is corrupted. Redundant copy in Emulated EEPROM is used \r\n");
         }
-
     }
 }
 
@@ -295,8 +241,7 @@ static void print_user_input(uint8_t* input_array, int input_size) {
 	    printf("%c",input_array[count]);
 	}
 }
-void clear_input_buffer(void)
-{
+void clear_input_buffer(void) {
     int c;
     while ( (c = getchar()) != '\n' && c != EOF) {}
 }
