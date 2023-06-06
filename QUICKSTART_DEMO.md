@@ -20,7 +20,7 @@ Firmware logs will be available on that COM port.
 
 
 ## Software setup
-- Download, install and open [ModusToolbox&trade; software](https://www.cypress.com/products/modustoolbox-software-environment). 
+- Download, install and open [ModusToolbox&trade; software](https://www.infineon.com/cms/en/design-support/tools/sdk/modustoolbox-software/). 
 On Windows, ensure that you **Run As Adminstrator** the installation package so that the neccessary drivers can be installed.
 - Select a name for your workspace when prompted for a workspace name.
 - Click the **New Application** link in the **Quick Panel** (or, use **File** > **New** > **ModusToolbox Application**). This launches the [Project Creator](https://www.cypress.com/ModusToolboxProjectCreator) tool.
