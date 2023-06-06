@@ -44,6 +44,8 @@
 //
 
 /* Header file includes */
+#include <iotc_config_input.h>
+#include <stdio.h>
 #include "cyhal.h"
 #include "cybsp.h"
 #include "cy_retarget_io.h"
@@ -57,11 +59,13 @@
 #include "optiga/pal/pal_i2c.h"
 #include "optiga_trust.h"
 
+#include "iotc_config_input.h"
+
+
+/******forward declaration******/
 extern bool use_optiga_certificate(void);
 
-/******************************************************************************
- * Global Variables
- ******************************************************************************/
+
 /* This enables RTOS aware debugging. */
 volatile int uxTopUsedPriority;
 
@@ -132,8 +136,20 @@ int main() {
     __enable_irq();
 
     /* Initialize retarget-io to use the debug UART port. */
-    cy_retarget_io_init(CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX,
+    result = cy_retarget_io_init(CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX,
     CY_RETARGET_IO_BAUDRATE);
+
+    /* retarget-io init failed. Stop program execution */
+    if (result != CY_RSLT_SUCCESS)
+    {
+        CY_ASSERT(0);
+    }
+
+    /* EEPROM init */
+    if (eeprom_init()){
+    	printf("EEPROM init failed.\r\n");
+    }
+    /* user to input wifi SSID Password CPID and ENV */
 
     /* Create an OPTIGA task to make sure everything related to
      * the OPTIGA stack will be called from the scheduler */
@@ -145,5 +161,6 @@ int main() {
     /* Should never get here. */
     CY_ASSERT(0);
 }
+
 
 /* [] END OF FILE */
