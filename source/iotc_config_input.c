@@ -5,12 +5,12 @@
 #include "cy_em_eeprom.h"
 #include "clock.h"		//for generating random device name
 
-#define IOTC_DEVICE_ID		"iotc-xensivdemo"
+#define IOTC_DEVICE_ID_PREFIX		"xensiv-"
 
 static uint8_t data_version[DATA_VERSION_LEN] = {0x20, 0x23, 0xcf, 0x01};	//0x2023cf01
 
 static void handle_error(uint32_t status, char *message);
-static void print_user_input(uint8_t* input_array, int input_size);
+static void print_user_input(char* input_array);
 /******************************************************************************
  * Global Variables
  ******************************************************************************/
@@ -51,27 +51,28 @@ int eeprom_init(void) {
 	return eeprom_return_value;
 }
 
-static uint8_t calc_size(uint8_t * arr, int length) {
+static uint8_t calc_size(char * arr, int length) {
 	uint8_t arr_size = 0;
 	if (arr == NULL) {
 		return 0;
 	}
-
-	for (int i = 0; i < length; i++) {
-		if (0xff != arr[i]) {
-			arr_size++;
-		}
+	arr_size = (uint8_t)strlen(arr) + 1;
+	if(arr_size > length) {
+		printf("Internal Error: calc_size size is wrong!\n");
+		return 0;
 	}
-	arr_size--;
 	return arr_size;
 }
 
 static cy_rslt_t get_unique_client_identifier(char *iotc_device_id) {
     cy_rslt_t status = CY_RSLT_SUCCESS;
-//    srand(time(NULL));
-    int random_num = rand() % 10000 + 1000;
-    /* Check for errors from snprintf. */
-    if (0 > snprintf(iotc_device_id, (DUID_LEN), IOTC_DEVICE_ID "%d", random_num)) {
+
+	uint32_t time_seed = Clock_GetTimeMs();
+//    printf("Time seed is %lu\r\n", (unsigned long)time_seed);
+    srand(time_seed);
+    int random_num = rand() % 0x8000;		// 0 - 0x7FFF
+    // Check for errors from snprintf.
+    if (0 > snprintf(iotc_device_id, (DUID_LEN), "%s%04X", IOTC_DEVICE_ID_PREFIX, random_num)) {
         status = ~CY_RSLT_SUCCESS;
     }
 
@@ -96,56 +97,49 @@ index 249-252: data_version //4 bytes
 void iotc_config_input_handler(void) {
 	cy_en_em_eeprom_status_t eeprom_return_value;
 
-	uint8_t cpid[CPID_LEN];
-	uint8_t env[ENV_LEN];
-//	uint8_t duid[DUID_LEN];
-	uint8_t ssid[SSID_LEN];
-	uint8_t pw[PW_LEN];
+	char cpid[CPID_LEN];
+	char env[ENV_LEN];
+	char ssid[SSID_LEN];
+	char pw[PW_LEN];
+	char duid[DUID_LEN];
 
 	uint8_t cpid_size;
 	uint8_t env_size;
-	uint8_t duid_size;
 	uint8_t ssid_size;
 	uint8_t pw_size;
+	uint8_t duid_size;
 
-	memset(cpid, 0xff, CPID_LEN);
-	memset(env, 0xff, ENV_LEN);
-//	memset(duid, 0xff, DUID_LEN);
-	memset(ssid, 0xff, SSID_LEN);
-	memset(pw, 0xff, PW_LEN);
+	memset(cpid, 0, CPID_LEN);
+	memset(env, 0, ENV_LEN);
+	memset(ssid, 0, SSID_LEN);
+	memset(pw, 0, PW_LEN);
 
 	printf("\n===============================================================\n");
-	/*
-	printf("\n\nEnter Device ID: \n");
-	scanf("%63s", duid);
-	duid_size = calc_size(duid, DUID_LEN);
-	print_user_input(duid, duid_size);
-	*/
-	char duid[DUID_LEN] = IOTC_DEVICE_ID;
+
 	cy_rslt_t res = get_unique_client_identifier(duid);
 	if (res != CY_RSLT_SUCCESS) {
 		printf("DUID generating failed\r\n");
+		return;
 	}
 	duid_size = strlen(duid) + 1;
-	printf("\nYour DUID is %s.\r\n", duid);
+	printf("\nYour DUID is %s\r\n", duid);
 
 
 	printf("\nEnter CPID : \n");
 	scanf("%63s", cpid);
-	//char* user_input = fgets((char*)cpid, (int)LEN, stdin);
 	cpid_size = calc_size(cpid, CPID_LEN);
-	print_user_input(cpid, cpid_size);
+	print_user_input(cpid);
 
 	printf("\n\nEnter Environment: \n");
 	scanf("%19s", env);
 	env_size = calc_size(env, ENV_LEN);
-	print_user_input(env, env_size);
+	print_user_input(env);
 
 
 	printf("\n\nEnter WIFI SSID: \n");
 	scanf("%31s", ssid);
 	ssid_size = calc_size(ssid, SSID_LEN);
-	print_user_input(ssid, ssid_size);
+	print_user_input(ssid);
 
 
 	printf("\n\nEnter WIFI password: \n");
@@ -167,7 +161,7 @@ void iotc_config_input_handler(void) {
 	eeprom_return_value = Cy_Em_EEPROM_Write(ENV_SIZE_IDX + 1, env, env_size, &eeprom_context);
 	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
 
-	//write env into EEPROM
+	//write DUID into EEPROM
 	eeprom_return_value = Cy_Em_EEPROM_Write(DUID_SIZE_IDX, &duid_size, sizeof(duid_size), &eeprom_context);
 	handle_error(eeprom_return_value, "Emulated EEPROM Write failed \r\n");
 
@@ -235,15 +229,10 @@ static void handle_error(uint32_t status, char *message) {
     }
 }
 
-static void print_user_input(uint8_t* input_array, int input_size) {
+static void print_user_input(char* input_array) {
     printf("You entered: ");
-	for (int count = 0; count < input_size ; count++) {
-	    printf("%c",input_array[count]);
-	}
+    printf("%s",input_array);
 }
-void clear_input_buffer(void) {
-    int c;
-    while ( (c = getchar()) != '\n' && c != EOF) {}
-}
+
 
 

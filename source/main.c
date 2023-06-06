@@ -151,16 +151,6 @@ int main() {
     }
     /* user to input wifi SSID Password CPID and ENV */
 
-    printf("\x1b[2J\x1b[;H");
-    printf("===============================================================\n");
-    printf("\nDo you want to configure WIFI & CPID/ENV (y/n): \n");
-
-    char input;
-    scanf("%s", &input);
-    if(0x79 == input){     //"0x79" is ascii y
-    	iotc_config_input_handler();
-    }
-
     /* Create an OPTIGA task to make sure everything related to
      * the OPTIGA stack will be called from the scheduler */
     xTaskCreate(optiga_client_task, "Optiga Client Task", 1024 * 12, NULL, 2, NULL);

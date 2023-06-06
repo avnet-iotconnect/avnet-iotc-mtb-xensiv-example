@@ -12,11 +12,6 @@
 /* The Blocking Write is turned on */
 #define BLOCKING_WRITE                  (1u)
 
-/* Logical Size of Emulated EEPROM in bytes. */
-#define EEPROM_DATA_SIZE     		    (253u)
-#define EEPROM_DATA_START    			(0u)
-
-
 /* Set the macro FLASH_REGION_TO_USE to either USER_FLASH or
  * EMULATED_EEPROM_FLASH to specify the region of the flash used for
  * emulated EEPROM.
@@ -45,8 +40,10 @@
 #define PW_SIZE_IDX					184
 #define DATA_VERSION_IDX			249
 
+// Logical Size of Emulated EEPROM in bytes. 5 bytes is for the length of each field.
+#define EEPROM_DATA_SIZE     		(CPID_LEN + ENV_LEN + DUID_LEN + SSID_LEN + PW_LEN + DATA_VERSION_LEN + 5)
+#define EEPROM_DATA_START    		(0u)
 
 int eeprom_init(void);
 void iotc_config_input_handler(void);
-void clear_input_buffer(void);
 

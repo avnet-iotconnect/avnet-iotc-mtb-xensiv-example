@@ -51,7 +51,7 @@
 //#include "cy_wcm.h"
 //#include "cy_lwip.h"
 
-//#include "clock.h"
+#include "clock.h"
 
 /* LwIP header files */
 #include "lwip/netif.h"
@@ -396,9 +396,34 @@ static void sensor_init(void)
 }
 
 void app_task(void *pvParameters) {
-
     /* Initialize PAS CO2 sensor */
     sensor_init();
+
+    printf("\x1b[2J\x1b[;H");
+    printf("===============================================================\n");
+    printf("\nDo you want to configure WIFI & CPID/ENV (y/n): \n");
+
+    char input;
+    scanf("%s", &input);
+    if ('y' == input) {
+    	iotc_config_input_handler();
+    }
+
+	//get connect info from flash data
+	char iotc_cpid[flash_data[CPID_SIZE_IDX]];		//consider the null terminator at the end
+	char iotc_env[flash_data[ENV_SIZE_IDX]];
+	char iotc_duid[flash_data[DUID_SIZE_IDX]];
+
+	if ((flash_data[CPID_SIZE_IDX] < CPID_LEN && flash_data[CPID_SIZE_IDX] > 0) ||
+		(flash_data[ENV_SIZE_IDX] < ENV_LEN && flash_data[ENV_SIZE_IDX] > 0) ||
+		(flash_data[DUID_SIZE_IDX] < DUID_LEN && flash_data[DUID_SIZE_IDX] > 0)) {
+        memcpy(iotc_cpid, &flash_data[CPID_SIZE_IDX + 1], flash_data[CPID_SIZE_IDX]);
+        memcpy(iotc_env, &flash_data[ENV_SIZE_IDX + 1], flash_data[ENV_SIZE_IDX]);
+        memcpy(iotc_duid, &flash_data[DUID_SIZE_IDX + 1], flash_data[DUID_SIZE_IDX]);
+	} else {
+		printf("Wrong CPID or ENV or DUID size!\r\n");
+		return;
+	}
 
     /* Configure the Wi-Fi interface as a Wi-Fi STA (i.e. Client). */
     cy_wcm_config_t config = { .interface = CY_WCM_INTERFACE_TYPE_STA };
@@ -431,40 +456,13 @@ void app_task(void *pvParameters) {
         return;
     }
 
-
     for (int i = 0; i < 100; i++) {
-    	//get connect info from flash data
-		char iotc_cpid[flash_data[CPID_SIZE_IDX] + 1];		//consider the null terminator at the end
-		char iotc_env[flash_data[ENV_SIZE_IDX] + 1];
-		char iotc_duid[flash_data[DUID_SIZE_IDX] + 1];
-
-    	if (flash_data[CPID_SIZE_IDX] < CPID_LEN && flash_data[CPID_SIZE_IDX] > 0) {
-            memcpy(iotc_cpid, &flash_data[CPID_SIZE_IDX + 1], flash_data[CPID_SIZE_IDX] + 1);
-    	}
-    	else {
-    		printf("Wrong CPID size!\r\n");
-    		goto exit_cleanup;
-    	}
-    	if (flash_data[ENV_SIZE_IDX] < ENV_LEN && flash_data[ENV_SIZE_IDX] > 0) {
-            memcpy(iotc_env, &flash_data[ENV_SIZE_IDX + 1], flash_data[ENV_SIZE_IDX] + 1);
-    	}
-    	else {
-    		printf("Wrong ENV size!\r\n");
-    		goto exit_cleanup;
-    	}
-    	if (flash_data[DUID_SIZE_IDX] < DUID_LEN && flash_data[DUID_SIZE_IDX] > 0) {
-    		memcpy(iotc_duid, &flash_data[DUID_SIZE_IDX + 1], flash_data[DUID_SIZE_IDX] + 1);
-    	}
-    	else {
-    		printf("Wrong DUID size!\r\n");
-    		goto exit_cleanup;
-    	}
-
         IotConnectClientConfig *iotc_config = iotconnect_sdk_init_and_get_config();
 //        iotc_config->duid = IOTCONNECT_DUID;
 //        iotc_config->cpid = IOTCONNECT_CPID;
 //        iotc_config->env =  IOTCONNECT_ENV;
         iotc_config->duid = iotc_duid;
+		printf("DUID is %s\r\n", iotc_duid);
         iotc_config->cpid = iotc_cpid;
         iotc_config->env =  iotc_env;
         iotc_config->auth.type = IOTCONNECT_AUTH_TYPE;
