@@ -17,7 +17,7 @@ Firmware logs will be available on that COM port.
 * Launch the programmer software, **Open** the hex firwmare on the top left and Click **Connect**.
 * Click **Program** button on the top right and wait for the propress bar to be done as the image shown below.
 * If successful, the log will show up on the terminal program.
-* For the re-building the firmware, please refer to [DEVELOPER_GUIDE](https://github.com/avnet-iotconnect/iotc-modustoolbox-xensiv-example/blob/main/DEVELOPER_GUIDE.md).
+* For re-building the firmware, please refer to [DEVELOPER_GUIDE](https://github.com/avnet-iotconnect/iotc-modustoolbox-xensiv-example/blob/main/DEVELOPER_GUIDE.md).
 
 
   ![Programmer Screenshot](media/programmer.png "Programmer Screenshot")
