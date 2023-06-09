@@ -118,6 +118,8 @@ static xensiv_dps3xx_t dps310_sensor;
  * populate it with teh certificate form the Secure Element */
 static char certificate[CERT_BUF_SIZE];
 
+static volatile bool scanf_flag = false;
+
 
 /* Macro to check if the result of an operation was successful and set the
  * corresponding bit in the status_flag based on 'init_mask' parameter. When
@@ -395,10 +397,7 @@ static void sensor_init(void)
     printf("PAS CO2 and DPSxxx pressure sensors initialized successfully\n\n");
 }
 
-void app_task(void *pvParameters) {
-    /* Initialize PAS CO2 sensor */
-    sensor_init();
-
+void scanf_task (void *pvParameters) {
     printf("\x1b[2J\x1b[;H");
     printf("===============================================================\n");
     printf("\nDo you want to configure WIFI & CPID/ENV (y/n): \n");
@@ -406,7 +405,31 @@ void app_task(void *pvParameters) {
     char input;
     scanf("%s", &input);
     if ('y' == input) {
-    	iotc_config_input_handler();
+    	scanf_flag = true;
+    	printf("User selected 'yes'...\n");
+    }
+    while(1);
+}
+
+void app_task(void *pvParameters) {
+
+	TaskHandle_t scanf_task_handle;
+
+    /* Initialize PAS CO2 sensor */
+    sensor_init();
+
+    xTaskCreate(scanf_task, "Scanf Task", 1024, NULL, APP_TASK_PRIORITY, &scanf_task_handle);
+
+    vTaskDelay(pdMS_TO_TICKS(5000));
+
+    if (scanf_task_handle != NULL) {
+    	vTaskDelete(scanf_task_handle);
+    }
+
+    if (scanf_flag) {
+        iotc_config_input_handler();
+    } else {
+    	printf("User selected 'no'...\n");
     }
 
 	//get connect info from flash data
