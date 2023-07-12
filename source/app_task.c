@@ -34,7 +34,6 @@
 // Copyright: Avnet 2021
 // Modified by Nik Markovic <nikola.markovic@avnet.com> on 11/11/21.
 //
-#include <iotc_config_input.h>
 #include "math.h"
 #include "cyhal.h"
 #include "cybsp.h"
@@ -51,7 +50,7 @@
 //#include "cy_wcm.h"
 //#include "cy_lwip.h"
 
-#include "clock.h"
+//#include "clock.h"
 
 /* LwIP header files */
 #include "lwip/netif.h"
@@ -73,9 +72,10 @@
 #include "optiga_trust.h"
 #include "optiga_trust_helpers.h"
 
+#include "eeprom.h"
 
 #define APP_VERSION "01.00.00"
-extern uint8_t flash_data[EEPROM_DATA_SIZE];
+//extern uint8_t flashData[EEPROM_DATA_SIZE];
 
 
 #if defined(TARGET_CYSBSYSKIT_DEV_01)
@@ -117,8 +117,6 @@ static xensiv_dps3xx_t dps310_sensor;
 /* We don't use CLIENT_CERTIFICATE memory but instead allocate a buffer and
  * populate it with teh certificate form the Secure Element */
 static char certificate[CERT_BUF_SIZE];
-
-static volatile bool scanf_flag = false;
 
 
 /* Macro to check if the result of an operation was successful and set the
@@ -169,24 +167,9 @@ static cy_rslt_t wifi_connect(void) {
     if (cy_wcm_is_connected_to_ap() == 0) {
         /* Configure the connection parameters for the Wi-Fi interface. */
         memset(&connect_param, 0, sizeof(cy_wcm_connect_params_t));
-//        memcpy(connect_param.ap_credentials.SSID, WIFI_SSID, sizeof(WIFI_SSID));
-//        memcpy(connect_param.ap_credentials.password, WIFI_PASSWORD, sizeof(WIFI_PASSWORD));
-
-        if (flash_data[SSID_SIZE_IDX] < SSID_LEN && flash_data[SSID_SIZE_IDX] > 0) {
-        	memcpy(connect_param.ap_credentials.SSID, &flash_data[SSID_SIZE_IDX + 1], flash_data[SSID_SIZE_IDX]);
-        }
-        else {
-        	printf("Wrong WIFI SSID size!\r\n");
-        	return -1;
-        }
-        if (flash_data[PW_SIZE_IDX] < PW_LEN && flash_data[PW_SIZE_IDX] > 0) {
-        	memcpy(connect_param.ap_credentials.password, &flash_data[PW_SIZE_IDX + 1], flash_data[PW_SIZE_IDX]);
-        }
-        else {
-        	printf("Wrong WIFI password size!\r\n");
-        	return -1;
-        }
-
+        memcpy(connect_param.ap_credentials.SSID, WIFI_SSID, sizeof(WIFI_SSID));
+        memcpy(connect_param.ap_credentials.password, WIFI_PASSWORD, sizeof(WIFI_PASSWORD));
+		
         connect_param.ap_credentials.security = WIFI_SECURITY;
 
         printf("Connecting to Wi-Fi AP '%s'\n", connect_param.ap_credentials.SSID);
@@ -257,17 +240,17 @@ static void publish_telemetry() {
     }
 
     //round the number to 2 decimal places
-    float temp = roundf(temperature * 100) / 100;
+//    float temp = roundf(temperature * 100) / 100;
 //    printf("\nTEMP is %f\r\n\n", temp);
 
     iotcl_telemetry_set_number(msg, "co2level", ppm);
-    iotcl_telemetry_set_number(msg, "temperature", temp);
+    iotcl_telemetry_set_number(msg, "temperature", temperature);
     iotcl_telemetry_set_number(msg, "pressure", pressure);
 
 
     const char *str = iotcl_create_serialized_string(msg, false);
     iotcl_telemetry_destroy(msg);
-    printf("Sending: %s\n", str);
+    printf("Sending new message format: %s\n", str);
     iotconnect_sdk_send_packet(str); // underlying code will report an error
     iotcl_destroy_serialized(str);
 
@@ -397,56 +380,10 @@ static void sensor_init(void)
     printf("PAS CO2 and DPSxxx pressure sensors initialized successfully\n\n");
 }
 
-void scanf_task (void *pvParameters) {
-    printf("\x1b[2J\x1b[;H");
-    printf("===============================================================\n");
-    printf("\nDo you want to configure WIFI & CPID/ENV (y/n): \n");
-
-    char input;
-    scanf("%s", &input);
-    if ('y' == input) {
-    	scanf_flag = true;
-    	printf("User selected 'yes'...\n");
-    }
-    while(1);
-}
-
 void app_task(void *pvParameters) {
-
-	TaskHandle_t scanf_task_handle;
 
     /* Initialize PAS CO2 sensor */
     sensor_init();
-
-    xTaskCreate(scanf_task, "Scanf Task", 1024, NULL, APP_TASK_PRIORITY, &scanf_task_handle);
-
-    vTaskDelay(pdMS_TO_TICKS(5000));
-
-    if (scanf_task_handle != NULL) {
-    	vTaskDelete(scanf_task_handle);
-    }
-
-    if (scanf_flag) {
-        iotc_config_input_handler();
-    } else {
-    	printf("User selected 'no'...\n");
-    }
-
-	//get connect info from flash data
-	char iotc_cpid[flash_data[CPID_SIZE_IDX]];		//consider the null terminator at the end
-	char iotc_env[flash_data[ENV_SIZE_IDX]];
-	char iotc_duid[flash_data[DUID_SIZE_IDX]];
-
-	if ((flash_data[CPID_SIZE_IDX] < CPID_LEN && flash_data[CPID_SIZE_IDX] > 0) ||
-		(flash_data[ENV_SIZE_IDX] < ENV_LEN && flash_data[ENV_SIZE_IDX] > 0) ||
-		(flash_data[DUID_SIZE_IDX] < DUID_LEN && flash_data[DUID_SIZE_IDX] > 0)) {
-        memcpy(iotc_cpid, &flash_data[CPID_SIZE_IDX + 1], flash_data[CPID_SIZE_IDX]);
-        memcpy(iotc_env, &flash_data[ENV_SIZE_IDX + 1], flash_data[ENV_SIZE_IDX]);
-        memcpy(iotc_duid, &flash_data[DUID_SIZE_IDX + 1], flash_data[DUID_SIZE_IDX]);
-	} else {
-		printf("Wrong CPID or ENV or DUID size!\r\n");
-		return;
-	}
 
     /* Configure the Wi-Fi interface as a Wi-Fi STA (i.e. Client). */
     cy_wcm_config_t config = { .interface = CY_WCM_INTERFACE_TYPE_STA };
@@ -479,22 +416,23 @@ void app_task(void *pvParameters) {
         return;
     }
 
-    for (int i = 0; i < 100; i++) {
+
+    while (1) {
         IotConnectClientConfig *iotc_config = iotconnect_sdk_init_and_get_config();
-//        iotc_config->duid = IOTCONNECT_DUID;
-//        iotc_config->cpid = IOTCONNECT_CPID;
-//        iotc_config->env =  IOTCONNECT_ENV;
-        iotc_config->duid = iotc_duid;
-		printf("DUID is %s\r\n", iotc_duid);
-        iotc_config->cpid = iotc_cpid;
-        iotc_config->env =  iotc_env;
+
+        iotc_config->host = IOTCONNECT_HOST;
+        iotc_config->duid = IOTCONNECT_DUID;
+        iotc_config->cd	  = IOTCONNECT_CD;
+        //env and cpid for future https uses.
+//        iotc_config->cpid = iotc_cpid;
+//        iotc_config->env =  iotc_env;
+
         iotc_config->auth.type = IOTCONNECT_AUTH_TYPE;
 
         if (iotc_config->auth.type == IOTC_AT_X509) {
             iotc_config->auth.data.cert_info.device_cert = (const char *)certificate;
             iotc_config->auth.data.cert_info.device_key = (const char *)DUMMY_PRIVATE_KEY;
         }
-
 
         cy_rslt_t ret = iotconnect_sdk_init();
         if (CY_RSLT_SUCCESS != ret) {
@@ -503,7 +441,7 @@ void app_task(void *pvParameters) {
         }
 
         for (int j = 0; iotconnect_sdk_is_connected() && j < 10; j++) {
-            publish_telemetry();
+        	publish_telemetry();
             vTaskDelay(pdMS_TO_TICKS(10000));
         }
 

@@ -44,7 +44,6 @@
 //
 
 /* Header file includes */
-#include <iotc_config_input.h>
 #include <stdio.h>
 #include "cyhal.h"
 #include "cybsp.h"
@@ -59,11 +58,13 @@
 #include "optiga/pal/pal_i2c.h"
 #include "optiga_trust.h"
 
-#include "iotc_config_input.h"
+#include "eeprom.h"
 
 
 /******forward declaration******/
 extern bool use_optiga_certificate(void);
+extern int eeprom_init(void);
+extern void eeprom_op(bool usrInput);
 
 
 /* This enables RTOS aware debugging. */
@@ -144,12 +145,6 @@ int main() {
     {
         CY_ASSERT(0);
     }
-
-    /* EEPROM init */
-    if (eeprom_init()){
-    	printf("EEPROM init failed.\r\n");
-    }
-    /* user to input wifi SSID Password CPID and ENV */
 
     /* Create an OPTIGA task to make sure everything related to
      * the OPTIGA stack will be called from the scheduler */

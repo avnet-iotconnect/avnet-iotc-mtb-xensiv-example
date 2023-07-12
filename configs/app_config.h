@@ -8,11 +8,11 @@
 
 #include "iotconnect.h"
 
-#define IOTCONNECT_CPID "your-cpid"
-#define IOTCONNECT_ENV  "your-environment"
-
 // Device Unique ID
 #define IOTCONNECT_DUID "device-id"
+// Host URL
+#define IOTCONNECT_HOST	"your-host"
+#define IOTCONNECT_CD	"device-cd-value"	//it is in the connection info of your device on iotconnect
 
 // from iotconnect.h IotConnectAuthType
 #define IOTCONNECT_AUTH_TYPE IOTC_AT_X509
