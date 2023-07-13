@@ -8,6 +8,7 @@ $(SEARCH_iotc-modustoolbox-sdk)/lib/cJSON/tests
 $(SEARCH_iotc-modustoolbox-sdk)/lib/cJSON/fuzzing
 $(SEARCH_iotc-modustoolbox-sdk)/lib/cJSON/test.c
 $(SEARCH_iotc-modustoolbox-sdk)/lib/iotc-c-lib/tests
+$(SEARCH_iotc-modustoolbox-sdk)/lib/ota-update
 
 # Not required PALs
 $(SEARCH_optiga-trust-m)/pal/NEW_PAL_TEMPLATE

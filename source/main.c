@@ -58,8 +58,6 @@
 #include "optiga/pal/pal_i2c.h"
 #include "optiga_trust.h"
 
-#include "eeprom.h"
-
 
 /******forward declaration******/
 extern bool use_optiga_certificate(void);

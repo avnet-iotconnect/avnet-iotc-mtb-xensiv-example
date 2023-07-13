@@ -72,8 +72,6 @@
 #include "optiga_trust.h"
 #include "optiga_trust_helpers.h"
 
-#include "eeprom.h"
-
 #define APP_VERSION "01.00.00"
 //extern uint8_t flashData[EEPROM_DATA_SIZE];
 
