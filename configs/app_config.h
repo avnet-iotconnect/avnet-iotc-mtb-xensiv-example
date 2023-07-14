@@ -12,7 +12,7 @@
 #define IOTCONNECT_DUID "device-id"
 // Host URL
 #define IOTCONNECT_HOST	"your-host"
-#define IOTCONNECT_CD	"device-cd-value"	//it is in the connection info of your device on iotconnect
+#define IOTCONNECT_CD	"cd-value"  //it is in the connection info of your device on iotconnect. ex."$aws/rules/msg_d2c_rpt/your-device/XG4EMVL/2.1/0". XG4EMVL is the cd value
 
 // from iotconnect.h IotConnectAuthType
 #define IOTCONNECT_AUTH_TYPE IOTC_AT_X509
