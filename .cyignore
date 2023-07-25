@@ -8,6 +8,7 @@ $(SEARCH_avnet-iotc-mtb-sdk)/lib/cJSON/tests
 $(SEARCH_avnet-iotc-mtb-sdk)/lib/cJSON/fuzzing
 $(SEARCH_avnet-iotc-mtb-sdk)/lib/cJSON/test.c
 $(SEARCH_avnet-iotc-mtb-sdk)/lib/iotc-c-lib/tests
+$(SEARCH_avnet-iotc-mtb-sdk)/lib/ota-update
 
 # Not required PALs
 $(SEARCH_optiga-trust-m)/pal/NEW_PAL_TEMPLATE

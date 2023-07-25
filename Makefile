@@ -156,6 +156,7 @@ PREBUILD=
 # Custom post-build commands to run.
 POSTBUILD=
 
+OTA_SUPPORT=0
 
 ################################################################################
 # Paths
