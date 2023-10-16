@@ -7,6 +7,7 @@ for connecting to Avnet's IoTConnect Platform using Optiga secure element.
 * PC with Windows 10/11
 * USB-A to micro-USB data cable
 * A Serial Terminal application such as [Tera Term](https://ttssh2.osdn.jp/index.html.en)
+* 2.4GHz WiFi Network
 
 ## Hardware Setup
 
