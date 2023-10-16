@@ -84,7 +84,7 @@ If you need to create an account, a free 2-month subscription is available.  Ple
 > If you are following this guide as part of a training or workshop, a template has already been created and this section may be skipped.
 
 An IoTConnect *Device Template* with a Self-Signed Certificate will need to be imported.
-* Download the premade [Device Template with Self-Signed Cert]().
+* Download the premade [Device Template with Self-Signed Cert](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/avnet-iotc-mtb-xensiv-example/templates/device/xensiv_ss_template.JSON).
 * Import the template into your IoTConnect instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available or for more information on [Template Management](https://docs.iotconnect.io/iotconnect/user-manuals/devices/template-management/), please see the [IoTConnect Documentation](https://iotconnect.io) website.)
 
 ## IoTConnect Device Creation
