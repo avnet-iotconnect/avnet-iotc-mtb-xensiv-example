@@ -24,10 +24,8 @@ for connecting to Avnet's IoTConnect Platform using Optiga secure element.
 * **Download** and **Install** the [ModusToolbox Programming Tools](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.modustoolboxprogtools) (An account is required to download)
 * **Download** and **Extract** the prebuild [Firmware](https://saleshosted.z13.web.core.windows.net/sdk/infineon/iotc-xensiv-demo-060723.zip)
 * Launch the *mtb-programmer* software and update the firmware if prompted
-* Click the dropdown box next to *Probe/Kit* and select the item begining with **"CY8CKIT-"**
+* Click the dropdown box next to *Probe/Kit* and select the item begining with **"CYSBSYSKIT-"**
 * Click **Open** and select the extracted hex file from the prebuild zip
 * Click **Connect**
 * Click **Program** on the top right and wait for the propress bar to complete
 * Verify output in the terminal program.
-
-![Programmer Screenshot](media/programmer.png "Programmer Screenshot")
