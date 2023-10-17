@@ -6,13 +6,13 @@ with the Avnet IoTConnect Platform, leveraging the Optiga secure element.
 ## Prerequisites
 * PC with Windows 10/11
 * USB-A to micro-USB data cable
-* A Serial Terminal application such as [Tera Term](https://ttssh2.osdn.jp/index.html.en)
 * 2.4GHz WiFi Network
+* A serial terminal application such as [Tera Term](https://ttssh2.osdn.jp/index.html.en) or a browser-based application like [Google Chrome Labs Serial Terminal](https://googlechromelabs.github.io/serial-terminal/)
 
 ## Hardware Setup
 
 * Connect the board to a USB port on your PC.  A new USB devices should be detected.
-* Open the Serial Terminal application and setup as following to allow for logging:
+* Open the Serial Terminal application and configure as shown below:
   * Port: (Select the COM port with the device)
   * Speed: `115200`
   * Data: `8 bits`
