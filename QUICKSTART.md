@@ -48,7 +48,7 @@ Ma0O+81heMCpsb9j/6/7ucw9iGVRpykvug==
 ```
 * Copy the certificate from the terminal including the "BEGIN" and "END" lines
 * Use a tool such as [this website](https://www.samltool.com/fingerprint.php) and paste in the certificate to generate a fingerprint (leave all the options at default)
-* Keep this website open and/or make note of the generated *fingerprint*
+* Make note of the generated *fingerprint*
 
 ## IoTConnect Account Creation
 
@@ -69,7 +69,7 @@ If you need to create an account, a free 2-month subscription is available.  Ple
 > There is no echo when typing, so be very careful when entering the following information. If a mistake is made, this whole section will need to be repeated.
 
 * Press the "RST" button on the board and wait until the following output is visible:  `Do you want to configure WIFI & CPID/ENV (y/n):`
-* When the prompt is visible, press `y` then `Enter`
+* When the prompt is visible, press `y` then `Enter` within 5 seconds (or the board with auto-boot with saved settings)
 * A randomly generated **DUID** will be displayed in the format **"xensiv-XXXX"**.  Make note of this value for later.
 * Enter the **CPID** acquired from the key vault and press `Enter`
 * Enter the **Environment** (ENV) acquired from the key vault and press `Enter`
@@ -94,7 +94,8 @@ An IoTConnect *Device Template* with a Self-Signed Certificate will need to be i
 * Enter a descriptive <var>Display Name</var>
 * Select the template from the dropdown box that was just imported (or provided)
 * Paste the calculated **Fingerprint** in the *Primary Thumbprint* field
-
 * Click **Save**, switch to the Serial Terminal, and Reset the board
+* After about 10 seconds, the device will begin sending MQTT data.
 
 ## Visualize Data ##
+
