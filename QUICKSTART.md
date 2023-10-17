@@ -1,7 +1,7 @@
 ## Introduction
 
-This document demonstrates the steps of setting up the Infineon XENSIV&trade; board
-for connecting to Avnet's IoTConnect Platform using Optiga secure element.
+This document outlines the steps of setting up the Infineon XENSIV&trade; board
+with the Avnet IoTConnect Platform, leveraging the Optiga secure element.
 
 ## Prerequisites
 * PC with Windows 10/11
