@@ -222,7 +222,7 @@ static cy_rslt_t wifi_connect(void) {
 }
 
 
-static void publish_telemetry() {
+static cy_rslt_t publish_telemetry() {
     IotclMessageHandle msg = iotcl_telemetry_create();
 
     // Optional. The first time you create a data point, the current timestamp will be automatically added
@@ -268,9 +268,9 @@ static void publish_telemetry() {
     const char *str = iotcl_create_serialized_string(msg, false);
     iotcl_telemetry_destroy(msg);
     printf("Sending: %s\n", str);
-    iotconnect_sdk_send_packet(str); // underlying code will report an error
+    cy_rslt_t res = iotconnect_sdk_send_packet(str); // underlying code will report an error
     iotcl_destroy_serialized(str);
-
+    return res;
 }
 
 bool use_optiga_certificate(void)
@@ -406,7 +406,7 @@ void scanf_task (void *pvParameters) {
     scanf("%s", &input);
     if ('y' == input) {
     	scanf_flag = true;
-    	printf("User selected 'yes'...\n");
+    	printf("\nUser selected 'yes'...\n");
     }
     while(1);
 }
@@ -429,7 +429,7 @@ void app_task(void *pvParameters) {
     if (scanf_flag) {
         iotc_config_input_handler();
     } else {
-    	printf("User selected 'no'...\n");
+    	printf("\nUser selected 'no'...\n");
     }
 
 	//get connect info from flash data
@@ -503,7 +503,11 @@ void app_task(void *pvParameters) {
         }
 
         for (int j = 0; iotconnect_sdk_is_connected() && j < 10; j++) {
-            publish_telemetry();
+
+        	cy_rslt_t result = publish_telemetry();
+        	if (result != CY_RSLT_SUCCESS) {
+        		break;
+        	}
             vTaskDelay(pdMS_TO_TICKS(10000));
         }
 

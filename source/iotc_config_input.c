@@ -116,15 +116,6 @@ void iotc_config_input_handler(void) {
 
 	printf("\n===============================================================\n");
 
-	cy_rslt_t res = get_unique_client_identifier(duid);
-	if (res != CY_RSLT_SUCCESS) {
-		printf("DUID generating failed\r\n");
-		return;
-	}
-	duid_size = strlen(duid) + 1;
-	printf("\nYour DUID is %s\r\n", duid);
-
-
 	printf("\nEnter CPID : \n");
 	scanf("%63s", cpid);
 	cpid_size = calc_size(cpid, CPID_LEN);
@@ -146,6 +137,13 @@ void iotc_config_input_handler(void) {
 	scanf("%63s", pw);
 	pw_size = calc_size(pw, PW_LEN);
 
+	cy_rslt_t res = get_unique_client_identifier(duid);
+	if (res != CY_RSLT_SUCCESS) {
+		printf("DUID generating failed\r\n");
+		return;
+	}
+	duid_size = strlen(duid) + 1;
+	printf("\n***Your DUID is %s\r\n\n", duid);
 
 	//write cpid into EEPROM
 	eeprom_return_value = Cy_Em_EEPROM_Write(CPID_SIZE_IDX, &cpid_size, sizeof(cpid_size), &eeprom_context);
