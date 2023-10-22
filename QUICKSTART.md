@@ -99,3 +99,9 @@ An IoTConnect *Device Template* with a Self-Signed Certificate will need to be i
 
 ## Visualize Data ##
 
+* The data can be visualized by using the Dynamic Dashboard feature of IoTConnect.  A sample dashboard that is preconfigured to display the Xensiv module's data is available for download [here](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/avnet-iotc-mtb-xensiv-example/templates/dashboard/IFX-Xensiv-PAS_CO2_dashboard_export.json).
+* Once downloaded, select "Create Dashboard" from the top of the IoTConnect portal and then choose the "Import Dashboard" option and select the template and device name used previously in this guide.
+* Congratulations, your sample dashboard should look similar to the one below.
+
+<img src="https://saleshosted.z13.web.core.windows.net/media/ifx/ifx-xensiv-dash.JPG" width="300">
+
