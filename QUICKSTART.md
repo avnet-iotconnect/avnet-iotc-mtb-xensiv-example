@@ -29,23 +29,29 @@ with the Avnet IoTConnect Platform, leveraging the Optiga secure element.
 * Click **Open** and select the hex file previously extracted
 * Click **Connect**
 * Click **Program** on the top right and wait for the propress bar to complete
-* Switch to the Serial Terminal and ensure the following output is visible:  `Do you want to configure WIFI & CPID/ENV (y/n):`
+* Switch to the Serial Terminal and ensure the following output is visible.  If not, press the **RST** on the board.
+  ```
+  Do you want to configure WIFI & CPID/ENV (y/n):
+  
+  User selected 'no'...
+  Wrong CPID or ENV or DUID size!
+  ```
 * Scroll up in the Serial Terminal until the *Device Certificate* is displayed
-```
------BEGIN CERTIFICATE-----
-MIIB9TCCAXygAwIBAgIEOi/kbTAKBggqhkjOPQQDAzByMQswCQYDVQQGEwJERTEh
-MB8GA1UECgwYSW5maW5lb24gVGVjaG5vbG9naWVzIEFHMRMwEQYDVQQLDApPUFRJ
-R0EoVE0pMSswKQYDVQQDDCJJbmZpbmVvbiBPUFRJR0EoVE0pIFRydXN0IE0gQ0Eg
-MzAwMB4XDTIwMDkxMDExNDAyNFoXDTQwMDkxMDExNDAyNFowGjEYMBYGA1UEAwwP
-SW5maW5                                        DAQcDQgAEAk4GXqVj
-YoNVwYj        EXAMPLE ONLY - DO NOT USE       rFqQAo9dd4ttDC29p
-XBmgkaW                                        dEwEB/wQCMAAwFQYD
-VR0gBA4wDDAKBggqghQARAEUATAfBgNVHSMEGDAWgBSzg+GsVpQGWa/Yr1cheEV0
-jgxJmTAKBggqhkjOPQQDAwNnADBkAjAmOrOHHkxAobTfFfmMZAL21BtOF111Rpkp
-/f0sFWNSf4/lxPtE1TJ3DUlMZ3qmtSMCMHPCHRv3rklr9jiIJ4GTKIGuy1d04NUH
-Ma0O+81heMCpsb9j/6/7ucw9iGVRpykvug==
------END CERTIFICATE-----
-```
+  ```
+  -----BEGIN CERTIFICATE-----
+  MIIB9TCCAXygAwIBAgIEOi/kbTAKBggqhkjOPQQDAzByMQswCQYDVQQGEwJERTEh
+  MB8GA1UECgwYSW5maW5lb24gVGVjaG5vbG9naWVzIEFHMRMwEQYDVQQLDApPUFRJ
+  R0EoVE0pMSswKQYDVQQDDCJJbmZpbmVvbiBPUFRJR0EoVE0pIFRydXN0IE0gQ0Eg
+  MzAwMB4XDTIwMDkxMDExNDAyNFoXDTQwMDkxMDExNDAyNFowGjEYMBYGA1UEAwwP
+  SW5maW5                                        DAQcDQgAEAk4GXqVj
+  YoNVwYj        EXAMPLE ONLY - DO NOT USE       rFqQAo9dd4ttDC29p
+  XBmgkaW                                        dEwEB/wQCMAAwFQYD
+  VR0gBA4wDDAKBggqghQARAEUATAfBgNVHSMEGDAWgBSzg+GsVpQGWa/Yr1cheEV0
+  jgxJmTAKBggqhkjOPQQDAwNnADBkAjAmOrOHHkxAobTfFfmMZAL21BtOF111Rpkp
+  /f0sFWNSf4/lxPtE1TJ3DUlMZ3qmtSMCMHPCHRv3rklr9jiIJ4GTKIGuy1d04NUH
+  Ma0O+81heMCpsb9j/6/7ucw9iGVRpykvug==
+  -----END CERTIFICATE-----
+  ```
 * Copy the certificate from the terminal including the "BEGIN" and "END" lines
 * Use a tool such as [this website](https://www.samltool.com/fingerprint.php) and paste in the certificate to generate a fingerprint (leave all the options at default)
 * Make note of the generated *fingerprint*
@@ -70,13 +76,13 @@ If you need to create an account, a free 2-month subscription is available.  Ple
 
 * Press the "RST" button on the board and wait until the following output is visible:  `Do you want to configure WIFI & CPID/ENV (y/n):`
 * When the prompt is visible, press `y` then `Enter` within 5 seconds (or the board with auto-boot with saved settings)
-* A randomly generated **DUID** will be displayed in the format **"xensiv-XXXX"**.  Make note of this value for later.
 * Enter the **CPID** acquired from the key vault and press `Enter`
 * Enter the **Environment** (ENV) acquired from the key vault and press `Enter`
 * Enter the **WIFI SSID** of the 2.4GHz network and press `Enter`
 * Enter the **WIFI Password** and press `Enter`
+* A randomly generated **DUID** will be displayed in the format **"xensiv-XXXX"**.  Make note of this value for later.
 * Ensure the device is able connect to the WiFi network, obtain an IP address, and get updated time from an NTP server.  
-* Verify the following message is displayed: `IOTC_SyncResponse error: Device not found`
+* There will be errors displayed because the device still needs to be created in the IoTConnect GUI.
 
 ## IoTConnect Device Template Setup
 
