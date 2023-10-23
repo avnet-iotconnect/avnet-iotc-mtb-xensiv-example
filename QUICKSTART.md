@@ -71,8 +71,8 @@ If you need to create an account, a free 2-month subscription is available.  Ple
 
 ## Configure the Xensiv Board
 
-> **Note:**
-> There is no echo when typing, so be very careful when entering the following information. If a mistake is made, this whole section will need to be repeated.
+> **Note:**  
+> There is no echo when typing, so be very careful when entering the following information.  If a mistake is made, this whole section will need to be repeated.
 
 * Press the "RST" button on the board and wait until the following output is visible:  `Do you want to configure WIFI & CPID/ENV (y/n):`
 * When the prompt is visible, press `y` then `Enter` within 5 seconds (or the board with auto-boot with saved settings)
@@ -82,7 +82,7 @@ If you need to create an account, a free 2-month subscription is available.  Ple
 * Enter the **WIFI Password** and press `Enter`
 * A randomly generated **DUID** will be displayed in the format **"xensiv-XXXX"**.  Make note of this value for later.
 * Ensure the device is able connect to the WiFi network, obtain an IP address, and get updated time from an NTP server.  
-* There will be errors displayed because the device still needs to be created in the IoTConnect GUI.
+* There will be errors displayed because the device still needs to be created in the IoTConnect GUI. Continue to the next section.
 
 ## IoTConnect Device Template Setup
 
@@ -107,7 +107,6 @@ An IoTConnect *Device Template* with a Self-Signed Certificate will need to be i
 
 * The data can be visualized by using the Dynamic Dashboard feature of IoTConnect.  A sample dashboard that is preconfigured to display the Xensiv module's data is available for download [here](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/avnet-iotc-mtb-xensiv-example/templates/dashboard/IFX-Xensiv-PAS_CO2_dashboard_export.json).
 * Once downloaded, select "Create Dashboard" from the top of the IoTConnect portal and then choose the "Import Dashboard" option and select the template and device name used previously in this guide.
-* Congratulations, your sample dashboard should look similar to the one below.
-
-<img src="https://saleshosted.z13.web.core.windows.net/media/ifx/ifx-xensiv-dash.JPG" width="300">
+* Congratulations, your sample dashboard should look similar to the one below.  
+  <img src="https://saleshosted.z13.web.core.windows.net/media/ifx/ifx-xensiv-dash.JPG" width="700">
 
