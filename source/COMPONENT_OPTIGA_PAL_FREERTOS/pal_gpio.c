@@ -1,8 +1,9 @@
 /******************************************************************************
-* File Name: wifi_config.h
+* File Name:   pal_i2c.c
 *
-* Description: This file contains the configuration macros required for the
-*              Wi-Fi connection.
+* Description: This file contains part of the Platform Abstraction Layer.
+*              This is a platform specific file. This file implements 
+*              the platform abstraction layer APIs for GPIO.
 *
 * Related Document: See README.md
 *
@@ -40,29 +41,60 @@
 * so agrees to indemnify Cypress against all liability.
 *******************************************************************************/
 
-#ifndef WIFI_CONFIG_H_
-#define WIFI_CONFIG_H_
+/*******************************************************************************
+ * Header file includes
+ ******************************************************************************/
+#include "optiga/pal/pal_ifx_i2c_config.h"
+#include "optiga/pal/pal_gpio.h"
+#include "pal_psoc_gpio_mapping.h"
 
-#include "cy_wcm.h"
+
+#include "cy_pdl.h"
+#include "cyhal.h"
+#include "cybsp.h"
 
 /*******************************************************************************
-* Macros
-********************************************************************************/
-/* SSID of the Wi-Fi Access Point to which the MQTT client connects. */
-#define WIFI_SSID                         ""
+ * Function Definitions
+ ******************************************************************************/
+//lint --e{714,715} suppress "This is implemented for overall completion of API"
+pal_status_t pal_gpio_init(const pal_gpio_t * p_gpio_context)
+{
+    pal_status_t cy_hal_status = PAL_STATUS_SUCCESS;
+    pal_psoc_gpio_t* pin_config = (pal_psoc_gpio_t *)p_gpio_context->p_gpio_hw;
+    cy_hal_status = cyhal_gpio_init(pin_config->gpio,
+                                       CYHAL_GPIO_DIR_OUTPUT, 
+                                       CYHAL_GPIO_DRIVE_STRONG, 
+                                       pin_config->init_state);
+    if (CY_RSLT_SUCCESS != cy_hal_status)
+    {
+        cy_hal_status = PAL_STATUS_FAILURE;
+    }
 
-/* Passkey of the above mentioned Wi-Fi SSID. */
-#define WIFI_PASSWORD                     ""
+    return (cy_hal_status);
+}
 
-/* Security type of the Wi-Fi access point. See 'cy_wcm_security_t' structure
- * in "cy_wcm.h" for more details.
- */
-#define WIFI_SECURITY                     CY_WCM_SECURITY_WPA2_AES_PSK
+//lint --e{714,715} suppress "This is implemented for overall completion of API"
+pal_status_t pal_gpio_deinit(const pal_gpio_t * p_gpio_context)
+{
+    pal_psoc_gpio_t* pin_config = (pal_psoc_gpio_t *)p_gpio_context->p_gpio_hw;
+    cyhal_gpio_free(pin_config->gpio);
+    return (PAL_STATUS_SUCCESS);
+}
 
-/* Maximum Wi-Fi re-connection limit. */
-#define MAX_WIFI_CONN_RETRIES             (120u)
+void pal_gpio_set_high(const pal_gpio_t * p_gpio_context)
+{
+    if ((p_gpio_context != NULL) && (p_gpio_context->p_gpio_hw != NULL))
+    {
+        pal_psoc_gpio_t* pin_config = (pal_psoc_gpio_t *)p_gpio_context->p_gpio_hw;
+        cyhal_gpio_write((cyhal_gpio_t)(pin_config->gpio), true);
+    }
+}
 
-/* Wi-Fi re-connection time interval in milliseconds. */
-#define WIFI_CONN_RETRY_INTERVAL_MS       (5000)
-
-#endif /* WIFI_CONFIG_H_ */
+void pal_gpio_set_low(const pal_gpio_t * p_gpio_context)
+{
+    if ((p_gpio_context != NULL) && (p_gpio_context->p_gpio_hw != NULL))
+    {
+        pal_psoc_gpio_t* pin_config = (pal_psoc_gpio_t *)p_gpio_context->p_gpio_hw;
+        cyhal_gpio_write((cyhal_gpio_t)(pin_config->gpio), false);
+    }
+}

@@ -68,17 +68,10 @@
 #include "xensiv_dps3xx_mtb.h"
 #include "xensiv_dps3xx.h"
 
-#include "optiga/pal/pal_os_event.h"
-#include "optiga/pal/pal_i2c.h"
-#include "optiga_trust.h"
-#include "optiga_trust_helpers.h"
-
-
 #define APP_VERSION "01.00.00"
 extern uint8_t flash_data[EEPROM_DATA_SIZE];
 
 
-#if defined(TARGET_CYSBSYSKIT_DEV_01)
 /* Output pin for sensor PSEL line */
 #define MTB_PASCO2_PSEL (P5_3)
 /* Output pin for PAS CO2 Wing Board power switch */
@@ -87,7 +80,7 @@ extern uint8_t flash_data[EEPROM_DATA_SIZE];
 #define MTB_PASCO2_LED_OK (P9_0)
 /* Output pin for PAS CO2 Wing Board LED WARNING  */
 #define MTB_PASCO2_LED_WARNING (P9_1)
-#endif
+
 
 /* Pin state to enable I2C channel of sensor */
 #define MTB_PASCO2_PSEL_I2C_ENABLE (0U)
@@ -108,17 +101,16 @@ extern uint8_t flash_data[EEPROM_DATA_SIZE];
 /* Delay time after each PAS CO2 readout */
 #define PASCO2_PROCESS_DELAY (1000)
 
-#define CERT_BUF_SIZE	(1200)
-
 static xensiv_pasco2_t xensiv_pasco2;
 static cyhal_i2c_t cyhal_i2c;
 static xensiv_dps3xx_t dps310_sensor;
 
 /* We don't use CLIENT_CERTIFICATE memory but instead allocate a buffer and
  * populate it with teh certificate form the Secure Element */
-static char certificate[CERT_BUF_SIZE];
+extern char optiga_cert_pem[1024];
 
 static volatile bool scanf_flag = false;
+
 
 
 /* Macro to check if the result of an operation was successful and set the
@@ -222,7 +214,7 @@ static cy_rslt_t wifi_connect(void) {
 }
 
 
-static cy_rslt_t publish_telemetry() {
+static void publish_telemetry() {
     IotclMessageHandle msg = iotcl_telemetry_create();
 
     // Optional. The first time you create a data point, the current timestamp will be automatically added
@@ -268,16 +260,13 @@ static cy_rslt_t publish_telemetry() {
     const char *str = iotcl_create_serialized_string(msg, false);
     iotcl_telemetry_destroy(msg);
     printf("Sending: %s\n", str);
-    cy_rslt_t res = iotconnect_sdk_send_packet(str); // underlying code will report an error
+    iotconnect_sdk_send_packet(str); // underlying code will report an error
     iotcl_destroy_serialized(str);
-    return res;
-}
 
+}
+/*
 bool use_optiga_certificate(void)
 {
-	uint16_t certificate_size = 0;
-    /* This is the place where the certificate is initialized. This is a function
-     * which will allow to read it out and populate internal mbedtls settings wit it*/
     read_certificate_from_optiga(0xe0e0, certificate, &certificate_size);
 
     if (certificate_size && (certificate_size < CERT_BUF_SIZE)) {
@@ -291,7 +280,7 @@ bool use_optiga_certificate(void)
     	return false;
     }
 }
-
+*/
 
 static void sensor_init(void)
 {
@@ -406,7 +395,7 @@ void scanf_task (void *pvParameters) {
     scanf("%s", &input);
     if ('y' == input) {
     	scanf_flag = true;
-    	printf("\nUser selected 'yes'...\n");
+    	printf("User selected 'yes'...\n");
     }
     while(1);
 }
@@ -429,7 +418,7 @@ void app_task(void *pvParameters) {
     if (scanf_flag) {
         iotc_config_input_handler();
     } else {
-    	printf("\nUser selected 'no'...\n");
+    	printf("User selected 'no'...\n");
     }
 
 	//get connect info from flash data
@@ -484,14 +473,16 @@ void app_task(void *pvParameters) {
 //        iotc_config->duid = IOTCONNECT_DUID;
 //        iotc_config->cpid = IOTCONNECT_CPID;
 //        iotc_config->env =  IOTCONNECT_ENV;
-        iotc_config->duid = iotc_duid;
-		printf("DUID is %s\r\n", iotc_duid);
+
+//        iotc_config->duid = iotc_duid;
+        iotc_config->duid = "xensiv-1234";
+		printf("DUID is %s\r\n", iotc_config->duid);
         iotc_config->cpid = iotc_cpid;
         iotc_config->env =  iotc_env;
         iotc_config->auth.type = IOTCONNECT_AUTH_TYPE;
 
         if (iotc_config->auth.type == IOTC_AT_X509) {
-            iotc_config->auth.data.cert_info.device_cert = (const char *)certificate;
+            iotc_config->auth.data.cert_info.device_cert = (const char *)optiga_cert_pem;
             iotc_config->auth.data.cert_info.device_key = (const char *)DUMMY_PRIVATE_KEY;
         }
 
@@ -503,11 +494,7 @@ void app_task(void *pvParameters) {
         }
 
         for (int j = 0; iotconnect_sdk_is_connected() && j < 10; j++) {
-
-        	cy_rslt_t result = publish_telemetry();
-        	if (result != CY_RSLT_SUCCESS) {
-        		break;
-        	}
+            publish_telemetry();
             vTaskDelay(pdMS_TO_TICKS(10000));
         }
 

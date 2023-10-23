@@ -1,8 +1,9 @@
 /******************************************************************************
-* File Name: wifi_config.h
+* File Name:   pal_os_memory.c
 *
-* Description: This file contains the configuration macros required for the
-*              Wi-Fi connection.
+* Description: This file contains part of the Platform Abstraction Layer.
+*              This is a platform specific file, in case you have a different
+*              memmory allocation functions implement them here.
 *
 * Related Document: See README.md
 *
@@ -40,29 +41,36 @@
 * so agrees to indemnify Cypress against all liability.
 *******************************************************************************/
 
-#ifndef WIFI_CONFIG_H_
-#define WIFI_CONFIG_H_
-
-#include "cy_wcm.h"
+/*******************************************************************************
+ * Header file includes
+ ******************************************************************************/
+#include "optiga/pal/pal_os_memory.h"
 
 /*******************************************************************************
-* Macros
-********************************************************************************/
-/* SSID of the Wi-Fi Access Point to which the MQTT client connects. */
-#define WIFI_SSID                         ""
+ * Function Definitions
+ ******************************************************************************/
+void * pal_os_malloc(uint32_t block_size)
+{
+    return (malloc(block_size));
+}
 
-/* Passkey of the above mentioned Wi-Fi SSID. */
-#define WIFI_PASSWORD                     ""
+void * pal_os_calloc(uint32_t number_of_blocks , uint32_t block_size)
+{
+    return (calloc(number_of_blocks, block_size));
+}
 
-/* Security type of the Wi-Fi access point. See 'cy_wcm_security_t' structure
- * in "cy_wcm.h" for more details.
- */
-#define WIFI_SECURITY                     CY_WCM_SECURITY_WPA2_AES_PSK
+void pal_os_free(void * p_block)
+{
+    free(p_block);
+}
 
-/* Maximum Wi-Fi re-connection limit. */
-#define MAX_WIFI_CONN_RETRIES             (120u)
+void pal_os_memcpy(void * p_destination, const void * p_source, uint32_t size)
+{
+    memcpy(p_destination, p_source, size);
+}
 
-/* Wi-Fi re-connection time interval in milliseconds. */
-#define WIFI_CONN_RETRY_INTERVAL_MS       (5000)
+void pal_os_memset(void * p_buffer, uint32_t value, uint32_t size)
+{
+    memset(p_buffer, (int32_t)value, size);
+}
 
-#endif /* WIFI_CONFIG_H_ */

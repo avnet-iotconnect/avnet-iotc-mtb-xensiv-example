@@ -1,8 +1,9 @@
 /******************************************************************************
-* File Name: wifi_config.h
+* File Name:   pal_os_lock.c
 *
-* Description: This file contains the configuration macros required for the
-*              Wi-Fi connection.
+* Description: This file contains part of the Platform Abstraction Layer.
+*              This is a platform specific file. The function here are not 
+*              really used by the host library (mw) itself
 *
 * Related Document: See README.md
 *
@@ -40,29 +41,76 @@
 * so agrees to indemnify Cypress against all liability.
 *******************************************************************************/
 
-#ifndef WIFI_CONFIG_H_
-#define WIFI_CONFIG_H_
+/*******************************************************************************
+ * Header file includes
+ ******************************************************************************/
+#include "optiga/pal/pal_os_lock.h"
 
-#include "cy_wcm.h"
+#include "FreeRTOS.h"
+#include "semphr.h"
 
 /*******************************************************************************
-* Macros
-********************************************************************************/
-/* SSID of the Wi-Fi Access Point to which the MQTT client connects. */
-#define WIFI_SSID                         ""
+ * Global Variables
+ ******************************************************************************/
+SemaphoreHandle_t xLockSemaphoreHandle;
 
-/* Passkey of the above mentioned Wi-Fi SSID. */
-#define WIFI_PASSWORD                     ""
+volatile uint8_t first_call_flag = 1;
 
-/* Security type of the Wi-Fi access point. See 'cy_wcm_security_t' structure
- * in "cy_wcm.h" for more details.
- */
-#define WIFI_SECURITY                     CY_WCM_SECURITY_WPA2_AES_PSK
+/*******************************************************************************
+ * Function Definitions
+ ******************************************************************************/
+void _lock_init(pal_os_lock_t * p_lock)
+{
+    xLockSemaphoreHandle = xSemaphoreCreateBinary();
+    pal_os_lock_release(p_lock);
+}
 
-/* Maximum Wi-Fi re-connection limit. */
-#define MAX_WIFI_CONN_RETRIES             (120u)
+void pal_os_lock_create(pal_os_lock_t * p_lock, uint8_t lock_type)
+{
+    p_lock->type = lock_type;
+    p_lock->lock = 0;
+}
 
-/* Wi-Fi re-connection time interval in milliseconds. */
-#define WIFI_CONN_RETRY_INTERVAL_MS       (5000)
+//lint --e{715} suppress "p_lock is not used here as it is placeholder for future."
+//lint --e{818} suppress "Not declared as pointer as nothing needs to be updated in the pointer."
+void pal_os_lock_destroy(pal_os_lock_t * p_lock)
+{
 
-#endif /* WIFI_CONFIG_H_ */
+}
+
+
+pal_status_t pal_os_lock_acquire(pal_os_lock_t * p_lock)
+{
+    (void) p_lock;
+    vPortEnterCritical();
+    if (first_call_flag)
+    {
+        _lock_init(p_lock);
+        first_call_flag = 0;
+    }
+    vPortExitCritical();
+
+    if ( xSemaphoreTake(xLockSemaphoreHandle, portMAX_DELAY) == pdTRUE )
+        return PAL_STATUS_SUCCESS;
+    else {
+        return PAL_STATUS_FAILURE;
+    }
+}
+
+void pal_os_lock_release(pal_os_lock_t * p_lock)
+{
+    (void) p_lock;
+
+    xSemaphoreGive(xLockSemaphoreHandle);
+}
+
+void pal_os_lock_enter_critical_section()
+{
+    vPortEnterCritical();
+}
+
+void pal_os_lock_exit_critical_section()
+{
+    vPortExitCritical();
+}
+

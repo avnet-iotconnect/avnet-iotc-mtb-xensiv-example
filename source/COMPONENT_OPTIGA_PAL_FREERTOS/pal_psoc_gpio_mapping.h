@@ -1,8 +1,9 @@
 /******************************************************************************
-* File Name: wifi_config.h
+* File Name:   pal_psoc_gpio_mapping.h
 *
-* Description: This file contains the configuration macros required for the
-*              Wi-Fi connection.
+* Description: This file contains part of the Platform Abstraction Layer.
+*              This is a platform specific file and shall be changed in case
+*              base board is changed
 *
 * Related Document: See README.md
 *
@@ -39,30 +40,29 @@
 * of such system or application assumes all risk of such use and in doing
 * so agrees to indemnify Cypress against all liability.
 *******************************************************************************/
+#ifndef PAL_PSOC_GPIO_MAPPING
+#define PAL_PSOC_GPIO_MAPPING
 
-#ifndef WIFI_CONFIG_H_
-#define WIFI_CONFIG_H_
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#include "cy_wcm.h"
+#include "pal.h"
+#include "cyhal.h"
 
-/*******************************************************************************
-* Macros
-********************************************************************************/
-/* SSID of the Wi-Fi Access Point to which the MQTT client connects. */
-#define WIFI_SSID                         ""
-
-/* Passkey of the above mentioned Wi-Fi SSID. */
-#define WIFI_PASSWORD                     ""
-
-/* Security type of the Wi-Fi access point. See 'cy_wcm_security_t' structure
- * in "cy_wcm.h" for more details.
+/**
+ * \brief Structure defines PSOC6 gpio pin configuration.
  */
-#define WIFI_SECURITY                     CY_WCM_SECURITY_WPA2_AES_PSK
+typedef struct pal_psoc_gpio
+{
+    cyhal_gpio_t  gpio;
+    bool_t        init_state;
 
-/* Maximum Wi-Fi re-connection limit. */
-#define MAX_WIFI_CONN_RETRIES             (120u)
+} pal_psoc_gpio_t;
 
-/* Wi-Fi re-connection time interval in milliseconds. */
-#define WIFI_CONN_RETRY_INTERVAL_MS       (5000)
 
-#endif /* WIFI_CONFIG_H_ */
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* PAL_PSOC_GPIO_MAPPING */

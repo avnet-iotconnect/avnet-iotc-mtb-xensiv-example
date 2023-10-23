@@ -1,8 +1,9 @@
 /******************************************************************************
-* File Name: wifi_config.h
+* File Name:   pal_i2c.c
 *
-* Description: This file contains the configuration macros required for the
-*              Wi-Fi connection.
+* Description: This file contains part of the Platform Abstraction Layer.
+*              This is a platform specific file. This file implements 
+*              the platform abstraction layer APIs.
 *
 * Related Document: See README.md
 *
@@ -39,30 +40,50 @@
 * of such system or application assumes all risk of such use and in doing
 * so agrees to indemnify Cypress against all liability.
 *******************************************************************************/
-
-#ifndef WIFI_CONFIG_H_
-#define WIFI_CONFIG_H_
-
-#include "cy_wcm.h"
+/*******************************************************************************
+ * Header file includes
+ ******************************************************************************/
+#include "optiga/pal/pal.h"
+#include "optiga/pal/pal_gpio.h"
+#include "optiga/pal/pal_i2c.h"
+#include "optiga/pal/pal_os_event.h"
+#include "optiga/pal/pal_os_timer.h"
+#include "pal_psoc_gpio_mapping.h"
+#include "optiga_lib_config.h"
 
 /*******************************************************************************
-* Macros
-********************************************************************************/
-/* SSID of the Wi-Fi Access Point to which the MQTT client connects. */
-#define WIFI_SSID                         ""
+ * Global variables
+ ******************************************************************************/
+#ifdef OPTIGA_TRUSTM_VDD
+extern pal_gpio_t optiga_vdd_0;
+#endif
 
-/* Passkey of the above mentioned Wi-Fi SSID. */
-#define WIFI_PASSWORD                     ""
+#ifdef OPTIGA_TRUSTM_RST
+extern pal_gpio_t optiga_reset_0;
+#endif
 
-/* Security type of the Wi-Fi access point. See 'cy_wcm_security_t' structure
- * in "cy_wcm.h" for more details.
- */
-#define WIFI_SECURITY                     CY_WCM_SECURITY_WPA2_AES_PSK
+/*******************************************************************************
+ * Function Definitions
+ ******************************************************************************/
+pal_status_t pal_init(void)
+{
+    // This function call is used to create a semaphore outside of the ISR
+    pal_i2c_init(NULL);
 
-/* Maximum Wi-Fi re-connection limit. */
-#define MAX_WIFI_CONN_RETRIES             (120u)
+    #ifdef OPTIGA_TRUSTM_VDD
+    pal_gpio_init(&optiga_vdd_0);
+    #endif
 
-/* Wi-Fi re-connection time interval in milliseconds. */
-#define WIFI_CONN_RETRY_INTERVAL_MS       (5000)
+    #ifdef OPTIGA_TRUSTM_RST
+    pal_gpio_init(&optiga_reset_0);
+    #endif
+    return PAL_STATUS_SUCCESS;
+}
 
-#endif /* WIFI_CONFIG_H_ */
+
+pal_status_t pal_deinit(void)
+{
+    // This function call is used to destroy a semaphore outside of the ISR
+    pal_i2c_deinit(NULL);
+    return PAL_STATUS_SUCCESS;
+}

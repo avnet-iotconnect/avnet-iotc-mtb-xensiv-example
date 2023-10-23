@@ -1,8 +1,10 @@
 /******************************************************************************
-* File Name: wifi_config.h
+* File Name:   pal_os_timer.c
 *
-* Description: This file contains the configuration macros required for the
-*              Wi-Fi connection.
+* Description: This file contains part of the Platform Abstraction Layer.
+*              This is a platform specific file and shall be changed in case
+*              base board is changed. this file shall implement only functions
+*              which can return timestamps
 *
 * Related Document: See README.md
 *
@@ -40,29 +42,51 @@
 * so agrees to indemnify Cypress against all liability.
 *******************************************************************************/
 
-#ifndef WIFI_CONFIG_H_
-#define WIFI_CONFIG_H_
-
-#include "cy_wcm.h"
+/*******************************************************************************
+ * Header file includes
+ ******************************************************************************/
+#include "optiga/pal/pal_os_timer.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "stdio.h"
 
 /*******************************************************************************
-* Macros
-********************************************************************************/
-/* SSID of the Wi-Fi Access Point to which the MQTT client connects. */
-#define WIFI_SSID                         ""
+ * Macros
+ ******************************************************************************/
+ 
+/*******************************************************************************
+ * Function Definitions
+ ******************************************************************************/
 
-/* Passkey of the above mentioned Wi-Fi SSID. */
-#define WIFI_PASSWORD                     ""
+uint32_t pal_os_timer_get_time_in_microseconds(void)
+{
+    // !!!OPTIGA_LIB_PORTING_REQUIRED
+    // This API is needed to support optiga cmd scheduler.
+    static uint32_t count = 0;
+    // The implementation must ensure that every invocation of this API returns a unique value.
+    return (count++);
+}
 
-/* Security type of the Wi-Fi access point. See 'cy_wcm_security_t' structure
- * in "cy_wcm.h" for more details.
- */
-#define WIFI_SECURITY                     CY_WCM_SECURITY_WPA2_AES_PSK
+/**
+* Get the current time in milliseconds<br>
+*
+*
+* \retval  uint32_t time in milliseconds
+*/
+uint32_t pal_os_timer_get_time_in_milliseconds(void)
+{
+    return xTaskGetTickCount();
+}
 
-/* Maximum Wi-Fi re-connection limit. */
-#define MAX_WIFI_CONN_RETRIES             (120u)
+/**
+* Waits or delays until the given milliseconds time
+* 
+* \param[in] milliseconds Delay value in milliseconds
+*
+*/
+void pal_os_timer_delay_in_milliseconds(uint16_t milliseconds)
+{
+    const TickType_t xDelay = milliseconds / portTICK_PERIOD_MS;
+    vTaskDelay( xDelay );
+}
 
-/* Wi-Fi re-connection time interval in milliseconds. */
-#define WIFI_CONN_RETRY_INTERVAL_MS       (5000)
-
-#endif /* WIFI_CONFIG_H_ */

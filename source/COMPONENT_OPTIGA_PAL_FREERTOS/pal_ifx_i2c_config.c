@@ -1,8 +1,9 @@
 /******************************************************************************
-* File Name: wifi_config.h
+* File Name:   pal_ifx_i2c_config.c
 *
-* Description: This file contains the configuration macros required for the
-*              Wi-Fi connection.
+* Description: This file contains part of the Platform Abstraction Layer.
+*              This is a platform specific file. This file implements 
+*              platform abstraction layer configurations for ifx i2c protocol.
 *
 * Related Document: See README.md
 *
@@ -40,29 +41,87 @@
 * so agrees to indemnify Cypress against all liability.
 *******************************************************************************/
 
-#ifndef WIFI_CONFIG_H_
-#define WIFI_CONFIG_H_
-
-#include "cy_wcm.h"
+/*******************************************************************************
+ * Header file includes
+ ******************************************************************************/
+#include "optiga/pal/pal_gpio.h"
+#include "optiga/pal/pal_i2c.h"
+#include "optiga/ifx_i2c/ifx_i2c_config.h"
+#include "optiga/pal/pal_ifx_i2c_config.h"
+#include "optiga_lib_config.h"
+#include "pal_psoc_i2c_mapping.h"
+#include "pal_psoc_gpio_mapping.h"
+#include "cy_pdl.h"
+#include "cyhal.h"
+#include "cybsp.h"
 
 /*******************************************************************************
-* Macros
-********************************************************************************/
-/* SSID of the Wi-Fi Access Point to which the MQTT client connects. */
-#define WIFI_SSID                         ""
+ * Global Variables
+ ******************************************************************************/
+// i2c driver related
+cyhal_i2c_t i2c_master_obj;
 
-/* Passkey of the above mentioned Wi-Fi SSID. */
-#define WIFI_PASSWORD                     ""
+#ifdef OPTIGA_TRUSTM_VDD
+pal_psoc_gpio_t optiga_vdd_config =
+{
+    .gpio = OPTIGA_TRUSTM_VDD,
+    .init_state = true
+};
+#endif
 
-/* Security type of the Wi-Fi access point. See 'cy_wcm_security_t' structure
- * in "cy_wcm.h" for more details.
+#ifdef OPTIGA_TRUSTM_RST
+pal_psoc_gpio_t optiga_reset_config =
+{
+    .gpio = OPTIGA_TRUSTM_RST,
+    .init_state = true
+};
+#endif
+
+pal_psoc_i2c_t optiga_i2c_master_config =
+{
+    .i2c_master_channel = &i2c_master_obj,
+    .scl = OPTIGA_TRUSTM_SCL,
+    .sda = OPTIGA_TRUSTM_SDA
+};
+
+/**
+* \brief PAL vdd pin configuration for OPTIGA. 
  */
-#define WIFI_SECURITY                     CY_WCM_SECURITY_WPA2_AES_PSK
+pal_gpio_t optiga_vdd_0 =
+{
+#ifdef OPTIGA_TRUSTM_VDD
+    // Platform specific GPIO context for the pin used to toggle Vdd.
+    (void * )&optiga_vdd_config
+#else
+    NULL
+#endif
+};
 
-/* Maximum Wi-Fi re-connection limit. */
-#define MAX_WIFI_CONN_RETRIES             (120u)
+/**
+ * \brief PAL reset pin configuration for OPTIGA.
+ */
+pal_gpio_t optiga_reset_0 =
+{
+#ifdef OPTIGA_TRUSTM_RST
+    // Platform specific GPIO context for the pin used to toggle Reset.
+    (void * )&optiga_reset_config
+#else
+    NULL
+#endif
+};
 
-/* Wi-Fi re-connection time interval in milliseconds. */
-#define WIFI_CONN_RETRY_INTERVAL_MS       (5000)
+/**
+ * \brief PAL I2C configuration for OPTIGA.
+ */
+pal_i2c_t optiga_pal_i2c_context_0 =
+{
+    /// Pointer to I2C master platform specific context
+    (void*)&optiga_i2c_master_config,
+    /// Upper layer context
+    NULL,
+    /// Callback event handler
+    NULL,
+    /// Slave address
+    0x30
+};
 
-#endif /* WIFI_CONFIG_H_ */
