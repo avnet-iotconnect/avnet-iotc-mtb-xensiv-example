@@ -56,12 +56,18 @@ with the Avnet IoTConnect Platform, leveraging the Optiga secure element.
 * Use a tool such as [this website](https://www.samltool.com/fingerprint.php) and paste in the certificate to generate a fingerprint (leave all the options at default)
 * Make note of the generated *fingerprint*
 
-## IoTConnect Account Creation
+## Cloud Account Setup
+This guide requires an IoTConnect account on Azure.
 
-> **Note:**  
-> If you have already created an IoTConnect Account, or were provided an account as part of a training or workshop, skip this section.
+>**NOTE:**  
+> If you have already created an IoTConnect account on Azure, or were provided an account as part of a training or workshop, skip this section.
 
-If you need to create an account, a free 2-month subscription is available.  Please follow the [Creating a New IoTConnect Account](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) guide and return to this guide once complete.
+If you need to create an account, a free 2-month subscription is available.
+Please follow the 
+[Creating a New IoTConnect Account](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md)
+guide and ensure to select the [Azure version](https://subscription.iotconnect.io/subscribe?cloud=azure) during registration:
+
+![IoTConnect on Azure](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/media/iotc-azure.png)
 
 ## Acquire IoTConnect Account Information
 
