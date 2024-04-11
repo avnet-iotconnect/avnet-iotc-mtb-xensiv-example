@@ -1,0 +1,16 @@
+# IDE Artifacts
+.idea/
+/.settings/
+
+
+# Generated files
+/.mtbLaunchConfigs/
+/deps/assetlocks.json
+/.project
+/.cproject
+/build/
+/libs/
+/.mtbqueryapi
+/makefile.init
+
+

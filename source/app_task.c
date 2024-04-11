@@ -58,7 +58,6 @@
 #include "lwip/apps/sntp.h"
 
 #include "iotconnect.h"
-#include "iotconnect_common.h"
 #include "iotc_mtb_time.h"
 
 #include "app_config.h"
@@ -75,6 +74,15 @@
 
 
 #define APP_VERSION "01.00.00"
+
+/*private key cannot be empty if using Optiga cert, so we use the dummy private key here*/
+#define DUMMY_PRIVATE_KEY \
+"-----BEGIN EC PRIVATE KEY-----\n" \
+"MHcCAQEEIIGm2Ma8d7qLDqCSQ8aXn6Quvnu56EdBh5okuSlnG67ZoAoGCCqGSM49\n" \
+"AwEHoUQDQgAEwbCYk6G3fWQYzTbdmcJ7C+Zudz6VGt1Uskf2lCWcn/7x4LRZdS5t\n" \
+"rQ0EI1fNGzpZyfQgpVTv26AnlqqumIPzhw==\n" \
+"-----END EC PRIVATE KEY-----"
+
 extern uint8_t flash_data[EEPROM_DATA_SIZE];
 
 
@@ -143,6 +151,21 @@ static volatile bool scanf_flag = false;
 
 
 
+static void on_connection_status(IotConnectConnectionStatus status) {
+    // Add your own status handling
+    switch (status) {
+        case IOTC_CS_MQTT_CONNECTED:
+            printf("IoTConnect Client Connected notification.\n");
+            break;
+        case IOTC_CS_MQTT_DISCONNECTED:
+            printf("IoTConnect Client Disconnected notification.\n");
+            break;
+        default:
+            printf("IoTConnect Client ERROR notification\n");
+            break;
+    }
+}
+
 /******************************************************************************
  * Function Name: wifi_connect
  ******************************************************************************
@@ -169,24 +192,23 @@ static cy_rslt_t wifi_connect(void) {
     if (cy_wcm_is_connected_to_ap() == 0) {
         /* Configure the connection parameters for the Wi-Fi interface. */
         memset(&connect_param, 0, sizeof(cy_wcm_connect_params_t));
-//        memcpy(connect_param.ap_credentials.SSID, WIFI_SSID, sizeof(WIFI_SSID));
-//        memcpy(connect_param.ap_credentials.password, WIFI_PASSWORD, sizeof(WIFI_PASSWORD));
-
+#if 1
+        memcpy(connect_param.ap_credentials.SSID, WIFI_SSID, sizeof(WIFI_SSID));
+        memcpy(connect_param.ap_credentials.password, WIFI_PASSWORD, sizeof(WIFI_PASSWORD));
+#else
         if (flash_data[SSID_SIZE_IDX] < SSID_LEN && flash_data[SSID_SIZE_IDX] > 0) {
         	memcpy(connect_param.ap_credentials.SSID, &flash_data[SSID_SIZE_IDX + 1], flash_data[SSID_SIZE_IDX]);
-        }
-        else {
-        	printf("Wrong WIFI SSID size!\r\n");
+        } else {
+        	printf("Wrong WIFI SSID size!\n");
         	return -1;
         }
         if (flash_data[PW_SIZE_IDX] < PW_LEN && flash_data[PW_SIZE_IDX] > 0) {
         	memcpy(connect_param.ap_credentials.password, &flash_data[PW_SIZE_IDX + 1], flash_data[PW_SIZE_IDX]);
-        }
-        else {
-        	printf("Wrong WIFI password size!\r\n");
+        } else {
+        	printf("Wrong WIFI password size!\n");
         	return -1;
         }
-
+#endif
         connect_param.ap_credentials.security = WIFI_SECURITY;
 
         printf("Connecting to Wi-Fi AP '%s'\n", connect_param.ap_credentials.SSID);
@@ -227,7 +249,6 @@ static cy_rslt_t publish_telemetry() {
 
     // Optional. The first time you create a data point, the current timestamp will be automatically added
     // TelemetryAddWith* calls are only required if sending multiple data points in one packet.
-    iotcl_telemetry_add_with_iso_time(msg, iotcl_iso_timestamp_now());
     iotcl_telemetry_set_string(msg, "version", APP_VERSION);
     iotcl_telemetry_set_number(msg, "cpu", 3.123); // test floating point numbers
 
@@ -237,40 +258,33 @@ static cy_rslt_t publish_telemetry() {
     float32_t temperature = 0;
 
     // Read the pressure and temperature data
-    if (xensiv_dps3xx_read(&dps310_sensor, &pressure, &temperature) == CY_RSLT_SUCCESS)
-    {
+    if (xensiv_dps3xx_read(&dps310_sensor, &pressure, &temperature) == CY_RSLT_SUCCESS) {
         // Display the pressure and temperature data in console
         printf("Pressure : %0.2f mBar", pressure);
         // 0xF8 - ASCII Degree Symbol
-        printf("\t Temperature: %0.2f %cC \r\n\n", temperature, 0xF8);
-    }
-    else
-    {
-        printf("\n Failed to read temperature and pressure data.\r\n");
+        printf("\t Temperature: %0.2f %cC \n", temperature, 0xF8);
+    } else {
+        printf("\n Failed to read temperature and pressure data.\n");
     }
 
     /* Read CO2 value from sensor */
     cy_rslt_t result = xensiv_pasco2_mtb_read(&xensiv_pasco2, (uint16_t)pressure, &ppm); //unit PPM
-    if (result != CY_RSLT_SUCCESS)
-    {
-    	printf("pasco2 sensor read error\r\n");
+    if (result != CY_RSLT_SUCCESS) {
+    	printf("pasco2 sensor read error\n");
     }
 
     //round the number to 2 decimal places
-    float temp = roundf(temperature * 100) / 100;
-//    printf("\nTEMP is %f\r\n\n", temp);
+    float temp = (float) ((int)(temperature * 100.0f) / 100.0f);
 
     iotcl_telemetry_set_number(msg, "co2level", ppm);
     iotcl_telemetry_set_number(msg, "temperature", temp);
     iotcl_telemetry_set_number(msg, "pressure", pressure);
 
 
-    const char *str = iotcl_create_serialized_string(msg, false);
+
+    iotcl_mqtt_send_telemetry(msg, false);
     iotcl_telemetry_destroy(msg);
-    printf("Sending: %s\n", str);
-    cy_rslt_t res = iotconnect_sdk_send_packet(str); // underlying code will report an error
-    iotcl_destroy_serialized(str);
-    return res;
+    return CY_RSLT_SUCCESS;
 }
 
 bool use_optiga_certificate(void)
@@ -377,7 +391,7 @@ static void sensor_init(void)
                                         XENSIV_DPS3XX_I2C_ADDR_ALT);
     if (result != CY_RSLT_SUCCESS)
     {
-        printf("\r\nFailed to initialize DPS310 I2C\r\n");
+        printf("\nFailed to initialize DPS310 I2C\n");
         CY_ASSERT(0);
     }
 
@@ -386,11 +400,11 @@ static void sensor_init(void)
     // Retrieve the DPS310 Revision ID and display the same
     if (xensiv_dps3xx_get_revision_id(&dps310_sensor,(uint8_t*)&revisionID) == CY_RSLT_SUCCESS)
     {
-        printf("DPS310 Revision ID = %d\r\n\n",(uint8_t)revisionID);
+        printf("DPS310 Revision ID = %d\n",(uint8_t)revisionID);
     }
     else
     {
-        printf("Failed to get Revision ID\r\n");
+        printf("Failed to get Revision ID\n");
         CY_ASSERT(0);
     }
 
@@ -418,7 +432,13 @@ void app_task(void *pvParameters) {
     /* Initialize PAS CO2 sensor */
     sensor_init();
 
-    xTaskCreate(scanf_task, "Scanf Task", 1024, NULL, APP_TASK_PRIORITY, &scanf_task_handle);
+    uint64_t hwuid = Cy_SysLib_GetUniqueId();
+    uint32_t hwuidhi = (uint32_t)(hwuid >> 32);
+    uint32_t hwuidlo = (uint32_t)(hwuid & 0xFFFFFFFF);
+
+    printf("Hardware Unique ID is: %08lx:%08lx", hwuidhi, hwuidlo);
+
+    xTaskCreate(scanf_task, "User CFG", 2048, NULL, APP_TASK_PRIORITY, &scanf_task_handle);
 
     vTaskDelay(pdMS_TO_TICKS(5000));
 
@@ -433,10 +453,13 @@ void app_task(void *pvParameters) {
     }
 
 	//get connect info from flash data
-	char iotc_cpid[flash_data[CPID_SIZE_IDX]];		//consider the null terminator at the end
-	char iotc_env[flash_data[ENV_SIZE_IDX]];
-	char iotc_duid[flash_data[DUID_SIZE_IDX]];
+	char iotc_cpid[CPID_LEN] = IOTCONNECT_CPID;		//consider the null terminator at the end
+	char iotc_env[ENV_LEN] = IOTCONNECT_ENV;
+	char iotc_duid[DUID_LEN];
 
+	sprintf(iotc_duid, "optiga-%08lx%08lx", hwuidhi, hwuidlo);
+	/*
+	 * TODO: Fix and implement this
 	if ((flash_data[CPID_SIZE_IDX] < CPID_LEN && flash_data[CPID_SIZE_IDX] > 0) ||
 		(flash_data[ENV_SIZE_IDX] < ENV_LEN && flash_data[ENV_SIZE_IDX] > 0) ||
 		(flash_data[DUID_SIZE_IDX] < DUID_LEN && flash_data[DUID_SIZE_IDX] > 0)) {
@@ -444,12 +467,13 @@ void app_task(void *pvParameters) {
         memcpy(iotc_env, &flash_data[ENV_SIZE_IDX + 1], flash_data[ENV_SIZE_IDX]);
         memcpy(iotc_duid, &flash_data[DUID_SIZE_IDX + 1], flash_data[DUID_SIZE_IDX]);
 	} else {
-		printf("Wrong CPID or ENV or DUID size!\r\n");
+		printf("Wrong CPID or ENV or DUID size!\n");
 		return;
 	}
+	*/
 
     /* Configure the Wi-Fi interface as a Wi-Fi STA (i.e. Client). */
-    cy_wcm_config_t config = { .interface = CY_WCM_INTERFACE_TYPE_STA };
+    cy_wcm_config_t wcm_config = { .interface = CY_WCM_INTERFACE_TYPE_STA };
 
     /* To avoid compiler warnings */
     (void) pvParameters;
@@ -459,7 +483,7 @@ void app_task(void *pvParameters) {
     /* Initialize the Wi-Fi Connection Manager and jump to the cleanup block
      * upon failure.
      */
-    if (CY_RSLT_SUCCESS != cy_wcm_init(&config)) {
+    if (CY_RSLT_SUCCESS != cy_wcm_init(&wcm_config)) {
         printf("Error: Wi-Fi Connection Manager initialization failed!\n");
         goto exit_cleanup;
     }
@@ -479,31 +503,32 @@ void app_task(void *pvParameters) {
         return;
     }
 
+    IotConnectClientConfig config;
+    iotconnect_sdk_init_config(&config);
+    config.connection_type = IOTCONNECT_CONNECTION_TYPE;
+    config.cpid = iotc_cpid;
+    config.env =  iotc_env;
+    config.duid = iotc_duid;
+    config.qos = 1;
+    config.verbose = true;
+    config.x509_config.device_cert = (const char *)certificate;
+    config.x509_config.device_key = DUMMY_PRIVATE_KEY;
+    config.callbacks.status_cb = on_connection_status;
+    cy_rslt_t ret = iotconnect_sdk_init(&config);
+    if (ret) {
+        vTaskDelete(NULL);
+    	return; // called function will print the error
+    }
+
+
     for (int i = 0; i < 100; i++) {
-        IotConnectClientConfig *iotc_config = iotconnect_sdk_init_and_get_config();
-//        iotc_config->duid = IOTCONNECT_DUID;
-//        iotc_config->cpid = IOTCONNECT_CPID;
-//        iotc_config->env =  IOTCONNECT_ENV;
-        iotc_config->duid = iotc_duid;
-		printf("DUID is %s\r\n", iotc_duid);
-        iotc_config->cpid = iotc_cpid;
-        iotc_config->env =  iotc_env;
-        iotc_config->auth.type = IOTCONNECT_AUTH_TYPE;
 
-        if (iotc_config->auth.type == IOTC_AT_X509) {
-            iotc_config->auth.data.cert_info.device_cert = (const char *)certificate;
-            iotc_config->auth.data.cert_info.device_key = (const char *)DUMMY_PRIVATE_KEY;
-        }
-
-
-        cy_rslt_t ret = iotconnect_sdk_init();
         if (CY_RSLT_SUCCESS != ret) {
             printf("Failed to initialize the IoTConnect SDK. Error code: %lu\n", ret);
             goto exit_cleanup;
         }
 
         for (int j = 0; iotconnect_sdk_is_connected() && j < 10; j++) {
-
         	cy_rslt_t result = publish_telemetry();
         	if (result != CY_RSLT_SUCCESS) {
         		break;
@@ -513,7 +538,12 @@ void app_task(void *pvParameters) {
 
         iotconnect_sdk_disconnect();
     }
-    exit_cleanup: printf("\nAppTask Done.\nTerminating the AppTask...\n");
+	printf("\nAppTask Done.\nTerminating the AppTask...\n");
+    vTaskDelete(NULL);
+    return;
+
+    exit_cleanup:
+	printf("\nAppTask Done.\nTerminating the AppTask...\n");
     vTaskDelete(NULL);
 
 }

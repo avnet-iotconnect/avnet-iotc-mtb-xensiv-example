@@ -72,7 +72,6 @@ volatile int uxTopUsedPriority;
 /* This is a place from which we can poll the status of operation */
 void vApplicationTickHook( void );
 
-
 void vApplicationTickHook( void )
 {
     pal_os_event_trigger_registered_callback();
@@ -87,12 +86,12 @@ void optiga_client_task(void *pvParameters)
      * to mbedtls to generate signature and so on for TLS handshake */
     bool result = use_optiga_certificate();
     if (!result) {
-    	//the called function will print the ERROR.
+    	while (1) { ;}
     	return;
     }
 
-    /* \x1b[2J\x1b[;H - ANSI ESC sequence to clear screen. */
-    printf("\x1b[2J\x1b[;H");
+    /* \x1b[2J\x1b[;H - Uncomment to use ANSI ESC sequence to clear screen. */
+    // printf("\x1b[2J\x1b[;H");
     printf("===============================================================\n");
     printf("Starting The App Task\n");
     printf("===============================================================\n\n");
@@ -101,7 +100,8 @@ void optiga_client_task(void *pvParameters)
 
     xTaskCreate(app_task, "App Task", APP_TASK_STACK_SIZE, NULL, APP_TASK_PRIORITY, NULL);
 
-    while(1);
+	// it seems that vTaskDelete causes a crash. Not sure why...
+	while (1) { ;}
 }
 
 

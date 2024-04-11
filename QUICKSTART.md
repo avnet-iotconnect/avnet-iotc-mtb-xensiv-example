@@ -29,45 +29,33 @@ with the Avnet IoTConnect Platform, leveraging the Optiga secure element.
 * Click **Open** and select the hex file previously extracted
 * Click **Connect**
 * Click **Program** on the top right and wait for the propress bar to complete
-* Switch to the Serial Terminal and ensure the following output is visible.  If not, press the **RST** on the board.
-  ```
-  Do you want to configure WIFI & CPID/ENV (y/n):
-  
-  User selected 'no'...
-  Wrong CPID or ENV or DUID size!
-  ```
+* Switch to the Serial Terminal and ensure the following output is visible:  `Do you want to configure WIFI & CPID/ENV (y/n):`
 * Scroll up in the Serial Terminal until the *Device Certificate* is displayed
-  ```
-  -----BEGIN CERTIFICATE-----
-  MIIB9TCCAXygAwIBAgIEOi/kbTAKBggqhkjOPQQDAzByMQswCQYDVQQGEwJERTEh
-  MB8GA1UECgwYSW5maW5lb24gVGVjaG5vbG9naWVzIEFHMRMwEQYDVQQLDApPUFRJ
-  R0EoVE0pMSswKQYDVQQDDCJJbmZpbmVvbiBPUFRJR0EoVE0pIFRydXN0IE0gQ0Eg
-  MzAwMB4XDTIwMDkxMDExNDAyNFoXDTQwMDkxMDExNDAyNFowGjEYMBYGA1UEAwwP
-  SW5maW5                                        DAQcDQgAEAk4GXqVj
-  YoNVwYj        EXAMPLE ONLY - DO NOT USE       rFqQAo9dd4ttDC29p
-  XBmgkaW                                        dEwEB/wQCMAAwFQYD
-  VR0gBA4wDDAKBggqghQARAEUATAfBgNVHSMEGDAWgBSzg+GsVpQGWa/Yr1cheEV0
-  jgxJmTAKBggqhkjOPQQDAwNnADBkAjAmOrOHHkxAobTfFfmMZAL21BtOF111Rpkp
-  /f0sFWNSf4/lxPtE1TJ3DUlMZ3qmtSMCMHPCHRv3rklr9jiIJ4GTKIGuy1d04NUH
-  Ma0O+81heMCpsb9j/6/7ucw9iGVRpykvug==
-  -----END CERTIFICATE-----
-  ```
+```
+-----BEGIN CERTIFICATE-----
+MIIB9TCCAXygAwIBAgIEOi/kbTAKBggqhkjOPQQDAzByMQswCQYDVQQGEwJERTEh
+MB8GA1UECgwYSW5maW5lb24gVGVjaG5vbG9naWVzIEFHMRMwEQYDVQQLDApPUFRJ
+R0EoVE0pMSswKQYDVQQDDCJJbmZpbmVvbiBPUFRJR0EoVE0pIFRydXN0IE0gQ0Eg
+MzAwMB4XDTIwMDkxMDExNDAyNFoXDTQwMDkxMDExNDAyNFowGjEYMBYGA1UEAwwP
+SW5maW5                                        DAQcDQgAEAk4GXqVj
+YoNVwYj        EXAMPLE ONLY - DO NOT USE       rFqQAo9dd4ttDC29p
+XBmgkaW                                        dEwEB/wQCMAAwFQYD
+VR0gBA4wDDAKBggqghQARAEUATAfBgNVHSMEGDAWgBSzg+GsVpQGWa/Yr1cheEV0
+jgxJmTAKBggqhkjOPQQDAwNnADBkAjAmOrOHHkxAobTfFfmMZAL21BtOF111Rpkp
+/f0sFWNSf4/lxPtE1TJ3DUlMZ3qmtSMCMHPCHRv3rklr9jiIJ4GTKIGuy1d04NUH
+Ma0O+81heMCpsb9j/6/7ucw9iGVRpykvug==
+-----END CERTIFICATE-----
+```
 * Copy the certificate from the terminal including the "BEGIN" and "END" lines
 * Use a tool such as [this website](https://www.samltool.com/fingerprint.php) and paste in the certificate to generate a fingerprint (leave all the options at default)
 * Make note of the generated *fingerprint*
 
-## Cloud Account Setup
-This guide requires an IoTConnect account on Azure.
+## IoTConnect Account Creation
 
->**NOTE:**  
-> If you have already created an IoTConnect account on Azure, or were provided an account as part of a training or workshop, skip this section.
+> **Note:**  
+> If you have already created an IoTConnect Account, or were provided an account as part of a training or workshop, skip this section.
 
-If you need to create an account, a free 2-month subscription is available.
-Please follow the 
-[Creating a New IoTConnect Account](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md)
-guide and ensure to select the [Azure version](https://subscription.iotconnect.io/subscribe?cloud=azure) during registration:
-
-![IoTConnect on Azure](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/media/iotc-azure.png)
+If you need to create an account, a free 2-month subscription is available.  Please follow the [Creating a New IoTConnect Account](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) guide and return to this guide once complete.
 
 ## Acquire IoTConnect Account Information
 
@@ -77,18 +65,18 @@ guide and ensure to select the [Azure version](https://subscription.iotconnect.i
 
 ## Configure the Xensiv Board
 
-> **Note:**  
-> There is no echo when typing, so be very careful when entering the following information.  If a mistake is made, this whole section will need to be repeated.
+> **Note:**
+> There is no echo when typing, so be very careful when entering the following information. If a mistake is made, this whole section will need to be repeated.
 
 * Press the "RST" button on the board and wait until the following output is visible:  `Do you want to configure WIFI & CPID/ENV (y/n):`
 * When the prompt is visible, press `y` then `Enter` within 5 seconds (or the board with auto-boot with saved settings)
+* A randomly generated **DUID** will be displayed in the format **"xensiv-XXXX"**.  Make note of this value for later.
 * Enter the **CPID** acquired from the key vault and press `Enter`
 * Enter the **Environment** (ENV) acquired from the key vault and press `Enter`
 * Enter the **WIFI SSID** of the 2.4GHz network and press `Enter`
 * Enter the **WIFI Password** and press `Enter`
-* A randomly generated **DUID** will be displayed in the format **"xensiv-XXXX"**.  Make note of this value for later.
 * Ensure the device is able connect to the WiFi network, obtain an IP address, and get updated time from an NTP server.  
-* There will be errors displayed because the device still needs to be created in the IoTConnect GUI. Continue to the next section.
+* Verify the following message is displayed: `IOTC_SyncResponse error: Device not found`
 
 ## IoTConnect Device Template Setup
 
@@ -113,6 +101,7 @@ An IoTConnect *Device Template* with a Self-Signed Certificate will need to be i
 
 * The data can be visualized by using the Dynamic Dashboard feature of IoTConnect.  A sample dashboard that is preconfigured to display the Xensiv module's data is available for download [here](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/avnet-iotc-mtb-xensiv-example/templates/dashboard/IFX-Xensiv-PAS_CO2_dashboard_export.json).
 * Once downloaded, select "Create Dashboard" from the top of the IoTConnect portal and then choose the "Import Dashboard" option and select the template and device name used previously in this guide.
-* Congratulations, your sample dashboard should look similar to the one below.  
-  <img src="https://saleshosted.z13.web.core.windows.net/media/ifx/ifx-xensiv-dash.JPG" width="700">
+* Congratulations, your sample dashboard should look similar to the one below.
+
+<img src="https://saleshosted.z13.web.core.windows.net/media/ifx/ifx-xensiv-dash.JPG" width="300">
 
