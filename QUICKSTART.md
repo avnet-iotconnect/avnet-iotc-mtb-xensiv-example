@@ -8,6 +8,7 @@ with the Avnet IoTConnect Platform, leveraging the Optiga secure element.
 * USB-A to micro-USB data cable
 * 2.4GHz WiFi Network
 * A serial terminal application such as [Tera Term](https://ttssh2.osdn.jp/index.html.en) or a browser-based application like [Google Chrome Labs Serial Terminal](https://googlechromelabs.github.io/serial-terminal/)
+* A registered [myInfineon Account](https://www.infineon.com/sec/login)
 
 ## Hardware Setup
 
@@ -22,7 +23,7 @@ with the Avnet IoTConnect Platform, leveraging the Optiga secure element.
 
 ## Flash the Firmware
 
-* **Download** and **Install** the [ModusToolbox Programming Tools](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.modustoolboxprogtools) (An account is required to download)
+* **Download** and **Install** the [ModusToolbox Programming Tools](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.modustoolboxprogtools) 
 * **Download** and **Extract** the prebuild [Firmware](https://saleshosted.z13.web.core.windows.net/sdk/infineon/iotc-xensiv-demo-101623.zip)
 * Launch the *mtb-programmer* software and update the firmware if prompted
 * Click the dropdown box next to *Probe/Kit* and select the item begining with **"CYSBSYSKIT-"**
