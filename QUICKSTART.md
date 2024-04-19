@@ -61,7 +61,7 @@ with the Avnet IoTConnect Platform, leveraging the Optiga secure element.
 This guide requires an IoTConnect account on Azure.
 
 >**NOTE:**  
-> If you have already created an IoTConnect account on Azure, or were provided an account as part of a training or workshop, skip this section.
+> If you have already created an IoTConnect account, skip this section.
 
 If you need to create an account, a free 2-month subscription is available.
 Please follow the 
@@ -72,6 +72,7 @@ guide and ensure to select the [Azure version](https://subscription.iotconnect.i
 
 ## Acquire IoTConnect Account Information
 
+* The Company ID (CPID) and Enviroment (ENV) variables are required to be stored into the device. Take note of these values for later reference.
 <details><summary>Acquire <b>CPID</b> and <b>ENV</b> parameters from the IoTConnect Key Vault</summary>
 <img style="width:75%; height:auto" src="https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/bbdc9f363831ba607f40805244cbdfd08c887e78/assets/cpid_and_env.png"/>
 </details>
@@ -92,9 +93,6 @@ guide and ensure to select the [Azure version](https://subscription.iotconnect.i
 * There will be errors displayed because the device still needs to be created in the IoTConnect GUI. Continue to the next section.
 
 ## IoTConnect Device Template Setup
-
-> **Note:**  
-> If you are following this guide as part of a training or workshop, a template has already been created and this section may be skipped.
 
 An IoTConnect *Device Template* with a Self-Signed Certificate will need to be imported.
 * Download the premade [Device Template with Self-Signed Cert](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/avnet-iotc-mtb-xensiv-example/templates/device/xensiv_ss_template.JSON).
