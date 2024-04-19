@@ -53,9 +53,7 @@ with the Avnet IoTConnect Platform, leveraging the Optiga secure element.
   Ma0O+81heMCpsb9j/6/7ucw9iGVRpykvug==
   -----END CERTIFICATE-----
   ```
-* Copy the certificate from the terminal including the "BEGIN" and "END" lines
-* Use a tool such as [this website](https://www.samltool.com/fingerprint.php) and paste in the certificate to generate a fingerprint (leave all the options at default)
-* Make note of the generated *fingerprint*
+* Copy the certificate from the terminal including the "BEGIN" and "END" lines and save for later use.
 
 ## Cloud Account Setup
 This guide requires an IoTConnect account on Azure.
@@ -103,8 +101,9 @@ An IoTConnect *Device Template* with a Self-Signed Certificate will need to be i
 * Create a new device in the IoTConnect portal. (Follow the [Create a New Device](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/create_new_device.md) guide for a detailed walkthrough.)
 * Enter the **DUID** for the <var>Unique ID</var>
 * Enter a descriptive <var>Display Name</var>
-* Select the template from the dropdown box that was just imported (or provided)
-* Paste the calculated **Fingerprint** in the *Primary Thumbprint* field
+* Select the template from the dropdown box that was just imported ("xensivdemo")
+* Ensure "Use my certificate" is selected under *Device certificate*
+* Paste the certificate text saved from earlier into the *Certificate Text* field
 * Click **Save**, switch to the Serial Terminal, and Reset the board
 * After about 10 seconds, the device will begin sending MQTT data.
 
