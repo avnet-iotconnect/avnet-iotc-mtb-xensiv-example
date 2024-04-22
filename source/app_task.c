@@ -67,7 +67,7 @@
 #include "app_eeprom_data.h"
 #include "app_pasco2.h"
 
-#define APP_VERSION "01.00.00"
+#define APP_VERSION "02.00.00"
 
 /*private key cannot be empty if using Optiga cert, so we use the dummy private key here*/
 #define DUMMY_PRIVATE_KEY \
@@ -227,7 +227,7 @@ static void user_input_yn_task (void *pvParameters) {
 	TaskHandle_t *parent_task = pvParameters;
 
 	user_input_status = APP_INPUT_NONE;
-    printf("Do you wish to configure the device?(y/[n]:\n>");
+    printf("Do you wish to configure the device?(y/[n]):\n>");
 
     int ch = getchar();
     if (EOF == ch) {
@@ -271,10 +271,14 @@ void app_task(void *pvParameters) {
 
     uint64_t hwuid = Cy_SysLib_GetUniqueId();
     uint32_t hwuidhi = (uint32_t)(hwuid >> 32);
-    uint32_t hwuidlo = (uint32_t)(hwuid & 0xFFFFFFFF);
+    // not using low bytes in the name because they appear to be the same across all boards of the same type
+    // feel free to modify the application to use these bytes
+    //uint32_t hwuidlo = (uint32_t)(hwuid & 0xFFFFFFFF);
 
-    // Low bytes don't seem to be changing, so we will inverse the order
-    printf("Hardware Unique ID is: %08lx:%08lx\n", hwuidlo, hwuidhi);
+    char iotc_duid[IOTCL_CONFIG_DUID_MAX_LEN];
+	sprintf(iotc_duid, IOTCONNECT_DUID_PREFIX"%08lx", hwuidhi);
+
+    printf("Generated device unique ID (DUID) is: %s\n", iotc_duid);
 
 
     if (app_eeprom_data_init()){
@@ -305,10 +309,6 @@ void app_task(void *pvParameters) {
         }
     }
 
-    // not using low bytes in the name because they appear to be the same across all boards of the same type
-    // feel free to modify the application to use these bytes
-    char iotc_duid[IOTCL_CONFIG_DUID_MAX_LEN];
-	sprintf(iotc_duid, IOTCONNECT_DUID_PREFIX"%08lx", hwuidhi);
 
     IotConnectClientConfig config;
     iotconnect_sdk_init_config(&config);
