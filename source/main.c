@@ -38,13 +38,12 @@
  * of such system or application assumes all risk of such use and in doing
  * so agrees to indemnify Cypress against all liability.
  *******************************************************************************/
-//
-// Copyright: Avnet 2021
-// Modified by Nik Markovic <nikola.markovic@avnet.com> on 11/11/21.
-//
+ /* SPDX-License-Identifier: MIT
+ * Copyright (C) 2024 Avnet
+ * Authors: Nikola Markovic <nikola.markovic@avnet.com> et al.
+ */
 
 /* Header file includes */
-#include <iotc_config_input.h>
 #include <stdio.h>
 #include "cyhal.h"
 #include "cybsp.h"
@@ -53,17 +52,11 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "app_task.h"
-
+// for pal_os_event_trigger_registered_callback
 #include "optiga/pal/pal_os_event.h"
-#include "optiga/pal/pal_i2c.h"
-#include "optiga_trust.h"
-
-#include "iotc_config_input.h"
 
 
-/******forward declaration******/
-extern bool use_optiga_certificate(void);
+#include "app_task.h"
 
 
 /* This enables RTOS aware debugging. */
@@ -76,34 +69,6 @@ void vApplicationTickHook( void )
 {
     pal_os_event_trigger_registered_callback();
 }
-
-void optiga_client_task(void *pvParameters)
-{
-    /* Optiga initialize and read the certificate */
-    pal_i2c_init(NULL);
-    optiga_trust_init();
-    /* Based on the certificate read from the chip, Optiga uses a hook(optiga-trust-m\release-v3.1.4\examples\mbedtls_port\)
-     * to mbedtls to generate signature and so on for TLS handshake */
-    bool result = use_optiga_certificate();
-    if (!result) {
-    	while (1) { ;}
-    	return;
-    }
-
-    /* \x1b[2J\x1b[;H - Uncomment to use ANSI ESC sequence to clear screen. */
-    // printf("\x1b[2J\x1b[;H");
-    printf("===============================================================\n");
-    printf("Starting The App Task\n");
-    printf("===============================================================\n\n");
-
-    /* Create the MQTT Client task. */
-
-    xTaskCreate(app_task, "App Task", APP_TASK_STACK_SIZE, NULL, APP_TASK_PRIORITY, NULL);
-
-	// it seems that vTaskDelete causes a crash. Not sure why...
-	while (1) { ;}
-}
-
 
 /******************************************************************************
  * Function Name: main
@@ -145,15 +110,9 @@ int main() {
         CY_ASSERT(0);
     }
 
-    /* EEPROM init */
-    if (eeprom_init()){
-    	printf("EEPROM init failed.\r\n");
-    }
     /* user to input wifi SSID Password CPID and ENV */
 
-    /* Create an OPTIGA task to make sure everything related to
-     * the OPTIGA stack will be called from the scheduler */
-    xTaskCreate(optiga_client_task, "Optiga Client Task", 1024 * 12, NULL, 2, NULL);
+    xTaskCreate(app_task, "App Task", APP_TASK_STACK_SIZE, NULL, APP_TASK_PRIORITY, NULL);
 
     /* Start the FreeRTOS scheduler. */
     vTaskStartScheduler();
