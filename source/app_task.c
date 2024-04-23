@@ -34,7 +34,6 @@
  * Copyright (C) 2024 Avnet
  * Authors: Nikola Markovic <nikola.markovic@avnet.com>, Shu Liu <shu.liu@avnet.com> et al.
  */
-#include <math.h>
 #include "cyhal.h"
 #include "cybsp.h"
 
@@ -51,16 +50,16 @@
 
 #include "clock.h"
 
-/* LwIP header files */
+/* LwIP header files - dependencies for iotc_mtb_time.h (that needs fixing in the include file) and the IPV4 operations for WiFi startup in this file */
 #include "lwip/netif.h"
 #include "lwip/apps/sntp.h"
 
-#include "iotconnect.h"
-#include "iotc_mtb_time.h"
 
 #include "optiga/pal/pal_i2c.h"
-#include "optiga_trust.h"
 #include "optiga_trust_helpers.h"
+
+#include "iotconnect.h"
+#include "iotc_mtb_time.h"
 
 #include "app_task.h"
 #include "app_config.h"
