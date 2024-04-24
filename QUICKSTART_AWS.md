@@ -65,7 +65,7 @@ guide and ensure to select the appropriate version during registration:
 ## Acquire IoTConnect Account Information
 
 * The Company ID (CPID) and Enviroment (ENV) variables are required to be stored into the device. Take note of these values for later reference.
-<details><summary>Acquire <b>CPID</b> and <b>ENV</b> parameters from the IoTConnect Key Vault</summary>
+<details><summary>Acquire <b>CPID</b> and <b>ENV</b> parameters from the IoTConnect Key Vault and save for later use</summary>
 <img style="width:75%; height:auto" src="https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/bbdc9f363831ba607f40805244cbdfd08c887e78/assets/cpid_and_env.png"/>
 </details>
 
