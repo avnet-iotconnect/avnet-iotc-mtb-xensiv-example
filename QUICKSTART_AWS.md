@@ -105,13 +105,20 @@ An IoTConnect *Device Template* will need to be created or imported.
 ## IoTConnect Device Creation
 
 * Create a new device in the IoTConnect portal. (Follow the [Create a New Device](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/create_new_device.md) guide for a detailed walkthrough.)
-* Enter the **DUID** for the <var>Unique ID</var>
-* Enter a descriptive <var>Display Name</var>
+* Enter the **DUID** saved from ealier in the <var>Unique ID</var> field
+* Enter a descriptive <var>Display Name</var> to help identify your device
 * Select the template from the dropdown box that was just imported ("xensivdemo")
 * Ensure "Use my certificate" is selected under *Device certificate*
-* Paste the certificate text saved from earlier into the *Certificate Text* field
-* Click **Save**, switch to the Serial Terminal, and Reset the board
-* After about 10 seconds, the device will begin sending MQTT data.
+* Browse and Select the "cert.txt" file saved from earlier
+* Click **Save & View**
+
+## Verify Connection and Data ##
+
+* Switch to the Serial Terminal application and Reset the board by pressing the **RST** button
+* After a few seconds, the device will connect, and begin sending telemetry packets
+
+* Switch back to the IoTConnect GUI in your browser
+* Click **Live Data** on the left Device menu and verify telemetry is being populated
 
 ## Visualize Data ##
 
