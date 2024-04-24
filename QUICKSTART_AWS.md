@@ -85,13 +85,21 @@ guide and ensure to select the appropriate version during registration:
 * Enter the **Environment** (ENV) acquired from the key vault and press `Enter`
 * Enter the **WIFI SSID** of the 2.4GHz network and press `Enter`
 * Enter the **WIFI Password** and press `Enter`
-* Ensure the device is able connect to the WiFi network, obtain an IP address, and get updated time from an NTP server.  
+* Ensure the device is able connect to the WiFi network, obtain an IP address, and get updated time from an NTP server.
+
+```
+Successfully connected to Wi-Fi network '<network name>'.
+IPv4 Address Assigned: <IP Address>
+Obtaining network time......
+Time received from NTP.
+```
+  
 * There will be errors displayed because the device still needs to be created in the IoTConnect GUI. Continue to the next section.
 
 ## IoTConnect Device Template Setup
 
-An IoTConnect *Device Template* with a Self-Signed Certificate will need to be imported.
-* Download the premade [Device Template with Self-Signed Cert](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/avnet-iotc-mtb-xensiv-example/templates/device/xensiv_ss_template.JSON).
+An IoTConnect *Device Template* will need to be created or imported.
+* Download the premade [Device Template with Self-Signed Cert](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/avnet-iotc-mtb-xensiv-example/templates/device/xensivdemo_template.JSON).
 * Import the template into your IoTConnect instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available or for more information on [Template Management](https://docs.iotconnect.io/iotconnect/user-manuals/devices/template-management/), please see the [IoTConnect Documentation](https://iotconnect.io) website.)
 
 ## IoTConnect Device Creation
