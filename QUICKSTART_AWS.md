@@ -59,12 +59,18 @@ An  IoTConnect account is required.  If you need to create an account, a free, 2
 Please follow the 
 [Creating a New IoTConnect Account](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md)
 guide and ensure to select the appropriate version during registration:  
-* [IoTC AWS version](https://subscription.iotconnect.io/subscribe?cloud=aws)  
-* [IoTC Azure version](https://subscription.iotconnect.io/subscribe?cloud=azure)  
+* [IoTConnect - AWS version](https://subscription.iotconnect.io/subscribe?cloud=aws)  
+* [IoTConnect - Azure version](https://subscription.iotconnect.io/subscribe?cloud=azure)  
+
+* Be sure to check any SPAM folder for the temporary password.
 
 ## Acquire IoTConnect Account Information
 
-* The Company ID (CPID) and Enviroment (ENV) variables are required to be stored into the device. Take note of these values for later reference.
+* Login to IoTConnect using link corresponding to the version you selected during registration:  
+    * [IoTConnect on AWS](https://console.iotconnect.io)  
+    * [IoTConnect on Azure](https://portal.iotconnect.io)  
+
+* The Company ID (**CPID**) and Enviroment (**ENV**) variables are required to be stored into the device. Take note of these values for later reference.
 <details><summary>Acquire <b>CPID</b> and <b>ENV</b> parameters from the IoTConnect Key Vault and save for later use</summary>
 <img style="width:75%; height:auto" src="https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/bbdc9f363831ba607f40805244cbdfd08c887e78/assets/cpid_and_env.png"/>
 </details>
