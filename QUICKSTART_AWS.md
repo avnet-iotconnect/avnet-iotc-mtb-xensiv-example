@@ -32,7 +32,8 @@ with the Avnet IoTConnect Platform, leveraging the Optiga secure element.
 * Click **Program** on the top right and wait for the propress bar to complete
 * Assuming the message "Device programmed sucessfully" appears at the bottom, **Close** the programmer.
 * Switch to the Serial Terminal and press **RST** on the board.
-* Locate and copy the *Device Certificate* and from the terminal including the "BEGIN" and "END" lines and save for later use.
+* Locate and copy the *Device Certificate* and from the terminal including the "BEGIN" and "END" lines.
+* Open a text editor, such as notepad, paste in the certificate, and save the file as "cert.txt"
   ```
   -----BEGIN CERTIFICATE-----
   MIIB9TCCAXygAwIBAgIEOi/kbTAKBggqhkjOPQQDAzByMQswCQYDVQQGEwJERTEh
