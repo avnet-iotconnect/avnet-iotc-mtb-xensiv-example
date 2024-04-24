@@ -24,7 +24,6 @@ with the Avnet IoTConnect Platform, leveraging the Optiga secure element.
 ## Flash the Firmware
 
 * **Download** and **Install** the [ModusToolbox Programming Tools](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.modustoolboxprogtools)
-* **Download** and **Install** the <a href="https://softwaretools.infineon.com/tools/com.ifx.tb.tool.modustoolboxprogtools" target="_blank">ModusToolbox Programming Tools</a> 
 * **Download** and **Extract** the prebuild Firmware(Available Soon)
 * Launch the *mtb-programmer* software and update the firmware if prompted
 * Click the dropdown box next to *Probe/Kit* and select the item begining with **"CYSBSYSKIT-"**
