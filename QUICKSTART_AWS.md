@@ -19,7 +19,8 @@ with the Avnet IoTConnect Platform, leveraging the Optiga secure element.
   * Data: `8 bits`
   * Parity: `none`
   * Stop Bits: `1`
-  * Flow Control: `none` 
+  * Flow Control: `none`
+* If using TeraTerm, enable `Local Echo` in the "Setup" -> "Terminal" otherwise text input will not be visible.
 
 ## Flash the Firmware
 
@@ -32,6 +33,7 @@ with the Avnet IoTConnect Platform, leveraging the Optiga secure element.
 * Click **Program** on the top right and wait for the propress bar to complete
 * Assuming the message "Device programmed sucessfully" appears at the bottom, **Close** the programmer.
 * Switch to the Serial Terminal and press **RST** on the board.
+* The application will display the certificate from the OPTIGA secure element.
 * Locate and copy the *Device Certificate* and from the terminal including the "BEGIN" and "END" lines.
 * Open a text editor, such as notepad, paste in the certificate, and save the file as "cert.txt"
   ```
@@ -78,7 +80,7 @@ guide and ensure to select the appropriate version during registration:
 ## Configure the Xensiv Board
 
 > **Note 1:**  
-> There is no echo in the terminal when typing or pasting values.
+> There is no echo in the terminal when typing or pasting values (unless you enabled this in the settings).
 > If a mistake is made, the board must be reset and this section repeated.
 
 * Verify the following output is visible in the terminal:  `Please enter your device configuration`
@@ -139,3 +141,9 @@ Pressure : 841.57 mBar   Temperature: 29.15 øC
 * Once downloaded, select "Create Dashboard" from the top of the IoTConnect portal and then choose the "Import Dashboard" option and select the template and device name used previously in this guide.
 * Congratulations, your sample dashboard should look similar to the one below.  
   <img src="https://saleshosted.z13.web.core.windows.net/media/ifx/ifx-xensiv-dash.JPG" width="700">
+
+## Troubleshooting ##
+
+* The XENSIV board may be set to operate in different modes.  The board is in the correct mode for programming out of the box.
+* Verify that the amber LED is solid to confirm the correct mode is enabled.
+* If the amber LED is flashing, press the `KP3_MODE` button on the bottom of the board until the LED is solid.
