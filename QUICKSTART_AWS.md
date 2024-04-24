@@ -78,21 +78,21 @@ guide and ensure to select the appropriate version during registration:
 ## Configure the Xensiv Board
 
 > **Note 1:**  
-> There is no terminal echo when typing, so be very careful when entering the following information.  If a mistake is made, the board must be reset and this section repeated.
+> There is no echo in the terminal when typing or pasting values.
+> If a mistake is made, the board must be reset and this section repeated.
 
-> **Note 2:**  
-> Use the "Edit" --> "Paste" menu as shortcuts may not work in the terminal.
-
-* Press the "RST" button on the board and wait until the following output is visible:  `Please enter your device configuration`
+* Verify the following output is visible in the terminal:  `Please enter your device configuration`
+* If not, press reset the board.
 
 > **Note:**
-> If you want to change an existing configuration press `y` then `Enter` within 5 seconds (or the board with auto-boot with saved settings)
+> If you want to change an existing configuration press `y` when prompted to do so.
 
 * Enter the **Platform** for which you subscribed and press `Enter`
 * Enter the **CPID** acquired from the key vault and press `Enter`
 * Enter the **Environment** (ENV) acquired from the key vault and press `Enter`
 * Enter the **WIFI SSID** of the 2.4GHz network and press `Enter`
 * Enter the **WIFI Password** and press `Enter`
+* The device will configure iteself and reboot
 * Ensure the device is able connect to the WiFi network, obtain an IP address, and get updated time from an NTP server.
 
 ```
@@ -124,6 +124,11 @@ An IoTConnect *Device Template* will need to be created or imported.
 
 * Switch to the Serial Terminal application and Reset the board by pressing the **RST** button
 * After a few seconds, the device will connect, and begin sending telemetry packets
+
+```
+Pressure : 841.57 mBar   Temperature: 29.15 øC
+>: {"d":[{"d":{"version":"02.00.00","cpu":3.123,"temperature":29.139999389648438,"pressure":841.57177734375,"co2level":994}}]}
+```
 
 * Switch back to the IoTConnect GUI in your browser
 * Click **Live Data** on the left Device menu and verify telemetry is being populated
