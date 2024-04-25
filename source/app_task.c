@@ -284,8 +284,8 @@ void app_task(void *pvParameters) {
     	printf("App EEPROM data init failed!\r\n");
     }
 
-    // do not even get user input if password if ssid is empty
-    if (0 == strlen(app_eeprom_data_get_wifi_ssid(WIFI_SSID))) {
+    // do not even get user input if password if ssid is empty or default
+    if (0 == strlen(app_eeprom_data_get_wifi_ssid(WIFI_SSID) || 0 == strcmp(app_eeprom_data_get_wifi_ssid(WIFI_SSID), "your-wifi-ssid"))) {
 	    printf("\nThe board needs to be configured.\n");
 	    app_eeprom_data_do_user_input();
     } else {
