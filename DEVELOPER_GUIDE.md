@@ -31,6 +31,13 @@ On Windows, ensure that you **Run As Adminstrator** the installation package so 
 - At this point you should be able to build and run the application by using the options in the **Quick Panel** on bottom left of the screen.   
 - You should see the application output in your terminal emulator.
 
+### TODO: Update instructions with these steps
+- Open library manager on the bottom left panel
+- Select the CYSBSYSKIT-DEV-01 BSP in the top of the list
+- In the properties panel, choose the **2.3.0 release** version
+- Click the *Update* button at the bottom of the screen.
+- You may see an error *ERROR:"make eclipse" failed*, but the error does not seem to cause any issues
+
 ## IoTConnect Template Setup
 
 * Login to the IoTConnect platform, navigate to Devices -> Device -> Templates and click "Create Template."
