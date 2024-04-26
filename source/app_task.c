@@ -66,7 +66,7 @@
 #include "app_eeprom_data.h"
 #include "app_pasco2.h"
 
-#define APP_VERSION "02.00.00"
+#define APP_VERSION "02.01.00"
 
 /*private key cannot be empty if using Optiga cert, so we use the dummy private key here*/
 #define DUMMY_PRIVATE_KEY \
@@ -285,7 +285,7 @@ void app_task(void *pvParameters) {
     }
 
     // do not even get user input if password if ssid is empty or default
-    if (0 == strlen(app_eeprom_data_get_wifi_ssid(WIFI_SSID) || 0 == strcmp(app_eeprom_data_get_wifi_ssid(WIFI_SSID), "your-wifi-ssid"))) {
+    if (0 == strlen(app_eeprom_data_get_wifi_ssid(WIFI_SSID)) || 0 == strcmp(app_eeprom_data_get_wifi_ssid(WIFI_SSID), "your-wifi-ssid")) {
 	    printf("\nThe board needs to be configured.\n");
 	    app_eeprom_data_do_user_input();
     } else {
