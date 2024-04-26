@@ -81,7 +81,7 @@
 /* Delay time after each PAS CO2 readout */
 #define PASCO2_PROCESS_DELAY (1000)
 
-
+static is_initialized = false;
 static xensiv_pasco2_t xensiv_pasco2;
 static cyhal_i2c_t cyhal_i2c;
 static xensiv_dps3xx_t dps310_sensor;
@@ -92,6 +92,9 @@ void app_pasco2_process_telemetry(IotclMessageHandle msg) {
     float32_t pressure = 0;
     float32_t temperature = 0;
 
+    if (!is_initialized) {
+    	return; // silently
+    }
     // Read the pressure and temperature data
     result = xensiv_dps3xx_read(&dps310_sensor, &pressure, &temperature);
 
@@ -120,9 +123,30 @@ void app_pasco2_process_telemetry(IotclMessageHandle msg) {
 
 }
 
+void app_pasco2_set_status_led(bool state) {
+    if (!is_initialized) {
+    	return; // silently
+    }
+
+	// Status led AKA "ok led"
+    cyhal_gpio_write(MTB_PASCO2_LED_OK, state ? MTB_PASCO_LED_STATE_ON : MTB_PASCO_LED_STATE_OFF);
+}
+
+void app_pasco2_set_warning_led(bool state) {
+    if (!is_initialized) {
+    	return; // silently
+    }
+
+	// Status led AKA "ok led"
+    cyhal_gpio_write(MTB_PASCO2_LED_WARNING, state ? MTB_PASCO_LED_STATE_ON : MTB_PASCO_LED_STATE_OFF);
+}
+
+
 cy_rslt_t app_pasco2_init(void)
 {
     cy_rslt_t result;
+
+    is_initialized = false;
 
     // initialize i2c library
     cyhal_i2c_cfg_t i2c_master_config = {CYHAL_I2C_MODE_MASTER,
@@ -212,5 +236,7 @@ cy_rslt_t app_pasco2_init(void)
     }
     printf("PAS CO2: DPS310 Revision ID = %lu\n", revisionID);
     printf("PAS CO2 and DPSxxx pressure sensors initialized successfully\n");
+
+    is_initialized = true;
     return CY_RSLT_SUCCESS;
 }

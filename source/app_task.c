@@ -66,7 +66,7 @@
 #include "app_eeprom_data.h"
 #include "app_pasco2.h"
 
-#define APP_VERSION "02.01.00"
+#define APP_VERSION "02.01.01"
 
 /*private key cannot be empty if using Optiga cert, so we use the dummy private key here*/
 #define DUMMY_PRIVATE_KEY \
@@ -166,6 +166,126 @@ static cy_rslt_t wifi_connect(void) {
     return result;
 }
 
+static bool is_app_version_same_as_ota(const char *version) {
+    return strcmp(APP_VERSION, version) == 0;
+}
+
+static bool app_needs_ota_update(const char *version) {
+    return strcmp(APP_VERSION, version) < 0;
+}
+
+// This sample OTA handling only checks the version and verifies if the firmware needs an update but does not download.
+static void on_ota(IotclC2dEventData data) {
+    const char *message = NULL;
+    const char *url = iotcl_c2d_get_ota_url(data, 0);
+    const char *ack_id = iotcl_c2d_get_ack_id(data);
+    bool success = false;
+    if (NULL != url) {
+        printf("Download URL is: %s\n", url);
+        const char *version = iotcl_c2d_get_ota_sw_version(data);
+        if (is_app_version_same_as_ota(version)) {
+            printf("OTA request for same version %s. Sending success\n", version);
+            success = true;
+            message = "Version is matching";
+        } else if (app_needs_ota_update(version)) {
+            printf("OTA update is required for version %s.\n", version);
+            success = false;
+            message = "Not implemented";
+        } else {
+            printf("Device firmware version %s is newer than OTA version %s. Sending failure\n", APP_VERSION,
+                   version);
+            // Not sure what to do here. The app version is better than OTA version.
+            // Probably a development version, so return failure?
+            // The user should decide here.
+            success = false;
+            message = "Device firmware version is newer";
+        }
+    }
+
+    iotcl_mqtt_send_ota_ack(ack_id, (success ? IOTCL_C2D_EVT_OTA_DOWNLOAD_DONE : IOTCL_C2D_EVT_OTA_DOWNLOAD_FAILED), message);
+}
+
+// returns success on matching the expected format. Returns is_on, assuming "on" for true, "off" for false
+static bool parse_on_off_command(const char* command, const char* name, bool *arg_parsing_success, bool *is_on, const char** message) {
+	*arg_parsing_success = false;
+	*message = NULL;
+	size_t name_len = strlen(name);
+    if (0 == strncmp(command, name, name_len)) {
+    	if (strlen(command) < name_len + 2) { // one for space and at least one character for the argument
+    		printf("ERROR: Expected command \"%s\" to have an argument\n", command);
+    		*message = "Command requires an argument";
+    		*arg_parsing_success = false;
+    	} else if (0 == strcmp(&command[name_len + 1], "on")) {
+    		*is_on = true;
+    		*message = "LED is on";
+    		*arg_parsing_success = true;
+    	} else if (0 == strcmp(&command[name_len + 1], "off")) {
+    		*is_on = false;
+    		*message = "LED is off";
+    		*arg_parsing_success = true;
+    	} else {
+    		*message = "Command argument";
+    		*arg_parsing_success = false;
+    	}
+    	// we matches the command
+		return true;
+    }
+
+    // not our command
+	return false;
+}
+static void on_command(IotclC2dEventData data) {
+	const char * const BOARD_STATUS_LED = "board-user-led";
+	const char * const PASCO2_STATUS_LED = "pasco2-status-led";
+	const char * const PASCO2_WARNING_LED = "pasco2-warning-led";
+    bool command_success = false;
+    const char * message = NULL;
+
+    const char *command = iotcl_c2d_get_command(data);
+    const char *ack_id = iotcl_c2d_get_ack_id(data);
+    if (command) {
+    	bool arg_parsing_success;
+        printf("Command %s received with %s ACK ID\n", command, ack_id ? ack_id : "no");
+        // could be a command without acknowledgement, so ackID can be null
+        bool led_on;
+        if (parse_on_off_command(command, BOARD_STATUS_LED, &arg_parsing_success, &led_on, &message)) {
+        	command_success = arg_parsing_success;
+        	if (arg_parsing_success) {
+                cyhal_gpio_write(CYBSP_USER_LED, !led_on); // USER_LED is active low
+        	}
+        } else if (parse_on_off_command(command, PASCO2_STATUS_LED,  &arg_parsing_success, &led_on, &message)) {
+        	command_success = arg_parsing_success;
+        	if (arg_parsing_success) {
+                app_pasco2_set_status_led(led_on);
+        	} // else the helper will set the message
+        } else if (parse_on_off_command(command, PASCO2_WARNING_LED,  &arg_parsing_success, &led_on, &message)) {
+        	command_success = arg_parsing_success;
+        	if (arg_parsing_success) {
+                app_pasco2_set_warning_led(led_on);
+        	} // else the helper will set the message
+        } else {
+            printf("Failed to parse command\n");
+        	message = "Unrecognized command";
+        }
+    } else {
+    	printf("Failed to parse command. Command missing?\n");
+        message = "Parsing error";
+    }
+
+    // could be a command without ack, so ack ID can be null
+    // the user needs to enable acknowledgements in the template to get an ack ID
+	if (ack_id) {
+		iotcl_mqtt_send_cmd_ack(
+				ack_id,
+				command_success ? IOTCL_C2D_EVT_CMD_SUCCESS : IOTCL_C2D_EVT_CMD_FAILED,
+				message // allowed to be null, but should not be null if failed, we'd hope
+		);
+	} else {
+		// if we send an ack
+		printf("Mesage status is %s. Message: %s", command_success ? "SUCCESS" : "FAILED", message ? message : "<none>");
+	}
+}
+
 
 static cy_rslt_t publish_telemetry(void) {
     IotclMessageHandle msg = iotcl_telemetry_create();
@@ -173,7 +293,7 @@ static cy_rslt_t publish_telemetry(void) {
     // Optional. The first time you create a data point, the current timestamp will be automatically added
     // TelemetryAddWith* calls are only required if sending multiple data points in one packet.
     iotcl_telemetry_set_string(msg, "version", APP_VERSION);
-    iotcl_telemetry_set_number(msg, "cpu", 3.123); // test floating point numbers
+    iotcl_telemetry_set_number(msg, "random", random() % 100); // test some random numbers
 
     app_pasco2_process_telemetry(msg);
 
@@ -320,6 +440,8 @@ void app_task(void *pvParameters) {
     config.x509_config.device_cert = (const char *)certificate;
     config.x509_config.device_key = DUMMY_PRIVATE_KEY;
     config.callbacks.status_cb = on_connection_status;
+    config.callbacks.cmd_cb = on_command;
+    config.callbacks.ota_cb = on_ota;
 
     const char * conn_type_str = "(UNKNOWN)";
     if (config.connection_type == IOTC_CT_AWS) {
@@ -356,13 +478,16 @@ void app_task(void *pvParameters) {
         // called function will print errors
         return;
     }
+    cy_rslt_t ret = iotconnect_sdk_init(&config);
+    if (CY_RSLT_SUCCESS != ret) {
+        printf("Failed to initialize the IoTConnect SDK. Error code: %lu\n", ret);
+        goto exit_cleanup;
+    }
+
+    cyhal_gpio_write(CYBSP_USER_LED, false); // USER_LED is active low
 
     for (int i = 0; i < 10; i++) {
-        cy_rslt_t ret = iotconnect_sdk_init(&config);
-        if (ret) {
-            vTaskDelete(NULL);
-        	return; // called function will print the error
-        }
+    	ret = iotconnect_sdk_connect();
         if (CY_RSLT_SUCCESS != ret) {
             printf("Failed to initialize the IoTConnect SDK. Error code: %lu\n", ret);
             goto exit_cleanup;
@@ -377,6 +502,7 @@ void app_task(void *pvParameters) {
         }
         iotconnect_sdk_disconnect();
     }
+    iotconnect_sdk_deinit();
 
 	printf("\nAppTask Done.\nTerminating the AppTask...\n");
 	while (1) {
