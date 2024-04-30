@@ -81,7 +81,7 @@
 /* Delay time after each PAS CO2 readout */
 #define PASCO2_PROCESS_DELAY (1000)
 
-static is_initialized = false;
+static bool is_initialized = false;
 static xensiv_pasco2_t xensiv_pasco2;
 static cyhal_i2c_t cyhal_i2c;
 static xensiv_dps3xx_t dps310_sensor;
@@ -112,15 +112,25 @@ void app_pasco2_process_telemetry(IotclMessageHandle msg) {
         printf("ERROR: Failed to read temperature and pressure data. Error=%lx.\n", result);
     }
 
-    /* Read CO2 value from sensor */
-    result = xensiv_pasco2_mtb_read(&xensiv_pasco2, (uint16_t)pressure, &ppm);
+    // Read CO2 value from sensor. Try a few times.
+    for (int i = 2; i >= 0; i--) {
+        result = xensiv_pasco2_mtb_read(&xensiv_pasco2, (uint16_t)pressure, &ppm);
+        if (i == 0 || result == CY_RSLT_SUCCESS) {
+        	break;
+        }
+        vTaskDelay(pdMS_TO_TICKS(450)); // add some delay
+    }
     if (result == CY_RSLT_SUCCESS) {
         iotcl_telemetry_set_number(msg, "co2level", ppm);
     } else {
-    	printf("ERROR: PAS CO2 sensor read error. Error=%lx.\n", result);
+    	if (CY_RSLT_GET_CODE(result) == XENSIV_PASCO2_READ_NRDY) {
+			printf("*** PAS CO2 PPM value is not yet ready\n");
+		} else if (CY_RSLT_GET_CODE(result) == XENSIV_PASCO2_ERR_COMM) {
+			printf("ERROR: PAS CO2: I2C communication error\n");
+		} else {
+	    	printf("ERROR: PAS CO2 sensor read error. Error=%lx.\n", CY_RSLT_GET_CODE(result));
+		}
     }
-
-
 }
 
 void app_pasco2_set_status_led(bool state) {
