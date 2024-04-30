@@ -25,7 +25,7 @@ with the Avnet IoTConnect Platform on Microsoft Azure, leveraging the Optiga sec
 ## Flash the Firmware
 
 * **Download** and **Install** the [ModusToolbox Programming Tools](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.modustoolboxprogtools)
-* **Download** and **Extract** the prebuild Firmware(Available Soon)
+* **Download** and **Extract** the prebuild Firmware:  [xensiv-demo-02.01.02.hex](https://saleshosted.z13.web.core.windows.net/sdk/infineon/xensiv-demo-02.01.02.hex)
 * Launch the *mtb-programmer* software and update the firmware if prompted
 * Click the dropdown box next to *Probe/Kit* and select the item begining with **"CYSBSYSKIT-"**
 * Click **Open** and select the hex file previously extracted
