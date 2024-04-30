@@ -60,17 +60,15 @@ An  IoTConnect account is required.  If you need to create an account, a free, 2
 
 Please follow the 
 [Creating a New IoTConnect Account](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md)
-guide and ensure to select the appropriate version during registration:  
+guide and select the IoTConnect - AWS version:  
 * [IoTConnect - AWS version](https://subscription.iotconnect.io/subscribe?cloud=aws)  
-* [IoTConnect - Azure version](https://subscription.iotconnect.io/subscribe?cloud=azure)  
 
 * Be sure to check any SPAM folder for the temporary password.
 
 ## Acquire IoTConnect Account Information
 
-* Login to IoTConnect using link corresponding to the version you selected during registration:  
+* Login to IoTConnect using link the following URL:  
     * [IoTConnect on AWS](https://console.iotconnect.io)  
-    * [IoTConnect on Azure](https://portal.iotconnect.io)  
 
 * The Company ID (**CPID**) and Enviroment (**ENV**) variables are required to be stored into the device. Take note of these values for later reference.
 <details><summary>Acquire <b>CPID</b> and <b>ENV</b> parameters from the IoTConnect Key Vault and save for later use</summary>
@@ -109,8 +107,10 @@ Time received from NTP.
 ## IoTConnect Device Template Setup
 
 An IoTConnect *Device Template* will need to be created or imported.
-* Download the premade [Device Template with Self-Signed Cert](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/avnet-iotc-mtb-xensiv-example/templates/device/xensivdemo_template.JSON).
-* Import the template into your IoTConnect instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available or for more information on [Template Management](https://docs.iotconnect.io/iotconnect/user-manuals/devices/template-management/), please see the [IoTConnect Documentation](https://iotconnect.io) website.)
+* Download the premade [Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/avnet-iotc-mtb-xensiv-example/templates/device/xensivdemo_template.JSON).
+* Import the template into your IoTConnect instance:  [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) guide  
+> **Note:**  
+> For more information on [Template Management](https://docs.iotconnect.io/iotconnect/user-manuals/devices/template-management/) please see the [IoTConnect Documentation](https://iotconnect.io) website.
 
 ## IoTConnect Device Creation
 
@@ -138,9 +138,10 @@ Pressure : 841.57 mBar   Temperature: 29.15 øC
 ## Visualize Data ##
 
 * The data can be visualized by using the Dynamic Dashboard feature of IoTConnect.  A sample dashboard that is preconfigured to display the Xensiv module's data is available for download [here](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/avnet-iotc-mtb-xensiv-example/templates/dashboard/IFX-Xensiv-PAS_CO2_dashboard_export.json).
+
 * Once downloaded, select "Create Dashboard" from the top of the IoTConnect portal and then choose the "Import Dashboard" option and select the template and device name used previously in this guide.
 * Congratulations, your sample dashboard should look similar to the one below.  
-  <img src="https://saleshosted.z13.web.core.windows.net/media/ifx/ifx-xensiv-dash.JPG" width="700">
+  <img width="700" alt="xensiv_pasco2_dashboard_image" src="https://github.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/assets/40640041/0d3047e4-bbe2-45a7-b959-88692919d4fa">
 
 ## Troubleshooting ##
 
