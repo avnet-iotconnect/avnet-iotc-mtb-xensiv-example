@@ -1,5 +1,15 @@
 $(SEARCH_avnet-iotc-mtb-sdk)/lib/ota-update
 
+# Indirectly, we need the libraries/standard from this AWS SDK dependency for coreHTTP and coreMQTT
+$(SEARCH_aws-iot-device-sdk-embedded-C)/libraries/3rdparty/
+$(SEARCH_aws-iot-device-sdk-embedded-C)/libraries/aws/
+$(SEARCH_aws-iot-device-sdk-embedded-C)/demos/
+$(SEARCH_aws-iot-device-sdk-embedded-C)/integration-test/
+$(SEARCH_aws-iot-device-sdk-embedded-C)/tools/
+$(SEARCH_aws-iot-device-sdk-embedded-C)/docs/
+$(SEARCH_aws-iot-device-sdk-port)/source/ota/
+
+
 #############################################
 ### All Optiga project specific exclusions below this line
 
