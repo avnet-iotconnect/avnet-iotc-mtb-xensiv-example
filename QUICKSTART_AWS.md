@@ -1,7 +1,7 @@
 ## Introduction
 
 This document outlines the steps of setting up the Infineon XENSIV&trade; board
-with the Avnet IoTConnect Platform, leveraging the Optiga secure element.
+with the Avnet IoTConnect Platform on AWS, leveraging the Optiga secure element.
 
 ## Prerequisites
 * PC with Windows 10/11
@@ -87,7 +87,7 @@ guide and select the IoTConnect - AWS version:
 > **Note:**
 > If you want to change an existing configuration press `y` when prompted to do so.
 
-* Enter the **Platform** for which you subscribed and press `Enter`
+* Enter the **Platform** for which you subscribed ("aws") and press `Enter`
 * Enter the **CPID** acquired from the key vault and press `Enter`
 * Enter the **Environment** (ENV) acquired from the key vault and press `Enter`
 * Enter the **WIFI SSID** of the 2.4GHz network and press `Enter`
