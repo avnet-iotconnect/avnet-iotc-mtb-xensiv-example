@@ -66,7 +66,7 @@
 #include "app_eeprom_data.h"
 #include "app_pasco2.h"
 
-#define APP_VERSION "02.01.01"
+#define APP_VERSION "02.01.02"
 
 /*private key cannot be empty if using Optiga cert, so we use the dummy private key here*/
 #define DUMMY_PRIVATE_KEY \
@@ -86,6 +86,7 @@ static UserInputYnStatus user_input_status = APP_INPUT_NONE;
 #define CERT_BUF_SIZE	(1200)
 /* Storage for optiga's certificate */
 static char certificate[CERT_BUF_SIZE];
+static bool is_demo_mode = false;
 
 static void on_connection_status(IotConnectConnectionStatus status) {
     // Add your own status handling
@@ -192,8 +193,7 @@ static void on_ota(IotclC2dEventData data) {
             success = false;
             message = "Not implemented";
         } else {
-            printf("Device firmware version %s is newer than OTA version %s. Sending failure\n", APP_VERSION,
-                   version);
+            printf("Device firmware version %s is newer than OTA version %s. Sending failure\n", APP_VERSION, version);
             // Not sure what to do here. The app version is better than OTA version.
             // Probably a development version, so return failure?
             // The user should decide here.
@@ -217,11 +217,11 @@ static bool parse_on_off_command(const char* command, const char* name, bool *ar
     		*arg_parsing_success = false;
     	} else if (0 == strcmp(&command[name_len + 1], "on")) {
     		*is_on = true;
-    		*message = "LED is on";
+    		*message = "Value is now \"on\"";
     		*arg_parsing_success = true;
     	} else if (0 == strcmp(&command[name_len + 1], "off")) {
     		*is_on = false;
-    		*message = "LED is off";
+    		*message = "Value is now \"off\"";
     		*arg_parsing_success = true;
     	} else {
     		*message = "Command argument";
@@ -238,11 +238,16 @@ static void on_command(IotclC2dEventData data) {
 	const char * const BOARD_STATUS_LED = "board-user-led";
 	const char * const PASCO2_STATUS_LED = "pasco2-status-led";
 	const char * const PASCO2_WARNING_LED = "pasco2-warning-led";
+	const char * const DEMO_MODE_CMD = "demo-mode";
     bool command_success = false;
     const char * message = NULL;
 
     const char *command = iotcl_c2d_get_command(data);
     const char *ack_id = iotcl_c2d_get_ack_id(data);
+    if (ack_id) {
+    	printf("WARNING: Acknowledgments are not supported with this software version!");
+    	ack_id = NULL; // Force code flow to be the same as if there was no ACK.
+    }
     if (command) {
     	bool arg_parsing_success;
         printf("Command %s received with %s ACK ID\n", command, ack_id ? ack_id : "no");
@@ -263,6 +268,8 @@ static void on_command(IotclC2dEventData data) {
         	if (arg_parsing_success) {
                 app_pasco2_set_warning_led(led_on);
         	} // else the helper will set the message
+        } else if (parse_on_off_command(command, DEMO_MODE_CMD,  &arg_parsing_success, &is_demo_mode, &message)) {
+        	command_success = arg_parsing_success;
         } else {
             printf("Failed to parse command\n");
         	message = "Unrecognized command";
@@ -282,7 +289,7 @@ static void on_command(IotclC2dEventData data) {
 		);
 	} else {
 		// if we send an ack
-		printf("Mesage status is %s. Message: %s", command_success ? "SUCCESS" : "FAILED", message ? message : "<none>");
+		printf("Message status is %s. Message: %s\n", command_success ? "SUCCESS" : "FAILED", message ? message : "<none>");
 	}
 }
 
@@ -493,7 +500,8 @@ void app_task(void *pvParameters) {
             goto exit_cleanup;
         }
 
-        for (int j = 0; iotconnect_sdk_is_connected() && j < 10; j++) {
+        int max_messages = is_demo_mode ? 600 : 30; // non-demo = 5 seconds * 10 * 30 = 25 minutes ; demo = 5 seconds * 10 * 600 = 8 hours
+        for (int j = 0; iotconnect_sdk_is_connected() && j < max_messages; j++) {
         	cy_rslt_t result = publish_telemetry();
         	if (result != CY_RSLT_SUCCESS) {
         		break;
