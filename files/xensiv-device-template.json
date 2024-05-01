@@ -1,0 +1,65 @@
+{
+    "code": "xensivdemo",
+    "name": "xensivdemo",
+    "authType": 2,
+    "attributes": [
+        {
+            "name": "version",
+            "type": "STRING",
+            "description": "Version reported by the software",
+            "unit": null
+        },
+        {
+            "name": "co2level",
+            "type": "INTEGER",
+            "description": "CO2 content in parts per million",
+            "unit": "ppm"
+        },
+        {
+            "name": "temperature",
+            "type": "LONG",
+            "description": "Temperature measured by the on-board sensor",
+            "unit": "C"
+        },
+        {
+            "name": "pressure",
+            "type": "LONG",
+            "description": "Atmospheric pressure",
+            "unit": "millibars"
+        },
+        {
+            "name": "random",
+            "type": "INTEGER",
+            "description": "A randomly generated integer",
+            "unit": null
+        }
+    ],
+    "commands": [
+        {
+            "name": "pasco2-warning-led",
+            "command": "pasco2-warning-led",
+            "requiredParam": true,
+            "requiredAck": false,
+            "isOTACommand": false
+        },
+        {
+            "name": "pasco2-status-led",
+            "command": "pasco2-status-led",
+            "requiredParam": true,
+            "requiredAck": false,
+            "isOTACommand": false
+        }
+    ],
+    "messageVersion": "2.1",
+    "msgCode": "GMNA0JM",
+    "greenGrass": "0",
+    "wireless": "0",
+    "properties": {
+        "description": null,
+        "dataFrequency": "60",
+        "fileSupport": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}

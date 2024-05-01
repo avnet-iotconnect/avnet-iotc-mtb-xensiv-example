@@ -11,8 +11,11 @@ The project uses the following dependent projects:
 
 ## Supported Boards
 
-The code has been developed and tested with:
-- [Rapid IoT connect developer kit with PAS CO2 sensor.](https://www.infineon.com/cms/en/product/evaluation-boards/kit_csk_pasco2) (`CYSBSYSKIT-DEV-01`)
+The code has been developed and tested with
+[XENSIV&trade; KIT CSK PASCO2](https://www.infineon.com/cms/en/product/evaluation-boards/kit_csk_pasco2).
+The kit contains the main MCU board with Optiga Secure Element along with the PAS CO2 sensor board that needs to be connected to the main board. 
+This project will compile and run with or without the PAS CO2 board attached to the MCU. 
 
 ## Instructions
-* Please refer to the [QUICKSTART](https://github.com/avnet-iotconnect/iotc-modustoolbox-xensiv-example/blob/main/QUICKSTART.md) and the [DEVELOPER_GUIDE](https://github.com/avnet-iotconnect/iotc-modustoolbox-xensiv-example/blob/main/DEVELOPER_GUIDE.md) documents.
+* If developing code with ModusToolbox, refer to the [DEVELOPER_GUIDE.md](./DEVELOPER_GUIDE.md) document.
+* If you wish to only evaluate this kit with a pre-compiled binary, refer to the [QUICKSTART](./QUICKSTART.md) document.

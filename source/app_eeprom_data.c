@@ -180,7 +180,7 @@ void app_eeprom_data_do_user_input(void) {
 
 	printf("\n");
 	do {
-		printf("WIFI SSID: \n>");
+		printf("WiFi SSID: \n>");
 		fflush(stdout);
 		scanf("%"STR(WIFI_SSID_LEN)"s", app_eeprom_data.wifi_ssid);
 		printf("%s\n", app_eeprom_data.wifi_ssid);
@@ -189,7 +189,7 @@ void app_eeprom_data_do_user_input(void) {
 
 	printf("\n");
 	do {
-		printf("WIFI Password: \n>");
+		printf("WiFi Password: \n>");
 		fflush(stdout);
 		scanf("%"STR(WIFI_PASS_LEN)"s", app_eeprom_data.wifi_pass);
 		printf("%s\n\n", app_eeprom_data.wifi_pass);
