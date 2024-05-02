@@ -1,0 +1,960 @@
+{
+    "ddType": 2,
+    "items": [
+        {
+            "widgetGuid": "F66A9747-6C71-40E5-8639-9F53233494D2",
+            "widgetProperties": {
+                "i": "Label",
+                "background": "#4a90e2",
+                "fontColor": "#ffffff",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "31",
+                "title": "XENSIV Sensor Kit on IoTConnect ",
+                "titleAlign": "",
+                "contents": ""
+            },
+            "properties": {
+                "x": "0",
+                "y": "0",
+                "w": "31",
+                "h": "2",
+                "i": "Label",
+                "minW": "6",
+                "minH": "2",
+                "maxH": "2",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "21A18C90-2DBC-4283-89D2-B01E1B70E363",
+            "widgetProperties": {
+                "i": "gauge",
+                "background": "#fff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "18",
+                "title": "CO2 Levels (ppm)",
+                "titleAlign": "",
+                "contents": {
+                    "gauge": {
+                        "device": {
+                            "deviceGuid": "CE17877E-8BEF-4B63-B448-C458E35575F7",
+                            "deviceUniqueId": "xensiv-f1ef3b35"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "23566588-BC71-4FA4-8248-0199C7C6EF56",
+                                    "attributeName": "co2level",
+                                    "checked": "true",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "915",
+                                    "deviceUpdatedDate": "2023-10-22T22:02:23.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "915"
+                                },
+                                {
+                                    "attributeGuid": "E8DC4AB0-A7A2-4D6F-9D8F-B32F089604D4",
+                                    "attributeName": "pressure",
+                                    "checked": "false",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "990.2299194335938",
+                                    "deviceUpdatedDate": "2023-10-22T22:02:23.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "990.2299194335938"
+                                },
+                                {
+                                    "attributeGuid": "89863E8F-0ED7-4D3C-80A4-B35A4D68BB38",
+                                    "attributeName": "temperature",
+                                    "checked": "false",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "29.93000030517578",
+                                    "deviceUpdatedDate": "2023-10-22T22:02:23.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "29.93000030517578"
+                                }
+                            ]
+                        },
+                        "minValue": "400",
+                        "maxValue": "10000",
+                        "greenFrom": "0",
+                        "greenTo": "1500",
+                        "redFrom": "0",
+                        "redTo": "10000",
+                        "yellowFrom": "0",
+                        "yellowTo": "5000",
+                        "key": "gauge",
+                        "version": "1.0"
+                    }
+                }
+            },
+            "properties": {
+                "x": "31",
+                "y": "0",
+                "w": "7",
+                "h": "8",
+                "i": "gauge",
+                "minW": "7",
+                "minH": "8",
+                "maxH": "14",
+                "maxW": "16",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "21A18C90-2DBC-4283-89D2-B01E1B70E363",
+            "widgetProperties": {
+                "i": "gauge",
+                "background": "#fff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "18",
+                "title": "Pressure (mb)",
+                "titleAlign": "",
+                "contents": {
+                    "gauge": {
+                        "device": {
+                            "deviceGuid": "CE17877E-8BEF-4B63-B448-C458E35575F7",
+                            "deviceUniqueId": "xensiv-f1ef3b35"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "23566588-BC71-4FA4-8248-0199C7C6EF56",
+                                    "attributeName": "co2level",
+                                    "checked": "false",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2023-10-22T22:45:45.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "E8DC4AB0-A7A2-4D6F-9D8F-B32F089604D4",
+                                    "attributeName": "pressure",
+                                    "checked": "true",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "989.9849853515625",
+                                    "deviceUpdatedDate": "2023-10-22T22:45:45.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "989.9849853515625"
+                                },
+                                {
+                                    "attributeGuid": "89863E8F-0ED7-4D3C-80A4-B35A4D68BB38",
+                                    "attributeName": "temperature",
+                                    "checked": "false",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "29.700000762939453",
+                                    "deviceUpdatedDate": "2023-10-22T22:45:45.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "29.700000762939453"
+                                }
+                            ]
+                        },
+                        "minValue": "750",
+                        "maxValue": "1350",
+                        "greenFrom": "0",
+                        "greenTo": "0",
+                        "redFrom": "0",
+                        "redTo": "0",
+                        "yellowFrom": "0",
+                        "yellowTo": "0",
+                        "key": "gauge",
+                        "version": "1.0"
+                    }
+                }
+            },
+            "properties": {
+                "x": "39",
+                "y": "0",
+                "w": "7",
+                "h": "8",
+                "i": "gauge",
+                "minW": "7",
+                "minH": "8",
+                "maxH": "14",
+                "maxW": "16",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "21A18C90-2DBC-4283-89D2-B01E1B70E363",
+            "widgetProperties": {
+                "i": "gauge",
+                "background": "#fff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "18",
+                "title": "Temperature (C)",
+                "titleAlign": "",
+                "contents": {
+                    "gauge": {
+                        "device": {
+                            "deviceGuid": "CE17877E-8BEF-4B63-B448-C458E35575F7",
+                            "deviceUniqueId": "xensiv-f1ef3b35"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "23566588-BC71-4FA4-8248-0199C7C6EF56",
+                                    "attributeName": "co2level",
+                                    "checked": "false",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2023-10-22T22:45:45.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "E8DC4AB0-A7A2-4D6F-9D8F-B32F089604D4",
+                                    "attributeName": "pressure",
+                                    "checked": "false",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "989.9849853515625",
+                                    "deviceUpdatedDate": "2023-10-22T22:45:45.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "989.9849853515625"
+                                },
+                                {
+                                    "attributeGuid": "89863E8F-0ED7-4D3C-80A4-B35A4D68BB38",
+                                    "attributeName": "temperature",
+                                    "checked": "true",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "29.700000762939453",
+                                    "deviceUpdatedDate": "2023-10-22T22:45:45.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "29.700000762939453"
+                                }
+                            ]
+                        },
+                        "minValue": "-40",
+                        "maxValue": "100",
+                        "greenFrom": "0",
+                        "greenTo": "80",
+                        "redFrom": "0",
+                        "redTo": "100",
+                        "yellowFrom": "0",
+                        "yellowTo": "0",
+                        "key": "gauge",
+                        "version": "1.0"
+                    }
+                }
+            },
+            "properties": {
+                "x": "47",
+                "y": "0",
+                "w": "7",
+                "h": "8",
+                "i": "gauge",
+                "minW": "7",
+                "minH": "8",
+                "maxH": "14",
+                "maxW": "16",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "A8CB394D-15B1-42C9-94FC-AD7BDC599E2A",
+            "widgetProperties": {
+                "i": "Image",
+                "background": "#ffffff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "10",
+                "title": "",
+                "titleAlign": "",
+                "contents": {
+                    "option": {
+                        "imageUpload": "false",
+                        "imageUrl": "true",
+                        "imageDevice": "false",
+                        "imageTelemetry": "false",
+                        "key": "option",
+                        "position": "center"
+                    },
+                    "upload": {
+                        "imageurl": "",
+                        "key": "upload"
+                    },
+                    "url": {
+                        "imageurl": "https://saleshosted.z13.web.core.windows.net/media/ifx/infineon_logo.png",
+                        "key": "url"
+                    },
+                    "device": {
+                        "deviceGuid": "CE17877E-8BEF-4B63-B448-C458E35575F7",
+                        "deviceName": "",
+                        "imageurl": "",
+                        "key": "device",
+                        "deviceUniqueId": "xensiv-f1ef3b35"
+                    },
+                    "telemetry": {
+                        "deviceGuid": "",
+                        "deviceName": "",
+                        "imageurl": "",
+                        "key": "telemetry"
+                    }
+                }
+            },
+            "properties": {
+                "x": "0",
+                "y": "2",
+                "w": "16",
+                "h": "7",
+                "i": "Image",
+                "minW": "5",
+                "minH": "5",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "8BF5A2DF-51FA-479B-B5D8-8413DC425CFF",
+            "widgetProperties": {
+                "i": "LiveLineChart",
+                "background": "#fff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "18",
+                "title": "Enviro Telemetry",
+                "titleAlign": "",
+                "contents": {
+                    "liveChart": {
+                        "device": {
+                            "deviceGuid": "CE17877E-8BEF-4B63-B448-C458E35575F7",
+                            "deviceUniqueId": "xensiv-f1ef3b35"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "23566588-BC71-4FA4-8248-0199C7C6EF56",
+                                    "attributeName": "co2level",
+                                    "checked": "true",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "799",
+                                    "deviceUpdatedDate": "2023-10-23T00:50:53.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "799"
+                                },
+                                {
+                                    "attributeGuid": "E8DC4AB0-A7A2-4D6F-9D8F-B32F089604D4",
+                                    "attributeName": "pressure",
+                                    "checked": "true",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "990.5518798828125",
+                                    "deviceUpdatedDate": "2023-10-23T00:50:53.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "990.5518798828125"
+                                },
+                                {
+                                    "attributeGuid": "89863E8F-0ED7-4D3C-80A4-B35A4D68BB38",
+                                    "attributeName": "temperature",
+                                    "checked": "false",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "32.189998626708984",
+                                    "deviceUpdatedDate": "2023-10-23T00:50:53.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "32.189998626708984"
+                                }
+                            ]
+                        },
+                        "key": "liveChart",
+                        "recentEndPoints": "10"
+                    }
+                }
+            },
+            "properties": {
+                "x": "16",
+                "y": "2",
+                "w": "15",
+                "h": "16",
+                "i": "LiveLineChart",
+                "minW": "15",
+                "minH": "15",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "6FEFF6B7-15C4-4095-A156-87A1B38D2FF5",
+            "widgetProperties": {
+                "i": "Transformation",
+                "background": "#B8E986",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "43",
+                "title": "C02 Level",
+                "titleAlign": "",
+                "contents": {
+                    "Transformation": {
+                        "device": {
+                            "deviceGuid": "CE17877E-8BEF-4B63-B448-C458E35575F7",
+                            "deviceUniqueId": "xensiv-f1ef3b35"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "23566588-BC71-4FA4-8248-0199C7C6EF56",
+                                    "attributeName": "co2level",
+                                    "checked": "true",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "1027",
+                                    "deviceUpdatedDate": "2023-10-22T22:53:48.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "1027"
+                                },
+                                {
+                                    "attributeGuid": "48CEF741-A338-4026-8FDA-8BF69F97E877",
+                                    "attributeName": "version",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "01.00.00",
+                                    "deviceUpdatedDate": "2023-10-22T22:53:48.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "01.00.00"
+                                },
+                                {
+                                    "attributeGuid": "E8DC4AB0-A7A2-4D6F-9D8F-B32F089604D4",
+                                    "attributeName": "pressure",
+                                    "checked": "false",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "990.0194091796875",
+                                    "deviceUpdatedDate": "2023-10-22T22:53:48.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "990.0194091796875"
+                                },
+                                {
+                                    "attributeGuid": "89863E8F-0ED7-4D3C-80A4-B35A4D68BB38",
+                                    "attributeName": "temperature",
+                                    "checked": "false",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "31.809999465942383",
+                                    "deviceUpdatedDate": "2023-10-22T22:53:48.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "31.809999465942383"
+                                }
+                            ]
+                        },
+                        "key": "Transformation",
+                        "transformations": [
+                            {
+                                "condition": "le",
+                                "conditionValue": "1500",
+                                "type": "Color",
+                                "errors": "",
+                                "typeValue": "#1cb32a",
+                                "isShowLiveFontColor": "false"
+                            },
+                            {
+                                "condition": "le",
+                                "conditionValue": "5000",
+                                "type": "Color",
+                                "errors": "",
+                                "typeValue": "#f8e71c",
+                                "isShowLiveFontColor": "false"
+                            },
+                            {
+                                "condition": "gt",
+                                "conditionValue": "5000",
+                                "type": "Color",
+                                "errors": "",
+                                "typeValue": "#d0021b",
+                                "isShowLiveFontColor": "false"
+                            }
+                        ]
+                    }
+                }
+            },
+            "properties": {
+                "x": "31",
+                "y": "8",
+                "w": "7",
+                "h": "5",
+                "i": "Transformation",
+                "minW": "7",
+                "minH": "4",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "1C12305F-91F5-4DEE-9DF2-ED542C06313E",
+            "widgetProperties": {
+                "i": "combo",
+                "background": "#fff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "18",
+                "title": "Pressure / CO2",
+                "titleAlign": "",
+                "contents": {
+                    "combo": {
+                        "device": {
+                            "deviceGuid": "CE17877E-8BEF-4B63-B448-C458E35575F7",
+                            "deviceUniqueId": "xensiv-f1ef3b35"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "46DA63C0-3D97-4749-B6EC-80064D3F540D",
+                                    "attributeName": "temperature",
+                                    "checked": "false",
+                                    "dataType": "LONG",
+                                    "attributeLatestValue": "30",
+                                    "deviceUpdatedDate": "2024-04-29T14:44:38.653Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "30"
+                                },
+                                {
+                                    "attributeGuid": "651BCC34-C528-4C39-BAC9-8AF15FEC7123",
+                                    "attributeName": "pressure",
+                                    "checked": "false",
+                                    "dataType": "LONG",
+                                    "attributeLatestValue": "834",
+                                    "deviceUpdatedDate": "2024-04-29T14:44:38.653Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "834"
+                                },
+                                {
+                                    "attributeGuid": "9336F02B-1A45-4DF5-B4D6-8D67613B0EC0",
+                                    "attributeName": "co2level",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "819",
+                                    "deviceUpdatedDate": "2024-04-29T14:44:38.653Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "819"
+                                }
+                            ]
+                        },
+                        "lineAttributes": {
+                            "lineAttributeGuid": "651BCC34-C528-4C39-BAC9-8AF15FEC7123",
+                            "lineAttributeName": "pressure",
+                            "lineAttributeColor": "#d0021b"
+                        },
+                        "barAttributes": {
+                            "barAttributeGuid": "9336F02B-1A45-4DF5-B4D6-8D67613B0EC0",
+                            "barAttributeName": "co2level",
+                            "barAttributeColor": "#4a90e2"
+                        },
+                        "lineColor": "#00cc00",
+                        "barColor": "#00cc00",
+                        "barCount": "16",
+                        "dateToUse": "SDK Date",
+                        "lineAttributeGuid": "",
+                        "lineAttributeName": "",
+                        "lineAttributeColor": "",
+                        "barAttributeGuid": "",
+                        "barAttributeName": "",
+                        "barAttributeColor": "",
+                        "key": "combo",
+                        "recentEndPoints": "10"
+                    }
+                }
+            },
+            "properties": {
+                "x": "38",
+                "y": "8",
+                "w": "16",
+                "h": "12",
+                "i": "combo",
+                "minW": "16",
+                "minH": "12",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "A8CB394D-15B1-42C9-94FC-AD7BDC599E2A",
+            "widgetProperties": {
+                "i": "Image",
+                "background": "#ffffff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "10",
+                "title": "",
+                "titleAlign": "",
+                "contents": {
+                    "option": {
+                        "imageUpload": "false",
+                        "imageUrl": "true",
+                        "imageDevice": "false",
+                        "imageTelemetry": "false",
+                        "key": "option",
+                        "position": "center"
+                    },
+                    "upload": {
+                        "imageurl": "",
+                        "key": "upload"
+                    },
+                    "url": {
+                        "imageurl": "https://saleshosted.z13.web.core.windows.net/media/ifx/kit_csk_pasco2.jpg",
+                        "key": "url"
+                    },
+                    "device": {
+                        "deviceGuid": "CE17877E-8BEF-4B63-B448-C458E35575F7",
+                        "deviceName": "",
+                        "imageurl": "",
+                        "key": "device",
+                        "deviceUniqueId": "xensiv-f1ef3b35"
+                    },
+                    "telemetry": {
+                        "deviceGuid": "",
+                        "deviceName": "",
+                        "imageurl": "",
+                        "key": "telemetry"
+                    }
+                }
+            },
+            "properties": {
+                "x": "0",
+                "y": "9",
+                "w": "16",
+                "h": "10",
+                "i": "Image",
+                "minW": "5",
+                "minH": "5",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "F7979C1B-8637-4667-90A2-6961052C6E21",
+            "widgetProperties": {
+                "i": "Live",
+                "background": "#ffffff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "24",
+                "title": "Software",
+                "titleAlign": "",
+                "contents": {
+                    "attributeValue": {
+                        "attributeName": "version",
+                        "key": "attributeValue"
+                    },
+                    "attributeTime": {
+                        "attributeName": "version",
+                        "key": "attributeTime"
+                    },
+                    "live": {
+                        "device": {
+                            "deviceGuid": "CE17877E-8BEF-4B63-B448-C458E35575F7",
+                            "deviceUniqueId": "xensiv-f1ef3b35"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "23566588-BC71-4FA4-8248-0199C7C6EF56",
+                                    "attributeName": "co2level",
+                                    "checked": "false",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "867",
+                                    "deviceUpdatedDate": "2023-10-22T23:11:00.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "867"
+                                },
+                                {
+                                    "attributeGuid": "48CEF741-A338-4026-8FDA-8BF69F97E877",
+                                    "attributeName": "version",
+                                    "checked": "true",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "01.00.00",
+                                    "deviceUpdatedDate": "2023-10-22T23:11:00.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "01.00.00"
+                                },
+                                {
+                                    "attributeGuid": "E8DC4AB0-A7A2-4D6F-9D8F-B32F089604D4",
+                                    "attributeName": "pressure",
+                                    "checked": "false",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "989.9660034179688",
+                                    "deviceUpdatedDate": "2023-10-22T23:11:00.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "989.9660034179688"
+                                },
+                                {
+                                    "attributeGuid": "89863E8F-0ED7-4D3C-80A4-B35A4D68BB38",
+                                    "attributeName": "temperature",
+                                    "checked": "false",
+                                    "dataType": "NUMBER",
+                                    "attributeLatestValue": "29.219999313354492",
+                                    "deviceUpdatedDate": "2023-10-22T23:11:00.000Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "29.219999313354492"
+                                }
+                            ]
+                        },
+                        "rules": "",
+                        "key": "live"
+                    }
+                }
+            },
+            "properties": {
+                "x": "31",
+                "y": "13",
+                "w": "7",
+                "h": "4",
+                "i": "Live",
+                "minW": "7",
+                "minH": "4",
+                "maxH": "4",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "6A7BB4C8-1763-41EB-A490-0764F72A527F",
+            "widgetProperties": {
+                "i": "DeviceLatestValue",
+                "background": "#fff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "25",
+                "title": "Xensiv Latest Values",
+                "titleAlign": "",
+                "contents": {
+                    "devicelatestvalue": {
+                        "device": {
+                            "deviceGuid": "CE17877E-8BEF-4B63-B448-C458E35575F7",
+                            "deviceUniqueId": "xensiv-f1ef3b35"
+                        },
+                        "boxtypes": "2",
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "version",
+                                    "attributeName": "version"
+                                },
+                                {
+                                    "attributeGuid": "temperature",
+                                    "attributeName": "temperature"
+                                },
+                                {
+                                    "attributeGuid": "co2level",
+                                    "attributeName": "co2level"
+                                },
+                                {
+                                    "attributeGuid": "pressure",
+                                    "attributeName": "pressure"
+                                }
+                            ]
+                        },
+                        "key": "devicelatestvalue"
+                    }
+                }
+            },
+            "properties": {
+                "x": "16",
+                "y": "18",
+                "w": "15",
+                "h": "12",
+                "i": "DeviceLatestValue",
+                "minW": "15",
+                "minH": "12",
+                "maxH": "12",
+                "maxW": "15",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "A0326788-ACC8-4C4C-8243-98112CAEB98B",
+            "widgetProperties": {
+                "i": "Telemetry",
+                "background": "#fff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "18",
+                "title": "Xensiv Telemetry",
+                "titleAlign": "",
+                "contents": {
+                    "telemetry": {
+                        "showHeader": "true",
+                        "showDate": "true",
+                        "device": {
+                            "deviceGuid": "CE17877E-8BEF-4B63-B448-C458E35575F7",
+                            "deviceUniqueId": "xensiv-f1ef3b35"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "62DAACB2-15A9-4172-82E2-635F978B6531",
+                                    "attributeName": "random",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "46DA63C0-3D97-4749-B6EC-80064D3F540D",
+                                    "attributeName": "temperature",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "651BCC34-C528-4C39-BAC9-8AF15FEC7123",
+                                    "attributeName": "pressure",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "9336F02B-1A45-4DF5-B4D6-8D67613B0EC0",
+                                    "attributeName": "co2level",
+                                    "checked": "true"
+                                }
+                            ]
+                        },
+                        "dateToUse": "SDK Date",
+                        "key": "telemetry"
+                    }
+                }
+            },
+            "properties": {
+                "x": "0",
+                "y": "19",
+                "w": "16",
+                "h": "11",
+                "i": "Telemetry",
+                "minW": "15",
+                "minH": "6",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "E413CDFD-54EB-465E-BA97-CE610867E440",
+            "widgetProperties": {
+                "i": "DeviceCommand",
+                "background": "#fff",
+                "fontColor": "#000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "18",
+                "title": "Device Command",
+                "titleAlign": "",
+                "contents": {
+                    "deviceCommand": {
+                        "template": "5EC55DBC-D677-470E-AC87-EC7D25152AF0",
+                        "device": "xensiv-f1ef3b35",
+                        "deviceGuid": "CE17877E-8BEF-4B63-B448-C458E35575F7"
+                    }
+                }
+            },
+            "properties": {
+                "x": "31",
+                "y": "20",
+                "w": "23",
+                "h": "10",
+                "i": "DeviceCommand",
+                "minW": "22",
+                "minH": "10",
+                "maxH": "20",
+                "maxW": "35",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "57E7E7D3-DE04-4CE3-84C3-63D9CC473F75",
+            "widgetProperties": {
+                "i": "HyperLink",
+                "background": "#4a90e2",
+                "fontColor": "#ffffff",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "26",
+                "title": "Product Page",
+                "titleAlign": "center",
+                "contents": {
+                    "hyperlink": {
+                        "link": "https://www.avnet.com/wps/portal/us/solutions/iot/iotconnect/development-kits/infineon-xensiv-sensor-kit/",
+                        "key": "hyperlink"
+                    }
+                }
+            },
+            "properties": {
+                "x": "0",
+                "y": "30",
+                "w": "8",
+                "h": "2",
+                "i": "HyperLink",
+                "minW": "5",
+                "minH": "2",
+                "maxH": "2",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "57E7E7D3-DE04-4CE3-84C3-63D9CC473F75",
+            "widgetProperties": {
+                "i": "HyperLink",
+                "background": "#4a90e2",
+                "fontColor": "#ffffff",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "26",
+                "title": "Quick Start",
+                "titleAlign": "center",
+                "contents": {
+                    "hyperlink": {
+                        "link": "https://github.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/blob/main/QUICKSTART.md",
+                        "key": "hyperlink"
+                    }
+                }
+            },
+            "properties": {
+                "x": "8",
+                "y": "30",
+                "w": "8",
+                "h": "2",
+                "i": "HyperLink",
+                "minW": "5",
+                "minH": "2",
+                "maxH": "2",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "57E7E7D3-DE04-4CE3-84C3-63D9CC473F75",
+            "widgetProperties": {
+                "i": "HyperLink",
+                "background": "#4a90e2",
+                "fontColor": "#ffffff",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "26",
+                "title": "IoTConnect",
+                "titleAlign": "center",
+                "contents": {
+                    "hyperlink": {
+                        "link": "https://www.avnet.com/iot",
+                        "key": "hyperlink"
+                    }
+                }
+            },
+            "properties": {
+                "x": "16",
+                "y": "30",
+                "w": "8",
+                "h": "2",
+                "i": "HyperLink",
+                "minW": "5",
+                "minH": "2",
+                "maxH": "2",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "57E7E7D3-DE04-4CE3-84C3-63D9CC473F75",
+            "widgetProperties": {
+                "i": "HyperLink",
+                "background": "#4a90e2",
+                "fontColor": "#ffffff",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "26",
+                "title": "SDK Source",
+                "titleAlign": "center",
+                "contents": {
+                    "hyperlink": {
+                        "link": "https://github.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/tree/main",
+                        "key": "hyperlink"
+                    }
+                }
+            },
+            "properties": {
+                "x": "24",
+                "y": "30",
+                "w": "7",
+                "h": "2",
+                "i": "HyperLink",
+                "minW": "5",
+                "minH": "2",
+                "maxH": "2",
+                "isStatic": "false"
+            }
+        }
+    ]
+}

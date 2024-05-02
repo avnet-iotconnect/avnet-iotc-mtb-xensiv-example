@@ -1,14 +1,17 @@
-$(SEARCH_cJSON)/tests
-$(SEARCH_cJSON)/test.c
-$(SEARCH_cJSON)/cJSON_Utils.c
-$(SEARCH_cJSON)/fuzzing
-
-
-$(SEARCH_avnet-iotc-mtb-sdk)/lib/cJSON/tests
-$(SEARCH_avnet-iotc-mtb-sdk)/lib/cJSON/fuzzing
-$(SEARCH_avnet-iotc-mtb-sdk)/lib/cJSON/test.c
-$(SEARCH_avnet-iotc-mtb-sdk)/lib/iotc-c-lib/tests
 $(SEARCH_avnet-iotc-mtb-sdk)/lib/ota-update
+
+# Indirectly, we need the libraries/standard from this AWS SDK dependency for coreHTTP and coreMQTT
+$(SEARCH_aws-iot-device-sdk-embedded-C)/libraries/3rdparty/
+$(SEARCH_aws-iot-device-sdk-embedded-C)/libraries/aws/
+$(SEARCH_aws-iot-device-sdk-embedded-C)/demos/
+$(SEARCH_aws-iot-device-sdk-embedded-C)/integration-test/
+$(SEARCH_aws-iot-device-sdk-embedded-C)/tools/
+$(SEARCH_aws-iot-device-sdk-embedded-C)/docs/
+$(SEARCH_aws-iot-device-sdk-port)/source/ota/
+
+
+#############################################
+### All Optiga project specific exclusions below this line
 
 # Not required PALs
 $(SEARCH_optiga-trust-m)/pal/NEW_PAL_TEMPLATE

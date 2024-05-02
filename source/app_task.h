@@ -30,16 +30,12 @@
 * of such system or application assumes all risk of such use and in doing
 * so agrees to indemnify Cypress against all liability.
 *******************************************************************************/
-//
-// Copyright: Avnet 2021
-// Modified by Nik Markovic <nikola.markovic@avnet.com> on 11/11/21.
-//
 
 #ifndef APP_TASK_H_
 #define APP_TASK_H_
 
 #define APP_TASK_PRIORITY       (2)
-#define APP_TASK_STACK_SIZE     (1024 * 8)
+#define APP_TASK_STACK_SIZE     (1024 * 10)
 
 void app_task(void *pvParameters);
 
