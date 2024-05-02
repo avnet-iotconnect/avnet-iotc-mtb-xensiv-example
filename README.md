@@ -1,5 +1,7 @@
 ## About
 Avnet IoTConnect Optiga and XENSIV&trade; project example for Infineon's ModusToolbox IDE and framework.
+This repository is in maintenance mode.
+Please use the main branch releases for new projects with protocol 2.1 for AWS and Azure.
 
 This code is based on the [mtb-example-optiga-mqtt-client](https://github.com/Infineon/mtb-example-optiga-mqtt-client) project and
  uses [optiga_trust_helpers](https://github.com/Infineon/mtb-example-optiga-mqtt-client/blob/master/source/optiga_trust_helpers.c) files.
