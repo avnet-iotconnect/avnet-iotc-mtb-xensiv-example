@@ -64,7 +64,7 @@ Please follow the
 [Creating a New IoTConnect Account](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md)
 guide and select one of the two implementations of IoTConnect: 
 * [AWS Version](https://subscription.iotconnect.io/subscribe?cloud=aws)  
-* [AWS Version](https://subscription.iotconnect.io/subscribe?cloud=azure)  
+* [Azure Version](https://subscription.iotconnect.io/subscribe?cloud=azure)  
 
 * Be sure to check any SPAM folder for the temporary password.
 
@@ -145,7 +145,7 @@ Pressure : 841.57 mBar   Temperature: 29.15 øC
 ## Visualize Data
 
 * The data can be visualized by using the Dynamic Dashboard feature of IoTConnect.  
-A sample dashboard that is preconfigured to display the Xensiv module's data is available at [files/xensiv-dashboard-template.json](files/xensiv-dashboard-template.json).
+A sample dashboard that is preconfigured to display the Xensiv module's data is available here: [xensiv-dashboard-template.json](files/xensiv-dashboard-template.json).
 
 * Once downloaded, select "Create Dashboard" from the top of the IoTConnect portal and then choose the "Import Dashboard" option and select the template and device name used previously in this guide.
 * Congratulations, your sample dashboard should look similar to the one below.  
