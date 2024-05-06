@@ -18,18 +18,17 @@ to use this directory with Git.
   of this repo - refer to [deps/TARGET_CYSBSYSKIT-DEV-01.mtb](deps/TARGET_CYSBSYSKIT-DEV-01.mtb)
   - Click the *Update* button at the bottom of the screen.
   - You may see an error *ERROR:"make eclipse" failed*, but the error does not seem to cause any issues.
-- Note that you can use Git with the SDK created in [mtb_shared/avnet-iotc-mtb-sdk/label](mtb_shared/avnet-iotc-mtb-sdk/label)
+- Note that you can use Git with the SDK created in `mtb_shared/avnet-iotc-mtb-sdk/label`
 in the same way you would your application clone, with the exception that
 the remote normally called "origin" will be named "cypress". You can ignore the fact that the repo
-will be created under the directory named after the label or branch the [deps/avnet-iotc-mtb-sdk.mtb](deps/avnet-iotc-mtb-sdk.mtb)
-is pointing to and simply checkout your desired version.
+will be created under the directory named after the label or branch that is defined in the
+[deps/avnet-iotc-mtb-sdk.mtb](deps/avnet-iotc-mtb-sdk.mtb) is pointing to, and simply checkout your desired version.
 - Additionally, if you change the branch or label of the SDK at [deps/avnet-iotc-mtb-sdk.mtb](deps/avnet-iotc-mtb-sdk.mtb)
 with Library Manager a new directory will be created with the contents of that remote branch, so keep this in mind
 if any local SDK changes exist before making this change. 
 - **IMPORTANT:** Note that if you need to run the Library Manager or "make getlibs" after modifying the contents of theSDK,
 at the time of creating this guide, the process will **overwrite any changes** in the SDK directory.
 To ensure that you do not lose any changes, make a copy of the changes or commit them before doing either of these steps.
-  
 
 ## Local Manifest Setup
 

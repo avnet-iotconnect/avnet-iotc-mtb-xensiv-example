@@ -12,15 +12,11 @@ run with limited functionality without the attached PAS CO2 board.
 
 ## Building the Software
 
-<details>
-  <summary>Developing With Git and Setting Up for Local Development</summary>
-
-  If you wish to just evaluate the application by compiling and running it with ModusToolbox&trade;
-  development environment, skip this section.
-  
-  If you wish to contribute to this project or work with your own git fork, the setup steps will change slightly
-  with respect to the setup below, so read [DEVELOPER_LOCAL_SETUP.md](./DEVELOPER_LOCAL_SETUP.md) to set up your project.
-</details>
+> If you wish to contribute to this project or work with your own git fork,
+> or evaluate an application version that is not yet released, the setup steps will change 
+> the setup steps slightly.
+> In that case, read [DEVELOPER_LOCAL_SETUP.md](./DEVELOPER_LOCAL_SETUP.md) 
+> before continuing to the steps below.
 
 - Download, install [ModusToolbox&trade; software](https://www.infineon.com/cms/en/design-support/tools/sdk/modustoolbox-software/)
 version 3.2 or later. Install the development suite with Modus Toolbox&trade; Setup. 
@@ -28,7 +24,7 @@ Ensure that *Modus Toolbox&trade; Tools Package* and *Modus Toolbox&trade; Progr
 The setup tool may require you to log into your Infineon account.
 - Open the Project Creator.
 - Select the *CYSBSYSKIT-DEV-01* BSP and click *Next*.
-- At the top of the window choose a path where the project will be installed.
+- At the top of the window, choose a path where the project will be installed.
 On Windows, ensure that this path is *short* starting from a root of a drive like *C:\iotc-xensiv*,
 or else ong paths will trigger the 256 Windows path limit and cause compiling errors. Refer to the
 [Troubleshooting](#troubleshooting) section of this document for more information.
