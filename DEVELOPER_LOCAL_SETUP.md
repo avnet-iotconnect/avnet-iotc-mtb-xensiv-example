@@ -36,7 +36,7 @@ If you wish to test your newly developed branch, you will need to point Modus To
 to a custom manifest. If so follow these steps in order to do so:
 
 - After installing Modus Toolbox&trade; and before opening the Project Creator in steps of the main Developer Guide,
-a directory should be created in your user directory (On Windows it is C:\Users\<username>\.modustoolbox\)
+a directory should be created in your user directory (On Windows it is C:\Users\*your-username*\.modustoolbox\)
 - Create a new file in that directory named *manifest.loc*, with the following content:
 ```
 file:///c:/mtb-manifests/avnet-iotc-mtb-super-manifest-fv2.xml
