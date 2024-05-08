@@ -13,8 +13,7 @@ run with limited functionality without the attached PAS CO2 board.
 ## Building the Software
 
 > If you wish to contribute to this project or work with your own git fork,
-> or evaluate an application version that is not yet released, the setup steps will change 
-> the setup steps slightly.
+> or evaluate an application version that is not yet released, the setup steps will change slightly.
 > In that case, read [DEVELOPER_LOCAL_SETUP.md](./DEVELOPER_LOCAL_SETUP.md) 
 > before continuing to the steps below.
 
