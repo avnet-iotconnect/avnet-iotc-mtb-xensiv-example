@@ -284,7 +284,7 @@ static void on_command(IotclC2dEventData data) {
 	if (ack_id) {
 		iotcl_mqtt_send_cmd_ack(
 				ack_id,
-				command_success ? IOTCL_C2D_EVT_CMD_SUCCESS : IOTCL_C2D_EVT_CMD_FAILED,
+				command_success ? IOTCL_C2D_EVT_CMD_SUCCESS_WITH_ACK : IOTCL_C2D_EVT_CMD_FAILED,
 				message // allowed to be null, but should not be null if failed, we'd hope
 		);
 	} else {
