@@ -10,6 +10,8 @@ to set up devices with IoTConnect.
 This project makes use of PAS CO2 and pressure & temperature sensors, however the project will compile and
 run with limited functionality without the attached PAS CO2 board.
 
+The guide has been tested with the Eclipse option in Project Creator.
+
 ## Building the Software
 
 > If you wish to contribute to this project or work with your own git fork,

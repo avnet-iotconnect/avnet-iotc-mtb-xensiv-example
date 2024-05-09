@@ -32,12 +32,23 @@ To ensure that you do not lose any changes, make a copy of the changes or commit
 
 ## Local Manifest Setup
 
-If you wish to test your newly developed branch, you will need to point Modus Toolbox Project Creator
-to a custom manifest. If so follow these steps in order to do so:
+If you wish to test older versions of the software,
+or your newly committed branch, you will need to point Modus Toolbox Project Creator
+to a custom manifest. If so, follow these steps in order to do so:
 
 - After installing Modus Toolbox&trade; and before opening the Project Creator in steps of the main Developer Guide,
-a directory should be created in your user directory (On Windows it is C:/Users/*your-username*/.modustoolbox\)
-- Create a new file in that directory named *manifest.loc*, with the following content:
+.modustoolbox directory should be created in your user directory (On Windows it is C:/Users/*your-username*/.modustoolbox)
+If the directory does not exist, create the directory.
+- Create a new file in that directory named *manifest.loc*.
+- Add the following content (or similar) if you wish to point to an earlier release of the application, 
+put your released application version in the URL format, for example:
+```
+https://raw.githubusercontent.com/avnet-iotconnect/avnet-iotc-mtb-super-manifest/release-v4.0.0/avnet-iotc-mtb-super-manifest-fv2.xml
+```
+Using the above URL is all that is needed to achieve this
+
+### For full control, follow this section
+- Add the following content if you need full control of each sample application:
 ```
 file:///c:/mtb-manifests/avnet-iotc-mtb-super-manifest-fv2.xml
 ```
