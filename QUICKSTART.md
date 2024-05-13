@@ -22,7 +22,7 @@ with the Avnet IoTConnect, using the Optiga secure element and PAS CO2 sensor.
 * Click **Open** and select the hex file previously extracted
 * Click **Connect**
 * Click **Program** on the top right and wait for the progress bar to complete
-* Assuming the message "Device programmed successfully" appears at the bottom,**Close** the programmer.
+* Assuming the message "Device programmed successfully" appears at the bottom, **Close** the programmer.
 
 ## Serial Port Setup
 * Open the Serial Terminal application and configure as shown below:
@@ -37,7 +37,7 @@ otherwise text input will not be visible.
 * With the board plugged in, Switch to the Serial Terminal and press **RST** on the board.
 * The application will display the certificate from the OPTIGA secure element.
 * Locate and copy the *Device Certificate* and from the terminal including the "BEGIN" and "END" lines.
-* Open a text editor, such as notepad, paste in the certificate, and save the file as "cert.txt"
+* Open a text editor, such as notepad, paste in the certificate, and save the file as `cert.txt`
   ```
   -----BEGIN CERTIFICATE-----
   MIIB9TCCAXygAwIBAgIEOi/kbTAKBggqhkjOPQQDAzByMQswCQYDVQQGEwJERTEh
