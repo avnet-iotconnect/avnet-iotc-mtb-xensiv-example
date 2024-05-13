@@ -4,10 +4,10 @@ This document outlines the steps of setting up the Infineon XENSIV&trade; board
 with the Avnet IoTConnect, using the Optiga secure element and PAS CO2 sensor.
 
 ## Prerequisites
-* PC with Windows. The project is tested with Windows 10, though the setup should work with Linux or Mac as well.
+* PC with Windows 10/11 (While untested, it should also work with Linux and MacOS.)
 * USB-A to micro-USB data cable
 * 2.4GHz WiFi Network
-* A serial terminal application such as [Tera Term](https://ttssh2.osdn.jp/index.html.en) or a browser-based application like [Google Chrome Labs Serial Terminal](https://googlechromelabs.github.io/serial-terminal/)
+* A serial terminal application such as [Tera Term](https://sourceforge.net/projects/tera-term/) or a browser-based application like [Google Chrome Labs Serial Terminal](https://googlechromelabs.github.io/serial-terminal/)
 * A registered [myInfineon Account](https://www.infineon.com/sec/login)
 
 ## Hardware Setup
