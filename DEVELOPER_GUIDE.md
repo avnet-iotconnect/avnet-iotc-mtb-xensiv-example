@@ -10,7 +10,7 @@ to set up devices with IoTConnect.
 This project makes use of PAS CO2 and pressure & temperature sensors, however the project will compile and
 run with limited functionality without the attached PAS CO2 board.
 
-The project has been tested with the Eclipse option in Project Creator an only supports the ARM_GCC (Eclipse default) toolchain.
+The project has been tested with the Eclipse option in Project Creator and only supports the ARM_GCC (Eclipse default) toolchain.
 
 ## Building the Software
 
