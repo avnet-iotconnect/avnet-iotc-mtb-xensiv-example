@@ -76,7 +76,8 @@ Login to IoTConnect using the corresponding link below to the version for which 
 * [IoTConnect on AWS](https://console.iotconnect.io) (Recommended)
 * [IoTConnect on Azure](https://portal.iotconnect.io)
 
-* The Company ID (**CPID**) and Environment (**ENV**) variables identifying your IoTConnect account must be configured in the XENSIV device. Take note of these values for later reference.
+The Company ID (**CPID**) and Environment (**ENV**) variables identifying your IoTConnect account must be configured in the XENSIV device.
+* Take note of these values for later reference loacted in the "Settings" -> "Key Vault" section of the platform. See image below.
 <details><summary>Acquire <b>CPID</b> and <b>ENV</b> parameters from the IoTConnect Key Vault and save for later use</summary>
 <img style="width:75%; height:auto" src="https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/bbdc9f363831ba607f40805244cbdfd08c887e78/assets/cpid_and_env.png"/>
 </details>
