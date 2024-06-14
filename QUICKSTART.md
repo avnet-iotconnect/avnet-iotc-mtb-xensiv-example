@@ -39,7 +39,7 @@ This guide has been tested with the following environment, but should work with 
 
 ## 6. Extract Certificate and Device ID  
 The application will display the certificate from the OPTIGA secure element upon boot
-* **Copy** the *Device Certificate* and from the terminal including the "BEGIN" and "END" lines.
+* **Copy** the *Device Certificate* from the terminal including the "BEGIN" and "END" lines.
 * Open a text editor, such as notepad, paste in the certificate, and save the file as `cert.txt`
   ```
   -----BEGIN CERTIFICATE-----
