@@ -1,42 +1,45 @@
-## Introduction
+## 1. Introduction
+This document outlines the steps of setting up the Infineon XENSIV&trade; PAS CO2 kit with Avnet's IoTConnect.  The solution leverages Infineon's Optiga Trust M secure element to provide hardware security.
 
-This document outlines the steps of setting up the Infineon XENSIV&trade; board
-with the Avnet IoTConnect, using the Optiga secure element and PAS CO2 sensor.
-
-## Prerequisites
-* PC with Windows 10/11 (While untested, it should also work with Linux and MacOS.)
+## 2. Prerequisites
+This guide has been tested with the following environment, but should work with other operating systems.
+* PC with Windows 10/11
 * USB-A to micro-USB data cable
-* 2.4GHz WiFi Network
-* A serial terminal application such as [Tera Term](https://sourceforge.net/projects/tera-term/) or a browser-based application like [Google Chrome Labs Serial Terminal](https://googlechromelabs.github.io/serial-terminal/)
+* WiFi Network with Internet access
+* A serial terminal application such as [Tera Term](https://sourceforge.net/projects/tera-term/) (Recommended) or a browser-based version such as [Google Chrome Labs Serial Terminal](https://googlechromelabs.github.io/serial-terminal/) (Alternative)
 * A registered [myInfineon Account](https://www.infineon.com/sec/login)
+* XENSIV PAS CO2 KIT
 
-## Hardware Setup
-* Connect the main board and the sensor board together via the headers.
-* Connect the board to a USB port on your PC. A new USB device should be detected.
+## 3. Hardware Setup
+* Connect the XENSIV board and any sensor board(s) together via the headers.
+* Connect the XENSIV board to a USB port your PC. A new USB device should be detected.
 
-## Flash the Firmware
+## 4. Flash the Firmware
 * **Download** and **Install** the [ModusToolbox Programming Tools](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.modustoolboxprogtools)
-* **Download** and **Extract** the pre-compiled Firmware:  [xensiv-demo-02.01.02.hex](https://saleshosted.z13.web.core.windows.net/sdk/infineon/xensiv-demo-02.01.02.hex)
-* Launch the *mtb-programmer* software and update the firmware if prompted
-* Click the dropdown box next to *Probe/Kit* and select the item beginning with **"CYSBSYSKIT-"**
-* Click **Open** and select the hex file previously extracted
+* **Download** the pre-compiled firmware:  [xensiv-demo-02.01.02.hex](https://saleshosted.z13.web.core.windows.net/sdk/infineon/xensiv-demo-02.01.02.hex)
+* Launch the **mtb-programmer** software and update the firmware if prompted
+* Click the dropdown box next to **Probe/Kit** and select the item beginning with **"CYSBSYSKIT-"**
+* Click **Open** and select the firmware .hex file downloaded (`xensiv-demo-02.01.02.hex`)
 * Click **Connect**
-* Click **Program** on the top right and wait for the progress bar to complete
-* Assuming the message "Device programmed successfully" appears at the bottom, **Close** the programmer.
+* Click **Program**
+* Wait for the "Device programmed successfully" message to appear at the bottom
+* **Close** the programmer
 
-## Serial Port Setup
-* Open the Serial Terminal application and configure as shown below:
+## 5. Serial Port Setup
+* Launch the Serial Terminal application
+* If using TeraTerm, it's recommended you enable `Local Echo` in the "Setup" -> "Terminal" menu, otherwise text input will not be visible.
+* Configure settings as shown below:
   * Port: (Select the COM port with the device)
   * Speed: `115200`
   * Data: `8 bits`
   * Parity: `none`
   * Stop Bits: `1`
   * Flow Control: `none`
-* If using TeraTerm, you may want to enable `Local Echo` in the "Setup" -> "Terminal" 
-otherwise text input will not be visible.
-* With the board plugged in, Switch to the Serial Terminal and press **RST** on the board.
-* The application will display the certificate from the OPTIGA secure element.
-* Locate and copy the *Device Certificate* and from the terminal including the "BEGIN" and "END" lines.
+* After setup, connect and press **RST** on the board
+
+## 6. Extract Certificate and Device ID  
+The application will display the certificate from the OPTIGA secure element.
+* **Copy** the *Device Certificate* and from the terminal including the "BEGIN" and "END" lines.
 * Open a text editor, such as notepad, paste in the certificate, and save the file as `cert.txt`
   ```
   -----BEGIN CERTIFICATE-----
@@ -55,52 +58,48 @@ otherwise text input will not be visible.
 
   Generated device unique ID (DUID) is: xensiv-xxxxxxxx
   ```
-* Locate and copy the Device Unique ID *(DUID)* from the terminal and save for later use. It will be in the format "xensiv-xxxxxxxx"
+* **Copy** the Device Unique ID *(DUID)* from the terminal and save for later use. It will be in the format `xensiv-xxxxxxxx`
 
-## Cloud Account Setup
-An IoTConnect account is required.  If you need to create an account, a free 2-month subscription is available.
+## 7. Cloud Account Setup
+An IoTConnect account is required.  If you need to create an account, a free trial subscription is available.
 
-Please follow the 
-[Creating a New IoTConnect Account](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md)
-guide and select one of the two implementations of IoTConnect: 
-* [AWS Version](https://subscription.iotconnect.io/subscribe?cloud=aws)  
+Select one of the two implementations of IoTConnect: 
+* [AWS Version](https://subscription.iotconnect.io/subscribe?cloud=aws)  (Recommended for this guide)
 * [Azure Version](https://subscription.iotconnect.io/subscribe?cloud=azure)  
 
-* Be sure to check any SPAM folder for the temporary password.
+* Be sure to check any SPAM folder for the temporary password after registering.
+* 
+See the IotConnect [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) for more details.
 
-## Acquire IoTConnect Account Information
+## 8. Acquire IoTConnect Account Information
+Login to IoTConnect using the corresponding link below to the version to which you registered:  
+  * [IoTConnect on AWS](https://console.iotconnect.io) 
+  * [IoTConnect on Azure](https://portal.iotconnect.io)
 
-* Login to IoTConnect using the corresponding link below to the version to which you registered:  
-    * [IoTConnect on AWS](https://console.iotconnect.io) 
-    * [IoTConnect on Azure](https://portal.iotconnect.io)
-
-* The Company ID (**CPID**) and Environment (**ENV**) variables are required to be stored into the device. Take note of these values for later reference.
+* The Company ID (**CPID**) and Environment (**ENV**) variables identifying your IoTConnect account must be configured in the XENSIV device. Take note of these values for later reference.
 <details><summary>Acquire <b>CPID</b> and <b>ENV</b> parameters from the IoTConnect Key Vault and save for later use</summary>
 <img style="width:75%; height:auto" src="https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/bbdc9f363831ba607f40805244cbdfd08c887e78/assets/cpid_and_env.png"/>
 </details>
 
-## Configure the Xensiv Board
+## 9. Configure the Xensiv Board
 
-> **Note 1:**  
-> There is no echo in the terminal when typing or pasting values (unless you enabled this in the settings).
+> **Note:**  There is no "local echo" in the terminal when typing or pasting values (unless you enabled this option in the TeraTerm settings).
 > If a mistake is made, the board must be reset and this section repeated.
 
-> **Note 2:**  
-> Whenever the board is re-flashed it must be reconfigured.
-
 * Verify the following output is visible in the terminal:  `Please enter your device configuration`
-* If not, press reset the board.
+* If not, reset the board.
 
-> **Note:**
- If you want to change an existing configuration press `y` and press `ENTER` when prompted to do so.
+> **Note:**  If you want to change an existing configuration press `y` and then `ENTER` when prompted to do after resetting the board.
 
-* Enter the **Platform** for which you subscribed `aws` (for AWS) or `az` (for Azure)
-* Enter the **CPID** acquired from the key vault (see above)
-* Enter the **Environment** (ENV) acquired from the key vault
-* Enter the **WiFi SSID**
-* Enter the **WiFi Password**
-* The device will configure itself and reboot
-* Ensure the device is able to connect to the WiFi network, obtain an IP address, and get updated time from an NTP server.
+* Enter the **Platform** for which you subscribed: `aws` (for AWS) or `az` (for Azure)
+* Enter the **CPID** acquired from the key vault in Step 8
+* Enter the **Environment** (ENV) acquired from the key vault in Step 8
+* Enter your **WiFi SSID**
+* Enter your **WiFi Password**
+
+The device will configure itself and reboot  
+
+* Ensure the device is able to connect to the WiFi network, obtain an IP address, and get updated time from an NTP server. The following output should be visible in the serial terminal:
 
 ```
 Successfully connected to Wi-Fi network '<network name>'.
@@ -108,56 +107,48 @@ IPv4 Address Assigned: <IP Address>
 Obtaining network time......
 Time received from NTP.
 ```
-  
-* There will be errors displayed because the device still needs to be created in the IoTConnect GUI. Continue to the next section.
 
-## IoTConnect Device Template Setup
+> **Note:**  There will be errors displayed because the device still needs to be created in the IoTConnect platform. Ignore the errors and continue to the next section.
 
-An IoTConnect *Device Template* will need to be created or imported.
+## 10. IoTConnect Device Template Setup
+
+An IoTConnect *Device Template* will need to be created or imported. This defines the data format the platform should expect from the device.
 * Download the premade  [Device Template](files/xensiv-device-template.json).
-* Import the template into your IoTConnect instance:  [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) guide  
-> **Note:**  
-> For more information on [Template Management](https://docs.iotconnect.io/iotconnect/user-manuals/devices/template-management/) please see the [IoTConnect Documentation](https://iotconnect.io) website.
+* Import the template into your IoTConnect instance using this guide:  [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md)  
 
-## IoTConnect Device Creation
-
+## 11. IoTConnect Device Creation
 * Create a new device in the IoTConnect portal. (Follow the [Create a New Device](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/create_new_device.md) guide for a detailed walkthrough.)
 * Enter the **DUID** saved from earlier in the *Unique ID* field
-* Enter a descriptive *Display Name* to help identify your device
+* Enter a description of your choice in the *Display Name* to help identify your device
 * Select the template from the dropdown box that was just imported ("xensivdemo")
 * Ensure "Use my certificate" is selected under *Device certificate*
-* Browse and Select the "cert.txt" file saved from earlier
+* Browse and Select the "cert.txt" file saved in Step 6
 * Click **Save & View**
 
-## Verify Connection and Data
+## 12. Verify Connection and Data
 
 * Switch to the Serial Terminal application and Reset the board by pressing the **RST** button
-* After a few seconds, the device will connect, and begin sending telemetry packets
+* After a few seconds, the device will connect, and begin sending telemetry packets similar to the example below:
 
 ```
 Pressure : 841.57 mBar   Temperature: 29.15 øC
 >: {"d":[{"d":{"version":"02.00.00","random":34,"temperature":29.139999389648438,"pressure":841.57177734375,"co2level":994}}]}
 ```
 
-* Switch back to the IoTConnect GUI in your browser
-* Click **Live Data** on the left Device menu and verify telemetry is being populated
+* Switch back to the IoTConnect GUI in your browser and **Click** "Live Data" on the left Device menu and verify telemetry is being populated
 
-## Visualize Data
-
-* The data can be visualized by using the Dynamic Dashboard feature of IoTConnect.  
+## 13. Visualize Data
+The data can be visualized by using the Dynamic Dashboard feature of IoTConnect.  
 A sample dashboard that is preconfigured to display the Xensiv module's data is available here: [xensiv-dashboard-template.json](files/xensiv-dashboard-template.json).
 
-* Once downloaded, select "Create Dashboard" from the top of the IoTConnect portal and then choose the "Import Dashboard" option and select the template and device name used previously in this guide.
-* Congratulations, your sample dashboard should look similar to the one below.  
+* **Download** the template then select "Create Dashboard" from the top of the IoTConnect portal
+* **Select** the "Import Dashboard" option and **Select** the template and device name used previously 
+
+Congratulations, your sample dashboard should look similar to the one below:  
   <img width="700" alt="xensiv_pasco2_dashboard_image" src="https://github.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/assets/40640041/0d3047e4-bbe2-45a7-b959-88692919d4fa">
 
-## Troubleshooting and Known Issues
-
-* The XENSIV board may be set to operate in different modes. The board is in the correct mode for programming out of the box.
-* Verify that the amber LED is solid to confirm the correct mode is enabled.
-* If the amber LED is flashing, press the `KP3_MODE` button on the bottom of the board until the LED is solid.
+## 14. Troubleshooting and Known Issues
 * The board may not be able to obtain time from the NTP server. Resetting the board should re-try the NTP connection and will likely succeed on the next try. 
-* On occasion, the CO2 ppm measurement may not be ready for retrieval. The sensor will report an error and the CO2 level 
-telemetry value will not be reported. This error is transient and can be ignored. 
-Additionally, the code can be modified to reduce the telemetry interval
-in order to allow the sensor to accumulate the value.
+* On occasion, the CO2 ppm measurement may not be ready for retrieval. The sensor will report an error and the CO2 level telemetry value will not be reported. This error is transient and can be ignored.
+
+The XENSIV board can operate in different "modes". The board is in the correct mode for programming out of the box. If you encounter issues flashing or configuring the board, verify that the amber LED is solid to confirm the correct mode is enabled. If the amber LED is flashing, press the `KP3_MODE` button on the bottom of the board until the LED is on solid to return to the correct mode.
