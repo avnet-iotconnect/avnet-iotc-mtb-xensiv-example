@@ -63,12 +63,12 @@ The application will display the certificate from the OPTIGA secure element upon
 ## 7. Cloud Account Setup
 An IoTConnect account is required.  If you need to create an account, a free trial subscription is available.
 
-Select one of the two implementations of IoTConnect: 
+Select one of the two implementations of IoTConnect:
 * [AWS Version](https://subscription.iotconnect.io/subscribe?cloud=aws)  (Recommended for this guide)
 * [Azure Version](https://subscription.iotconnect.io/subscribe?cloud=azure)  
 
-* Be sure to check any SPAM folder for the temporary password after registering.
-* 
+> **Note:**  Be sure to check any SPAM folder for the temporary password after registering.
+
 See the IotConnect [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) for more details.
 
 ## 8. Acquire IoTConnect Account Information
