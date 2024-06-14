@@ -78,23 +78,23 @@ Login to IoTConnect using the corresponding link below to the version for which 
 
 The Company ID (**CPID**) and Environment (**ENV**) variables identifying your IoTConnect account must be configured in the XENSIV device.
 * Take note of these values for later reference loacted in the "Settings" -> "Key Vault" section of the platform. See image below.
-<details><summary>Acquire <b>CPID</b> and <b>ENV</b> parameters from the IoTConnect Key Vault and save for later use</summary>
-<img style="width:75%; height:auto" src="https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/bbdc9f363831ba607f40805244cbdfd08c887e78/assets/cpid_and_env.png"/>
-</details>
+
+![Key Vault](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/bbdc9f363831ba607f40805244cbdfd08c887e78/assets/cpid_and_env.png)
+
 
 ## 9. Configure the Xensiv Board
 
-> **Note:**  There is no "local echo" in the terminal when typing or pasting values (unless you enabled this option in the TeraTerm settings).
+> **Warning:**  There is no local echo in the serial terminal when typing or pasting values (unless you enabled this option in the TeraTerm settings).
 > If a mistake is made, the board must be reset and this section repeated.
 
 * Verify the following output is visible in the terminal:  `Please enter your device configuration`
 * If not, reset the board.
 
-> **Note:**  If you want to change an existing configuration press `y` and then `ENTER` when prompted to do after resetting the board.
+> **Note:**  To change an existing configuration reset the board and press `y` and then `ENTER` when prompted.
 
 * Enter the **Platform** for which you subscribed: `aws` (for AWS) or `az` (for Azure)
 * Enter the **CPID** acquired from the key vault in Step 8
-* Enter the **Environment** (ENV) acquired from the key vault in Step 8
+* Enter the **ENV** (Environment) acquired from the key vault in Step 8
 * Enter your **WiFi SSID**
 * Enter your **WiFi Password**
 
@@ -109,16 +109,21 @@ Obtaining network time......
 Time received from NTP.
 ```
 
-> **Note:**  There will be errors displayed because the device still needs to be created in the IoTConnect platform. Ignore the errors and continue to the next section.
+There will be errors displayed because the device still needs to be created in the IoTConnect platform. Ignore the errors and continue to the next section.
 
 ## 10. IoTConnect Device Template Setup
 
 An IoTConnect *Device Template* will need to be created or imported. This defines the data format the platform should expect from the device.
-* Download the premade  [Device Template](files/xensiv-device-template.json).
-* Import the template into your IoTConnect instance using this guide:  [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md)  
+* Download the premade  [Device Template](https://raw.githubusercontent.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/main/files/xensiv-device-template.json) (Right-click, Save As)
+* Import the template into your IoTConnect instance using this guide:  [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md)
 
 ## 11. IoTConnect Device Creation
-* Create a new device in the IoTConnect portal. (Follow the [Create a New Device](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/create_new_device.md) guide for a detailed walkthrough.)
+* Return to the IoTConnect GUI in your browser
+* **Click** the Device icon (Gear) and the "Device" sub-menu:  
+![image](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/assets/40640041/fc84a59a-1317-4f25-bebf-1d07d1e535bf)
+* At the top-right, click on the "Create Device" button:  
+![image](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/assets/40640041/1882296f-a3dc-44d0-936c-79ed15a874e2)
+
 * Enter the **DUID** saved from earlier in the *Unique ID* field
 * Enter a description of your choice in the *Display Name* to help identify your device
 * Select the template from the dropdown box that was just imported ("xensivdemo")
@@ -140,7 +145,7 @@ Pressure : 841.57 mBar   Temperature: 29.15 øC
 
 ## 13. Visualize Data
 The data can be visualized by using the Dynamic Dashboard feature of IoTConnect.  
-A sample dashboard that is preconfigured to display the Xensiv module's data is available here: [xensiv-dashboard-template.json](files/xensiv-dashboard-template.json).
+A sample dashboard that is preconfigured to display the Xensiv module's data is available here: [xensiv-dashboard-template.json](https://raw.githubusercontent.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/main/files/xensiv-dashboard-template.json) (Right-click, Save As)
 
 * **Download** the template then select "Create Dashboard" from the top of the IoTConnect portal
 * **Select** the "Import Dashboard" option and **Select** the template and device name used previously 
