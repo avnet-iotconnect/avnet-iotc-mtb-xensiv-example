@@ -17,5 +17,5 @@ The kit contains the main MCU board with Optiga Secure Element along with the PA
 This project will compile and run with or without the PAS CO2 board attached to the MCU. 
 
 ## Instructions
-* If developing code with ModusToolbox, refer to the [DEVELOPER_GUIDE.md](./DEVELOPER_GUIDE.md) document.
-* If you wish to only evaluate this kit with a pre-compiled binary, refer to the [QUICKSTART](./QUICKSTART.md) document. 
+* If developing code with ModusToolbox, refer to the [DEVELOPER_GUIDE](./DEVELOPER_GUIDE.md) document.
+* To evaluate this kit with a pre-compiled binary, refer to the [QUICKSTART](./QUICKSTART.md) document. 
