@@ -6,7 +6,7 @@ This guide has been tested with the following environment, but should work with 
 * PC with Windows 10/11
 * USB-A to micro-USB data cable
 * WiFi Network with Internet access
-* A serial terminal application such as [Tera Term](https://sourceforge.net/projects/tera-term/) (Recommended) or a browser-based version such as [Google Chrome Labs Serial Terminal](https://googlechromelabs.github.io/serial-terminal/) (Alternative)
+* A serial terminal application such as [Tera Term](https://sourceforge.net/projects/tera-term/) (Recommended) or a browser-based version such as [Google Chrome Labs Serial Terminal](https://googlechromelabs.github.io/serial-terminal/)
 * A registered [myInfineon Account](https://www.infineon.com/sec/login)
 * XENSIV PAS CO2 KIT
 
