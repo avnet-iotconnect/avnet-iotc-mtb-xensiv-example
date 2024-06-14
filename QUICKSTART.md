@@ -69,7 +69,7 @@ Select one of the two implementations of IoTConnect:
 
 > **Note:**  Be sure to check any SPAM folder for the temporary password after registering.
 
-See the IotConnect [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) for more details.
+See the IoTConnect [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) for more details on the trial.
 
 ## 8. Acquire IoTConnect Account Information
 Login to IoTConnect using the corresponding link below to the version to which you registered:  
