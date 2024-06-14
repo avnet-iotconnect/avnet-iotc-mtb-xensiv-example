@@ -64,7 +64,7 @@ The application will display the certificate from the OPTIGA secure element upon
 An IoTConnect account is required.  If you need to create an account, a free trial subscription is available.
 
 Select one of the two implementations of IoTConnect:
-* [AWS Version](https://subscription.iotconnect.io/subscribe?cloud=aws)  (Recommended for this guide)
+* [AWS Version](https://subscription.iotconnect.io/subscribe?cloud=aws)  (Recommended)
 * [Azure Version](https://subscription.iotconnect.io/subscribe?cloud=azure)  
 
 > **Note:**  Be sure to check any SPAM folder for the temporary password after registering.
@@ -72,9 +72,9 @@ Select one of the two implementations of IoTConnect:
 See the IoTConnect [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) for more details on the trial.
 
 ## 8. Acquire IoTConnect Account Information
-Login to IoTConnect using the corresponding link below to the version to which you registered:  
-  * [IoTConnect on AWS](https://console.iotconnect.io) 
-  * [IoTConnect on Azure](https://portal.iotconnect.io)
+Login to IoTConnect using the corresponding link below to the version for which you registered:  
+* [IoTConnect on AWS](https://console.iotconnect.io) (Recommended)
+* [IoTConnect on Azure](https://portal.iotconnect.io)
 
 * The Company ID (**CPID**) and Environment (**ENV**) variables identifying your IoTConnect account must be configured in the XENSIV device. Take note of these values for later reference.
 <details><summary>Acquire <b>CPID</b> and <b>ENV</b> parameters from the IoTConnect Key Vault and save for later use</summary>
