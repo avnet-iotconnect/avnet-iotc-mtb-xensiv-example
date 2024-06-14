@@ -79,7 +79,7 @@ Login to IoTConnect using the corresponding link below to the version for which 
 The Company ID (**CPID**) and Environment (**ENV**) variables identifying your IoTConnect account must be configured in the XENSIV device.
 * Take note of these values for later reference loacted in the "Settings" -> "Key Vault" section of the platform. See image below.
 
-![Key Vault](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/bbdc9f363831ba607f40805244cbdfd08c887e78/assets/cpid_and_env.png)
+<img src="https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/bbdc9f363831ba607f40805244cbdfd08c887e78/assets/cpid_and_env.png" width=600>
 
 
 ## 9. Configure the Xensiv Board
@@ -115,14 +115,22 @@ There will be errors displayed because the device still needs to be created in t
 
 An IoTConnect *Device Template* will need to be created or imported. This defines the data format the platform should expect from the device.
 * Download the premade  [Device Template](https://raw.githubusercontent.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/main/files/xensiv-device-template.json) (Right-click, Save As)
-* Import the template into your IoTConnect instance using this guide:  [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md)
+
+* **Click** the Device icon and the "Device" sub-menu:  
+<img src="https://github.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/assets/40640041/57e0b0c8-08ba-4c3f-b33d-489d7d0db568" width=200>
+
+* At the bottom of the page, select the "Templates" icon from the toolbar.<br>![image](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/assets/40640041/3dc0b82c-13ea-4d99-93be-3adf14575709)
+* At the top-right of the page, select the "Create Template" button.<br>![image](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/assets/40640041/33325cbd-4fee-4958-b32a-f28d0d52342c)
+* At the top-right of the page, select the "Import" button.<br>![image](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/assets/40640041/418b999c-58e2-49f3-a3f1-118b16271b26)
+* Finally, click the "Browse" button and select the template previously downloaded.
 
 ## 11. IoTConnect Device Creation
-* Return to the IoTConnect GUI in your browser
-* **Click** the Device icon (Gear) and the "Device" sub-menu:  
-![image](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/assets/40640041/fc84a59a-1317-4f25-bebf-1d07d1e535bf)
+* **Click** the Device icon and the "Device" sub-menu:  
+<img src="https://github.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/assets/40640041/57e0b0c8-08ba-4c3f-b33d-489d7d0db568" width=200>
+
 * At the top-right, click on the "Create Device" button:  
-![image](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/assets/40640041/1882296f-a3dc-44d0-936c-79ed15a874e2)
+<img src="https://github.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/assets/40640041/82e70cb6-018b-4bf3-a92c-a7286b05d73f" width=200>
+
 
 * Enter the **DUID** saved from earlier in the *Unique ID* field
 * Enter a description of your choice in the *Display Name* to help identify your device
@@ -145,13 +153,13 @@ Pressure : 841.57 mBar   Temperature: 29.15 øC
 
 ## 13. Visualize Data
 The data can be visualized by using the Dynamic Dashboard feature of IoTConnect.  
-A sample dashboard that is preconfigured to display the Xensiv module's data is available here: [xensiv-dashboard-template.json](https://raw.githubusercontent.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/main/files/xensiv-dashboard-template.json) (Right-click, Save As)
+A preconfigured example dashboard is available here: [xensiv-dashboard-template.json](https://raw.githubusercontent.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/main/files/xensiv-dashboard-template.json) (Right-click, Save As)
 
 * **Download** the template then select "Create Dashboard" from the top of the IoTConnect portal
 * **Select** the "Import Dashboard" option and **Select** the template and device name used previously 
 
 Congratulations, your sample dashboard should look similar to the one below:  
-  <img width="700" alt="xensiv_pasco2_dashboard_image" src="https://github.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/assets/40640041/0d3047e4-bbe2-45a7-b959-88692919d4fa">
+<img width="700" alt="xensiv_pasco2_dashboard_image" src="https://github.com/avnet-iotconnect/avnet-iotc-mtb-xensiv-example/assets/40640041/0d3047e4-bbe2-45a7-b959-88692919d4fa">
 
 ## 14. Troubleshooting and Known Issues
 * The board may not be able to obtain time from the NTP server. Resetting the board should re-try the NTP connection and will likely succeed on the next try. 
