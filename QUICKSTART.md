@@ -26,7 +26,7 @@ This guide has been tested with the following environment, but should work with 
 * **Close** the programmer
 
 ## 5. Serial Port Setup
-* Launch the Serial Terminal application
+* Launch the Serial Terminal application (TeraTerm)
 * If using TeraTerm, it's recommended you enable `Local Echo` in the "Setup" -> "Terminal" menu, otherwise text input will not be visible.
 * Configure settings as shown below:
   * Port: (Select the COM port with the device)
@@ -38,7 +38,7 @@ This guide has been tested with the following environment, but should work with 
 * After setup, connect and press **RST** on the board
 
 ## 6. Extract Certificate and Device ID  
-The application will display the certificate from the OPTIGA secure element.
+The application will display the certificate from the OPTIGA secure element upon boot
 * **Copy** the *Device Certificate* and from the terminal including the "BEGIN" and "END" lines.
 * Open a text editor, such as notepad, paste in the certificate, and save the file as `cert.txt`
   ```
