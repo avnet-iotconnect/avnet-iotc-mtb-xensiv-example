@@ -17,8 +17,9 @@ This guide has been tested with the following environment, but should work with 
 ## 4. Flash the Firmware
 * **Download** and **Install** the [ModusToolbox Programming Tools](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.modustoolboxprogtools) (Right-Click, "Open link in new tab")
 * **Download** the pre-compiled firmware:  [xensiv-demo-02.01.02.hex](https://saleshosted.z13.web.core.windows.net/sdk/infineon/xensiv-demo-02.01.02.hex) (Right-Click, "Save link as...")
-* Launch the **mtb-programmer** software and update the firmware if prompted
-* Click the dropdown box next to **Probe/Kit** and select the item beginning with **"CYSBSYSKIT-"**
+* Launch the **ModusToolbox Programmer** software and update the firmware if prompted
+* Next to the **Programmer** drop-down, ensure the item begining with **KitProg3** is selected
+* Click the dropdown box next to **Board** and select the item beginning with **"CYSBSYSKIT-"**
 * Click **Open** and select the firmware .hex file downloaded (`xensiv-demo-02.01.02.hex`)
 * Click **Connect**
 * Click **Program**
