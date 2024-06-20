@@ -15,8 +15,8 @@ This guide has been tested with the following environment, but should work with 
 * Connect the XENSIV board to a USB port your PC. A new USB device should be detected.
 
 ## 4. Flash the Firmware
-* **Download** and **Install** the [ModusToolbox Programming Tools](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.modustoolboxprogtools)
-* **Download** the pre-compiled firmware:  [xensiv-demo-02.01.02.hex](https://saleshosted.z13.web.core.windows.net/sdk/infineon/xensiv-demo-02.01.02.hex)
+* **Download** and **Install** the [ModusToolbox Programming Tools](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.modustoolboxprogtools) (Right-Click, "Open link in new tab")
+* **Download** the pre-compiled firmware:  [xensiv-demo-02.01.02.hex](https://saleshosted.z13.web.core.windows.net/sdk/infineon/xensiv-demo-02.01.02.hex) (Right-Click, "Save link as...")
 * Launch the **mtb-programmer** software and update the firmware if prompted
 * Click the dropdown box next to **Probe/Kit** and select the item beginning with **"CYSBSYSKIT-"**
 * Click **Open** and select the firmware .hex file downloaded (`xensiv-demo-02.01.02.hex`)
