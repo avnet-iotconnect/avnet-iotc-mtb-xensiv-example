@@ -68,7 +68,7 @@ Edit *avnet-iotc-mtb-super-manifest-fv2.xml* and replace the **app-manifest** UR
 
 Edit *avnet-iotc-mtb-ce-manifest-fv2.xml* and replace the version release tag of the application 
 entries of the applications that you intend to work on with *your-branch* or *your-label* if you are testing a label. 
-Note that there are two entries for the Optiga/Sensor application pointing to the same repository in the xml.
+Note that there are two entries for the Optiga application pointing to the same repository in the xml.
 ```xml
 	<versions>
         <version flow_version="2.0" tools_min_version="2.4.0" req_capabilities_per_version="bsp_gen2">
