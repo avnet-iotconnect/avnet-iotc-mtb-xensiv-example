@@ -14,8 +14,9 @@ The project uses the following dependent projects:
 
 ## Supported Boards
 
-The code has been developed and tested with
+The code has been developed and tested with MTB 3.2, with Eclipse, and the boards below:
 [XENSIV&trade; KIT CSK PASCO2](https://www.infineon.com/cms/en/product/evaluation-boards/kit_csk_pasco2).
+
 The kit contains the main MCU board with Optiga Secure Element along with the PAS CO2 sensor board that needs to be connected to the main board. 
 This project will compile and run with or without the PAS CO2 board attached to the MCU. 
 
