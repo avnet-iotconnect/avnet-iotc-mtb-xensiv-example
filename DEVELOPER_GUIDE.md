@@ -67,7 +67,7 @@ The error may manifest in different ways, but the solution is to create the proj
 with 8 characters, or less (to be sure) like `C:\xensivdemo`. 
 Another thing that can be done to alleviate this issue is to rename the project during project creation. After checking the
 checkmark next to the project name you can rename the directory and the actual project name to something shorter 
-than the default long name like "Avnet_IoTConnect_Sensor_Example". Do not use spaces in the project name. 
+than the default long name "Avnet_IoTConnect_Optiga_Example" to "avnet-xensiv", for example. Do not use spaces in the project name. 
 * While debugging the Xensiv board, if clicking the "Restart a process" button, the board will lose the debugger connection.
 the workaround is to ensure that the debugger is not paused on a breakpoint and reset the board using the reset button on the board.
 The board should then hit the desired breakpoint again.
