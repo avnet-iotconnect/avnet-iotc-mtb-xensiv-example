@@ -8,6 +8,9 @@ This code is based on the [mtb-example-optiga-mqtt-client](https://github.com/In
 The project uses the following dependent projects:
 * [avnet-iotc-mtb-sdk](https://github.com/avnet-iotconnect/avnet-iotc-mtb-sdk)
 
+## Supported Toolchains (make variable 'TOOLCHAIN')
+
+* GNU Arm® Embedded Compiler (GCC_ARM) - Default value of TOOLCHAIN
 
 ## Supported Boards
 
